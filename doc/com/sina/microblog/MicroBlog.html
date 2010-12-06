@@ -143,11 +143,11 @@
 	 ///调用此接口是在登录成功的情况下
 	 private function callGeneralApi():void
 	 {
-	 		_mb.addEventListener(CUSTOM_EVENT, onCustomResult, false, 0, true);
+	 		_mb.addEventListener(CUSTOM_RESULT_EVENT, onCustomResult, false, 0, true);
 	 		_mb.addEventListener(CUSTOM_ERROR_EVENT, onCustomError, false, 0, true);
 			var obj:Object = { };
 			obj.count = 1;
-			_mb.callGeneralApi("/statuses/mentions.xml", obj, CUSTOM_EVENT, CUSTOM_ERROR_EVENT); ///分别传入线上的地址，参数对象，成功调取的事件类型以及失败后的事件类型
+			_mb.callGeneralApi("/statuses/mentions.xml", obj, CUSTOM_RESULT_EVENT, CUSTOM_ERROR_EVENT); ///分别传入线上的地址，参数对象，成功调取的事件类型以及失败后的事件类型
 	 }
 	 ///注意，此处的event类型需要写MicroBlogEvent,这样才能收到resut数据
 	 private function onCustomResult(event:MicroBlogEvent):void
@@ -1057,4 +1057,4 @@
 	 	  <p>调用verifyCrendentials成功时，事件的<code>result</code>属性<code>MicroBlogUser</code>
 	  对象.</p>
 	  <p>注意：当使用Basic方式验证的时候调用login成功时也会触发该事件</p>
-	  </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Mon Dec 6 2010, 10:24 AM +08:00  </center></div></body></html><!--<br/>Mon Dec 6 2010, 10:24 AM +08:00  -->
+	  </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Mon Dec 6 2010, 11:26 AM +08:00  </center></div></body></html><!--<br/>Mon Dec 6 2010, 11:26 AM +08:00  -->

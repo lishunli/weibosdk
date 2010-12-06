@@ -945,11 +945,11 @@ package com.sina.microblog
 	 * ///调用此接口是在登录成功的情况下
 	 * private function callGeneralApi():void
 	 * {
-	 * 		_mb.addEventListener(CUSTOM_EVENT, onCustomResult, false, 0, true);
+	 * 		_mb.addEventListener(CUSTOM_RESULT_EVENT, onCustomResult, false, 0, true);
 	 * 		_mb.addEventListener(CUSTOM_ERROR_EVENT, onCustomError, false, 0, true);
 			var obj:Object = { };
 			obj.count = 1;
-			_mb.callGeneralApi("/statuses/mentions.xml", obj, CUSTOM_EVENT, CUSTOM_ERROR_EVENT); ///分别传入线上的地址，参数对象，成功调取的事件类型以及失败后的事件类型
+			_mb.callGeneralApi("/statuses/mentions.xml", obj, CUSTOM_RESULT_EVENT, CUSTOM_ERROR_EVENT); ///分别传入线上的地址，参数对象，成功调取的事件类型以及失败后的事件类型
 	 * }
 	 * ///注意，此处的event类型需要写MicroBlogEvent,这样才能收到resut数据
 	 * private function onCustomResult(event:MicroBlogEvent):void
