@@ -70,10 +70,16 @@ package com.sina.microblog.events
 		public static const LOAD_PROVINCE_CITY_ID_LIST_ERROR:String = "loadProvinceCityIdListError";
 		
 		public static const NET_WORK_ERROR:String = "networkError";
+		
 		/**
 		 * 请求失败后返回的错误信息
 		 */ 
 		public var message:String;
+		
+		/**
+		 * 状态值
+		 */
+		public var status:int;
 		
 		public function MicroBlogErrorEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

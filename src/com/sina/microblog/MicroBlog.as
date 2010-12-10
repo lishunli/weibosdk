@@ -1075,6 +1075,8 @@ package com.sina.microblog
 		 */
 		private var _useProxy:Boolean = true;
 		
+		private var _debugMode:Boolean = false;
+		
 		/**
 		 * 构造函数
 		 */
@@ -1172,8 +1174,22 @@ package com.sina.microblog
 		public function set isTrustDomain(value:Boolean):void 
 		{
 			_isTrustDomain = value;
-			if (Capabilities.playerType != "Desktop") _useProxy = !_isTrustDomain;
+			if (Capabilities.playerType != "Desktop")
+			{
+				//_useProxy = !_isTrustDomain;
+				_useProxy = !_isTrustDomain || _debugMode;
+			}
 		}
+		
+		/**
+		 * 设置为本地测试模式
+		 */
+		public function get debugMode():Boolean { return _debugMode; }	
+		public function set debugMode(value:Boolean):void 
+		{
+			_debugMode = value;
+			_useProxy = !_isTrustDomain && !_debugMode;
+		}		
 		
 		private function getAnywhereToken():void
 		{
@@ -1192,7 +1208,9 @@ package com.sina.microblog
 				dispatchEvent(new MicroBlogEvent(MicroBlogEvent.LOGIN_RESULT));
 				dispatchEvent(new MicroBlogEvent(MicroBlogEvent.ANYWHERE_TOKEN_RESULT));
 			}else {
-				dispatchEvent(new MicroBlogErrorEvent(MicroBlogErrorEvent.ANYWHERE_TOKEN_ERROR));
+				var errE:MicroBlogErrorEvent = new MicroBlogErrorEvent(MicroBlogErrorEvent.ANYWHERE_TOKEN_ERROR);
+				errE.status = int(obj.status);
+				dispatchEvent(errE);
 			}
 		}
 		
@@ -1259,7 +1277,7 @@ package com.sina.microblog
 			var url:String = "http://api.t.sina.com.cn/oauth/login?source=" + _source;
 			url += "&callback=http://api.t.sina.com.cn/flash/callback.htm";
 			url += escape("?chanel=" + _localConnectionChanel);
-			if (ExternalInterface.available) ExternalInterface.call("window.open", url,'newwindow','height=420,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
+			if (ExternalInterface.available && !_debugMode) ExternalInterface.call("window.open", url,'newwindow','height=420,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
 			else navigateToURL(new URLRequest(url), "_blank");
 		}
 		
