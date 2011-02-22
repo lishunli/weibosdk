@@ -2250,7 +2250,7 @@ package com.sina.microblog
 		 * 
 		 * @param	category	分类，返回某一类别的推荐用户，默认为default。如果不在以下分类中，返回空列表：
 		 * default：人气关注	ent：影视名星	hk_famous：港台名人		model：模特
-		 * cooking：美食&健康	sport：体育名人	finance：商界名人		tech：IT互联网
+		 * cooking：美食&#64;健康	sport：体育名人	finance：商界名人		tech：IT互联网
 		 * singer：歌手			writer：作家	moderator：主持人		medium：媒体总编
 		 * stockplayer：炒股高手 
 		 */
