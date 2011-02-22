@@ -29,6 +29,8 @@ package com.sina.microblog.events
 		public static const LOAD_COMMENTS_TO_ME_RESULT:String = "loadCommentsToMeResult";
 		public static const LOAD_COMMENTS_RESULT:String = "loadCommentsResult";
 		public static const LOAD_STATUS_COUNTS_RESULT:String = "loadStatusCountsResult";
+		public static const REPOST_TIMELINE_RESULT:String = "repostTimelineResult";
+		public static const REPOST_BY_ME_RESULT:String = "repostByMeResult";
 		public static const LOAD_STATUS_UNREAD_RESULT:String = "loadStatusUnreadResult";
 		
 		public static const UPDATE_STATUS_RESULT:String = "updateStatusResult";
@@ -39,6 +41,7 @@ package com.sina.microblog.events
 		public static const REPOST_STATUS_RESULT:String = "repostStatusResult";
 		public static const REPLY_STATUS_RESULT:String = "replyStatusResult";
 		public static const RESET_STATUS_COUNT_RESULT:String = "resetStatusResult";
+		public static const DELETE_COMMENT_PATCH_RESULT:String = "deleteCommentPatchResult";
 		
 		public static const LOAD_DIRECT_MESSAGES_RECEIVED_RESULT:String = "loadDirectMessagesReceivedResult";
 		public static const LOAD_DIRECT_MESSAGES_SENT_RESULT:String = "loadDicrectMessagesSentResult";
@@ -48,6 +51,8 @@ package com.sina.microblog.events
 		public static const LOAD_USER_INFO_RESULT:String = "loadUserInfoResult";
 		public static const LOAD_FRIENDS_INFO_RESULT:String = "loadFriendsInfoResult";
 		public static const LOAD_FOLLOWERS_INFO_RESULT:String = "loadFollowersInfoResult";
+		public static const LOAD_HOT_USERS_RESULT:String = "loadHotUsersResult";
+		public static const UPDATE_FRIENDS_REMARK_RESULT:String = "updateFriendsRemarkResult";
 		
 		public static const FOLLOW_RESULT:String = "followResult";
 		public static const CANCEL_FOLLOWING_RESULT:String = "cancelFollowingResult";

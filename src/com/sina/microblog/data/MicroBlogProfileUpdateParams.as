@@ -35,78 +35,30 @@ package com.sina.microblog.data
 		 */
 		public function set gender(value:String):void
 		{
-			if (value && validatedGender.indexOf(value) >= 0)
+			if(value == GENDER_MALE || value == GENDER_FEMALE)
 			{
-				_postData.gender=StringEncoders.urlEncodeUtf8String(value);
+				_postData.gender = value;
 				_isEmpty=false;
 			}
 		}
-		/**
-		 * 设置用户qq
-		 */
-		//public function set qq(value:String):void
-		//{
-			//if (value && value.length > 0)
-			//{
-				//_postData.qq=StringEncoders.urlEncodeUtf8String(value);
-				//_isEmpty=false;
-			//}
-		//}
-		/**
-		 * 设置用户msn
-		 */
-		//public function set msn(value:String):void
-		//{
-			//if (value && value.length > 0)
-			//{
-				//_postData.msn=StringEncoders.urlEncodeUtf8String(value);
-				//_isEmpty=false;
-			//}
-		//}
+		
 		/**
 		 * 设置用户省份
 		 */
-		public function set province(value:String):void
+		public function set province(value:int):void
 		{
-			if (value && value.length > 0)
-			{
-				_postData.province=StringEncoders.urlEncodeUtf8String(value);
-				_isEmpty=false;
-			}
+			_postData.province = value;
+			_isEmpty=false;
 		}
 		/**
 		 * 设置用户城市
 		 */
-		public function set city(value:String):void
+		public function set city(value:int):void
 		{
-			if (value && value.length > 0)
-			{
-				_postData.city=StringEncoders.urlEncodeUtf8String(value);
-				_isEmpty=false;
-			}
+			_postData.city = value;
+			_isEmpty=false;
 		}
-		/**
-		 * 设置用户链接
-		 */
-		//public function set url(value:String):void
-		//{
-			//if (value && value.length > 0)
-			//{
-				//_postData.url=StringEncoders.urlEncodeUtf8String(value);
-				//_isEmpty=false;
-			//}
-		//}
-		/**
-		 * 设置用户地址
-		 */
-		//public function set location(value:String):void
-		//{
-			//if (value && value.length > 0)
-			//{
-				//_postData.location=StringEncoders.urlEncodeUtf8String(value);
-				//_isEmpty=false;
-			//}
-		//}
+		
 		/**
 		 * 设置用户描述
 		 */
@@ -114,7 +66,7 @@ package com.sina.microblog.data
 		{
 			if (value && value.length > 0)
 			{
-				_postData.description=StringEncoders.urlEncodeUtf8String(value);
+				_postData.description= value;
 				_isEmpty=false;
 			}
 		}

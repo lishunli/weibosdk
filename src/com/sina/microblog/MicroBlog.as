@@ -227,7 +227,47 @@ package com.sina.microblog
 	 *  @langversion 3.0
 	 *  @productversion MicroBlog-API 
 	 */
-	[Event(name="loadStatusCountsError", type="com.sina.microblog.events.MicroBlogErrorEvent")]
+	[Event(name = "loadStatusCountsError", type = "com.sina.microblog.events.MicroBlogErrorEvent")]
+	
+	/**
+	 *  当请求返回一条原创微博消息的最新n条转发微博消息成功时，时触发该事件。
+	 *
+	 *  <p>调用repostTimeline成功时，事件的<code>result</code>属性为一个<code>MicroBlogStatus</code>
+	 *  对象数组.</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="repostTimelineResult", type="com.sina.microblog.events.MicroBlogEvent")]
+	/**
+	 * 	当请求返回一条原创微博消息的最新n条转发微博消息失败时，时触发该事件。
+	 *
+	 *  <p>调用repostTimeline失败时，事件的<code>message</code>为失败原因描述</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="repostTimelineError", type="com.sina.microblog.events.MicroBlogErrorEvent")]
+	
+	/**
+	 *  获取用户最新转发的n条微博消息成功时，触发该事件。
+	 *
+	 *  <p>调用repostByMe成功时，事件的<code>result</code>属性为一个<code>MicroBlogStatus</code>
+	 *  对象数组.</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="repostByMeResult", type="com.sina.microblog.events.MicroBlogEvent")]
+	/**
+	 * 	获取用户最新转发的n条微博消息失败时，时触发该事件。
+	 *
+	 *  <p>调用repostByMe失败时，事件的<code>message</code>为失败原因描述</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="repostByMeError", type="com.sina.microblog.events.MicroBlogErrorEvent")]	
 	
 	/**
 	 *  <p>调用loadStatusUnread成功时，事件的<code>result</code>属性为一个<code>MicroBlogUnread</code>
@@ -363,7 +403,27 @@ package com.sina.microblog
 	 *  @langversion 3.0
 	 *  @productversion MicroBlog-API 
 	 */
-	[Event(name="deleteCommentError", type="com.sina.microblog.events.MicroBlogErrorEvent")]
+	[Event(name = "deleteCommentError", type = "com.sina.microblog.events.MicroBlogErrorEvent")]
+	
+	/**
+	 *  批量删除评论成功时触发该事件.
+	 *
+	 *  <p>调用deleteCommentBatch成功时，事件的<code>result</code>属性为<code>MicroBlogComment</code>
+	 *  对象数组.</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="deleteCommentPatchResult", type="com.sina.microblog.events.MicroBlogEvent")]
+	/**
+	 *  批量删除评论失败时触发该事件.
+	 *
+	 *  <p>调用deleteCommentBatch失败时，事件的<code>message</code>为失败原因描述</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="deleteCommentPatchError", type="com.sina.microblog.events.MicroBlogErrorEvent")]	
 	
 	/**
 	 *  当回复某个微博评论成功时触发该事件.
@@ -462,6 +522,46 @@ package com.sina.microblog
 	 *  @productversion MicroBlog-API 
 	 */
 	[Event(name="loadFollowersInfoError", type="com.sina.microblog.events.MicroBlogErrorEvent")]	
+
+	/**
+	 *  返回系统推荐的用户列表成功时触发该事件.
+	 *
+	 *  <p>调用loadHotUsers成功时，事件的<code>result</code>属性<code>MicroBlogUser</code>
+	 *  对象数组.</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API
+	 */
+	[Event(name="loadHotUsersResult", type="com.sina.microblog.events.MicroBlogEvent")]
+	/**
+	 *  返回系统推荐的用户列表失败时触发该事件.
+	 *
+	 *  <p>调用loadHotUsers失败时，事件的<code>message</code>为失败原因描述</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name = "loadHotUsersError", type = "com.sina.microblog.events.MicroBlogErrorEvent")]
+	
+	/**
+	 *  更新当前登录用户所关注的某个好友的备注信息成功时触发该事件.
+	 *
+	 *  <p>调用updateFriendsRemark成功时，事件的<code>result</code>属性<code>MicroBlogUser</code>
+	 *  对象数组.</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API
+	 */
+	[Event(name="updateFriendsRemarkResult", type="com.sina.microblog.events.MicroBlogEvent")]
+	/**
+	 *  更新当前登录用户所关注的某个好友的备注信息失败时触发该事件.
+	 *
+	 *  <p>调用updateFriendsRemark失败时，事件的<code>message</code>为失败原因描述</p>
+	 *  
+	 *  @langversion 3.0
+	 *  @productversion MicroBlog-API 
+	 */
+	[Event(name="updateFriendsRemarkError", type="com.sina.microblog.events.MicroBlogErrorEvent")]			
 	
 	/**
 	 *  <p>调用loadDirectMessagesReceived成功时，事件的<code>result</code>属性为<code>MicroBlogDirectMessage</code>
@@ -1009,7 +1109,8 @@ package com.sina.microblog
 	 */
 	public class MicroBlog extends EventDispatcher
 	{
-		private static const API_BASE_URL:String="http://api.t.sina.com.cn";		
+		private static const API_BASE_URL:String = "http://api.t.sina.com.cn";
+		///网络应用，跨域限制时，绑定app域请求的代理接口
 		private static const PROXY_URL:String = "http://api.t.sina.com.cn/flash/proxy.jsp";
 
 		private static const OAUTH_REQUEST_TOKEN_REQUEST_URL:String=API_BASE_URL + "/oauth/request_token";
@@ -1025,24 +1126,28 @@ package com.sina.microblog
 		private static const COMMENTS_TO_ME_REQUEST_URL:String = "/statuses/comments_to_me.xml"		
 		private static const COMMENTS_REQUEST_URL:String="/statuses/comments.xml";
 		private static const STATUS_COUNTS_REQUEST_URL:String = "/statuses/counts.xml";
+		private static const REPOST_TIMELINE_URL:String = "/statuses/repost_timeline.xml";
+		private static const REPOST_BY_ME_URL:String = "/statuses/repost_by_me.xml";		
 		private static const STATUS_UNREAD_REQUEST_URL:String = "/statuses/unread.xml";
 		private static const RESET_STATUS_COUNT_REQUEST_URL:String = "/statuses/reset_count.xml";
 		///emotions表情接口
 		
 		private static const SHOW_STATUS_REQUEST_URL:String = "/statuses/show/$id.xml";
-		////
+		//页面跳转接口
 		private static const UPDATE_STATUS_REQUEST_URL:String="/statuses/update.xml";
 		private static const UPDATE_STATUS_WITH_IMAGE_REQUEST_URL:String="/statuses/upload.xml";
 		private static const DELETE_STATUS_REQUEST_URL:String="/statuses/destroy/$id.xml";
 		private static const REPOST_STATUS_REQUEST_URL:String="/statuses/repost.xml";
 		private static const COMMENT_STATUS_REQUEST_URL:String="/statuses/comment.xml";
-		private static const DELETE_COMMENT_REQUEST_URL:String="/statuses/comment_destroy/$id.xml";
-		private static const REPLY_STATUS_REQUEST_URL:String = "/statuses/reply.xml";
-		
+		private static const DELETE_COMMENT_REQUEST_URL:String = "/statuses/comment_destroy/$id.xml";
+		private static const DELETE_COMMENT_BATCH_URL:String = "/statuses/comment/destroy_batch.xml";
+		private static const REPLY_STATUS_REQUEST_URL:String = "/statuses/reply.xml";	
 
 		private static const LOAD_USER_INFO_REQUEST_URL:String="/users/show$user.xml";
 		private static const LOAD_FRIENDS_INFO_REQUEST_URL:String="/statuses/friends$user.xml";
 		private static const LOAD_FOLLOWERS_INFO_REQUEST_URL:String = "/statuses/followers$user.xml";
+		private static const LOAD_HOT_USERS_URL:String = "/users/hot.xml";
+		private static const UPDATE_FRIENDS_REMARK_URL:String = "/user/friends/update_remark.xml";
 		
 		private static const LOAD_DIRECT_MESSAGES_RECEIVED_REQUEST_URL:String="/direct_messages.xml";
 		private static const LOAD_DIRECT_MESSAGES_SENT_REQUEST_URL:String="/direct_messages/sent.xml";
@@ -1071,8 +1176,6 @@ package com.sina.microblog
 		private static const ENABLE_NOTIFICATION_REQUEST_URL:String="/notifications/$enabled$user.xml";
 	
 		private static const LOAD_PROVINCE_CITY_ID_LIST:String=API_BASE_URL + "provinces.xml";
-//		private static const VERIFY_CREDENTIALS:String = "1";
-//		private static const LOGOUT:String = "2";
 
 		private static const USER_ID:String="user_id";
 		private static const SCREEN_NAME:String="screen_name";
@@ -1093,14 +1196,12 @@ package com.sina.microblog
 		private static const CONTENT_DISPOSITION_BASIC:String='Content-Disposition: form-data; name="$name"';
 		private static const CONTENT_TYPE_JPEG:String="Content-Type: image/pjpeg";
 		private static const CONTENT_TRANSFER_ENCODING:String="Content-Transfer-Encoding: binary";	
-		//private static const SOURCE_ADOBE_AIR_CLIENT:String = "Adobe Air Client";
 		
 		private var _consumerKey:String="";
 		private var _consumerSecret:String="";
 		private var _accessTokenKey:String="";
 		private var _accessTokenSecret:String="";
 		private var _pin:String="";
-		//private var _source:String = SOURCE_ADOBE_AIR_CLIENT;
 		private var _source:String = "";
 		private var _verifier:String = "";
 		private var authHeader:URLRequestHeader;
@@ -1114,9 +1215,7 @@ package com.sina.microblog
 		
 		private var serviceLoader:Dictionary=new Dictionary();
 		private var loaderMap:Dictionary = new Dictionary();
-		private var oauthLoader:URLLoader;	
-		
-		//public var currentResult:XML;/////////////////////////////////////////////////////////////////////////Test Purpose
+		private var oauthLoader:URLLoader;
 		
 		///设置当前应用是否所在新浪open api的白名单域，如果为true则接口会尝试直接访问api.t下的接口而不使用代理
 		private var _isTrustDomain:Boolean = false;
@@ -1128,6 +1227,8 @@ package com.sina.microblog
 		private var _useProxy:Boolean = true;
 		
 		private var _debugMode:Boolean = false;
+		
+		//public var currentResult:XML;/////////////////////////////////////////////////////////////////////////Test Purpose
 		
 		/**
 		 * 构造函数
@@ -1334,8 +1435,19 @@ package com.sina.microblog
 			var url:String = "http://api.t.sina.com.cn/oauth/login?source=" + _source;
 			url += "&callback=http://api.t.sina.com.cn/flash/callback.htm";
 			url += escape("?chanel=" + _localConnectionChanel);
-			if (ExternalInterface.available && !_debugMode) ExternalInterface.call("window.open", url,'newwindow','height=420,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
-			else navigateToURL(new URLRequest(url), "_blank");
+			
+			//if (ExternalInterface.available && !_debugMode) ExternalInterface.call("window.open", url,'newwindow','height=420,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
+			//else navigateToURL(new URLRequest(url), "_blank");
+			if (ExternalInterface.available && !_debugMode)
+			{
+				try {
+					ExternalInterface.call("window.open", url,'newwindow','height=420,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
+				}catch (err:Error) {
+					navigateToURL(new URLRequest(url), "_blank");
+				}
+			}else {
+				navigateToURL(new URLRequest(url), "_blank");
+			}
 		}
 		
 		/**
@@ -1358,7 +1470,7 @@ package com.sina.microblog
 
 		/**
 		 * 返回最新的20条公共微博。返回结果非完全实时，最长会缓存60秒
-		 *
+
 		 * <b>有请求数限制</b>
 		 * 
 		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件<br/>
@@ -1367,12 +1479,17 @@ package com.sina.microblog
 		 *
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.LOAD_PUBLIC_TIMELINE_ERROR</b></p>
+		 * 
+		 * @param count  		每次返回的记录数，默认值20，最大值200
+		 * @param base_app  	是否基于当前应用来获取数据。1为限制本应用微博，0为不做限制。 
 		 */
-		public function loadPublicTimeline():void
+		public function loadPublicTimeline(count:int = 20, base_app:int = 0):void
 		{
 			addProcessor(PUBLIC_TIMELINE_REQUEST_URL, processStatusArray, MicroBlogEvent.LOAD_PUBLIC_TIMELINE_RESULT, MicroBlogErrorEvent.LOAD_PUBLIC_TIMELINE_ERROR);
 			var params:Object = new Object();
 			params["_uri"] = PUBLIC_TIMELINE_REQUEST_URL;
+			if (count > 0) params["count"] = count;
+			if (base_app == 0 || base_app == 1) params["base_app"] = base_app;
 			if(_useProxy) executeRequest(PUBLIC_TIMELINE_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(PUBLIC_TIMELINE_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + PUBLIC_TIMELINE_REQUEST_URL, params, URLRequestMethod.POST));
 		}
@@ -1393,14 +1510,17 @@ package com.sina.microblog
 		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
 		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
 		 * @param page 请求的页序号，默认值0，返回第一页.
-		 *
+		 * @param base_app 是否基于当前应用来获取数据。1为限制本应用微博，0为不做限制。 
+		 * @param feature 微博类型，0全部，1原创，2图片，3视频，4音乐. 返回指定类型的微博信息内容。 
 		 */
-		public function loadFriendsTimeline(sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadFriendsTimeline(sinceID:String="0", maxID:String="0", count:uint=20, page:uint=1, base_app:int = 0, feature:int = 0):void
 		{
 			addProcessor(FRIENDS_TIMELINE_REQUEST_URL, processStatusArray, MicroBlogEvent.LOAD_FRIENDS_TIMELINE_RESULT, MicroBlogErrorEvent.LOAD_FRIENDS_TIMELINE_ERROR);
 			var params:Object = new Object();		
 			makeQueryCombinatory(params, sinceID, maxID, count, page);
 			params["_uri"] = FRIENDS_TIMELINE_REQUEST_URL;
+			if (base_app == 0 || base_app == 1) params["base_app"] = base_app;
+			if (feature == 0 || feature == 1 || feature == 2 || feature == 3 || feature == 4) params["feature"] = feature;
 			if (_useProxy) executeRequest(FRIENDS_TIMELINE_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(FRIENDS_TIMELINE_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + FRIENDS_TIMELINE_REQUEST_URL , params, URLRequestMethod.POST));
 		}
@@ -1413,7 +1533,8 @@ package com.sina.microblog
 		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件<br/>
 		 * type为<b>MicroBlogEvent.STATUS_USER_TIMELINE_RESULT</b><br/>
 		 * result为一个MicroBlogStatus数组，该数组包含了所请求的微博消息.
-		 * 由于分页限制，最多只能返回用户最新的200条微博信息</p>
+		 * 由于分页限制，最多只能返回用户最新的200条微博信息<br/>
+		 * 如果:id、user_id、screen_name三个参数均未指定，则返回当前登录用户最近发表的微博消息列表。 </p>
 		 *
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.STATUS_USER_TIMELINE_ERROR</b></p>
@@ -1424,9 +1545,11 @@ package com.sina.microblog
 		 * @param sinceID 请求大于该id的所有消息更新，默认值为0，表示不限制.
 		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
 		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param page 请求的页序号，默认值0，返回第一页。
+		 * @param base_app 是否基于当前应用来获取数据。1为限制本应用微博，0为不做限制。 
+		 * @param feature 微博类型，0全部，1原创，2图片，3视频，4音乐. 返回指定类型的微博信息内容。
 		 */
-		public function loadUserTimeline(id:*=null, userID:String="0", screenName:String=null, sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadUserTimeline(id:*=null, userID:String="0", screenName:String=null, sinceID:String="0", maxID:String="0", count:uint=20, page:uint=1, base_app:int = 0, feature:int = 0):void
 		{
 			//TO-DO: if the parameter equals to zero, don't include this parameter when build request url.
 			addProcessor(USER_TIMELINE_REQUEST_URL, processStatusArray, MicroBlogEvent.LOAD_USER_TIMELINE_RESULT, MicroBlogErrorEvent.LOAD_USER_TIMELINE_ERROR);
@@ -1438,6 +1561,8 @@ package com.sina.microblog
 			makeUserParams(params, userID, screenName,  -1, verifier);
 			makeQueryCombinatory(params, sinceID, maxID, count, page);
 			params["_uri"] = url;
+			if (base_app == 0 || base_app == 1) params["base_app"] = base_app;
+			if (feature == 0 || feature == 1 || feature == 2 || feature == 3 || feature == 4) params["feature"] = feature;
 			if(_useProxy) executeRequest(USER_TIMELINE_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(USER_TIMELINE_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
 		}
@@ -1460,7 +1585,7 @@ package com.sina.microblog
 		 * @param page 请求的页序号，默认值0，返回第一页.
 		 *
 		 */
-		public function loadMentions(sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadMentions(sinceID:String="0", maxID:String="0", count:uint=20, page:uint=1):void
 		{
 			//TO-DO: if the parameter equals to zero, don't include this parameter when build request url.
 			addProcessor(MENTIONS_REQUEST_URL, processStatusArray, MicroBlogEvent.LOAD_MENSIONS_RESULT, MicroBlogErrorEvent.LOAD_MENSIONS_ERROR);
@@ -1486,11 +1611,11 @@ package com.sina.microblog
 		 *
 		 * @param sinceID 请求大于该id的所有消息更新，默认值为0，表示不限制.
 		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
-		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param count 请求的页大小，即一页包含多少条记录；默认值20，表示使用服务器默认分页大小.
+		 * @param page 请求的页序号，默认值1，返回第一页.
 		 *
 		 */
-		public function loadCommentsTimeline(sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadCommentsTimeline(sinceID:String = "0", maxID:String = "0", count:uint = 20, page:uint = 1):void
 		{
 			addProcessor(COMMENTS_TIMELINE_REQUEST_URL, processCommentArray, MicroBlogEvent.LOAD_COMMENTS_TIMELINE_RESULT, MicroBlogErrorEvent.LOAD_COMMENTS_TIMELINE_ERROR);
 			var url:String=COMMENTS_TIMELINE_REQUEST_URL;
@@ -1515,10 +1640,10 @@ package com.sina.microblog
 		 *
 		 * @param sinceID 请求大于该id的所有消息更新，默认值为0，表示不限制.
 		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
-		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param count 请求的页大小，即一页包含多少条记录；默认值20，表示使用服务器默认分页大小.
+		 * @param page 请求的页序号，默认值1，返回第一页.
 		 */
-		public function loadMyComments(sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadMyComments(sinceID:String="0", maxID:String="0", count:uint=20, page:uint=1):void
 		{
 			addProcessor(COMMENTS_BY_ME_REQUEST_URL, processCommentArray, MicroBlogEvent.LOAD_MY_COMMENTS_RESULT, MicroBlogErrorEvent.LOAD_MY_COMMENTS_ERROR);
 			var url:String=COMMENTS_BY_ME_REQUEST_URL;
@@ -1543,10 +1668,10 @@ package com.sina.microblog
 		 * 
 		 * @param sinceID 请求大于该id的所有消息更新，默认值为0，表示不限制.
 		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
-		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param count 请求的页大小，即一页包含多少条记录；默认值20，表示使用服务器默认分页大小.
+		 * @param page 请求的页序号，默认值1，返回第一页.
 		 */
-		public function loadCommentsToMe(sinceID:String = "0", maxID:String = "0", count:uint = 0, page:uint = 0):void
+		public function loadCommentsToMe(sinceID:String="0", maxID:String ="0", count:uint=20, page:uint=1):void
 		{
 			addProcessor(COMMENTS_TO_ME_REQUEST_URL, processCommentArray, MicroBlogEvent.LOAD_COMMENTS_TO_ME_RESULT, MicroBlogErrorEvent.LOAD_COMMENTS_TO_ME_ERROR);
 			var url:String=COMMENTS_TO_ME_REQUEST_URL;
@@ -1570,14 +1695,14 @@ package com.sina.microblog
 		 * type为<b>MicroBlogErrorEvent.LOAD_COMMENTS_ERROR</b></p>
 		 *
 		 * @param id 必选参数，指定微博ID.
-		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param count 请求的页大小，即一页包含多少条记录；默认值20，表示使用服务器默认分页大小.
+		 * @param page 请求的页序号，默认值1，返回第一页.
 		 */
-		public function loadCommentList(id:String, count:uint=0, page:uint=0):void
+		public function loadCommentList(id:String, count:uint=20, page:uint=1):void
 		{
 			addProcessor(COMMENTS_REQUEST_URL, processCommentArray, MicroBlogEvent.LOAD_COMMENTS_RESULT, MicroBlogErrorEvent.LOAD_COMMENTS_ERROR);
 			var url:String=COMMENTS_REQUEST_URL;
-			var params:Object=new Object();
+			var params:Object = { };
 			params[ID]=id;
 			makeQueryCombinatory(params, "0", "0", count, page);
 			params["_uri"] = url;
@@ -1616,6 +1741,46 @@ package com.sina.microblog
 			params["_uri"] = url;
 			if(_useProxy) executeRequest(STATUS_COUNTS_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(STATUS_COUNTS_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
+		}
+		
+		/**
+		 * 返回一条原创微博消息的最新n条转发微博消息。本接口无法对非原创微博进行查询。
+		 * 
+		 * @param	id			要获取转发微博列表的原创微博ID。 
+		 * @param	sinceID		若指定此参数，则只返回ID比since_id大的记录（比since_id发表时间晚）
+		 * @param	maxID		若指定此参数，则返回ID小于或等于max_id的记录
+		 * @param	count		单页返回的记录条数。 
+		 * @param	page		返回结果的页码
+		 */
+		public function repostTimeline(id:String, sinceID:String="0", maxID:String ="0", count:uint=20, page:uint=1):void
+		{
+			addProcessor(REPOST_TIMELINE_URL, processStatusArray, MicroBlogEvent.REPOST_TIMELINE_RESULT, MicroBlogErrorEvent.REPOST_TIMELINE_ERROR);
+			var params:Object = new Object();
+			params.id = id;
+			makeQueryCombinatory(params, sinceID, maxID, count, page);
+			params["_uri"] = REPOST_TIMELINE_URL;
+			if(_useProxy) executeRequest(REPOST_TIMELINE_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
+			else executeRequest(REPOST_TIMELINE_URL, getMicroBlogRequest(API_BASE_URL + REPOST_TIMELINE_URL, params, URLRequestMethod.POST));
+		}
+		
+		/**
+		 * 获取用户最新转发的n条微博消息 
+		 * 
+		 * @param	userID		要获取转发微博列表的用户ID。
+		 * @param	sinceID		若指定此参数，则只返回ID比since_id大的记录（比since_id发表时间晚）。 
+		 * @param	maxID		若指定此参数，则返回ID小于或等于max_id的记录 
+		 * @param	count		单页返回的记录条数，默认20，最大200
+		 * @param	page		返回结果的页码。 
+		 */
+		public function repostByMe(userID:String, sinceID:String="0", maxID:String ="0", count:uint=20, page:uint=1):void
+		{
+			addProcessor(REPOST_BY_ME_URL, processStatusArray, MicroBlogEvent.REPOST_BY_ME_RESULT, MicroBlogErrorEvent.REPOST_BY_ME_ERROR);
+			var params:Object = new Object();
+			params.id = userID;
+			makeQueryCombinatory(params, sinceID, maxID, count, page);
+			params["_uri"] = REPOST_BY_ME_URL;
+			if(_useProxy) executeRequest(REPOST_BY_ME_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
+			else executeRequest(REPOST_BY_ME_URL, getMicroBlogRequest(API_BASE_URL + REPOST_BY_ME_URL, params, URLRequestMethod.POST));
 		}
 		
 		/**
@@ -1659,7 +1824,7 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.RESET_STATUS_COUNT_ERROR</b></p>
 		 * 
-		 * @param	type	要清除的技术类别
+		 * @param	type	要清除的计数类别
 		 */
 		public function resetCount(type:int):void
 		{
@@ -1706,12 +1871,22 @@ package com.sina.microblog
 		public function navigateToStatus(uid:String, statusId:String):void
 		{
 			var url:String = "http://api.t.sina.com.cn/" + uid + "/statuses/" + String(statusId);
-			if (ExternalInterface.available) ExternalInterface.call("window.open", url, 'newwindow');
-			else navigateToURL(new URLRequest(url), "_blank");
+			if (ExternalInterface.available && !_debugMode)
+			{
+				try {
+					ExternalInterface.call("window.open", url, 'newwindow');
+				}catch (err:Error) {
+					navigateToURL(new URLRequest(url), "_blank");
+				}
+			}else {
+				navigateToURL(new URLRequest(url), "_blank");
+			}			
 		}
 
 		/**
 		 * 发布一条微博信息.为防止重复，发布的信息与当前最新信息一样话，将会被忽略.
+		 * 
+		 * <b>注意：lat和long参数需配合使用，用于标记发表微博消息时所在的地理位置，只有用户设置中geo_enabled=true时候地理位置信息才有效。</b>
 		 *
 		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件<br/>
 		 * type为<b>MicroBlogEvent.UPDATE_STATUS_RESULT</b><br/>
@@ -1720,21 +1895,29 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.UPDATE_STATUS_ERROR</b></p>
 		 *
-		 * @param status 必选参数，要更新的微博信息,信息内容部超过140个汉字.
-		 * @param filename 可选参数，上传的jpeg文件名.
-		 * @param imgData 可选参数，为需要上传的jpeg文件数据，为空则不上传图片.
+		 * @param status 				必选参数，要更新的微博信息,信息内容部超过140个汉字.
+		 * @param filename 				可选参数，上传的jpeg文件名.
+		 * @param imgData 				可选参数，为需要上传的jpeg文件数据，为空则不上传图片.
+		 * @param inReplyToStatusID 	可选参数，要转发的微博消息ID。 
+		 * @param lat					可选参数，纬度。有效范围：-90.0到+90.0，+表示北纬。 
+		 * @param long					可选参数，经度。有效范围：-180.0到+180.0，+表示东经。 
+		 * @param annotations			可选参数，元数据，主要是为了方便第三方应用记录一些适合于自己使用的信息。每条微博可以包含一个或者多个元数据。请以json字串的形式提交，字串长度不超过512个字符，具体内容可以自定。 
 		 *
 		 * 如果没有登录或超过发布上限，将返回错误
-		 * 系统将忽略重复发布的信息.每次发布将比较最后一条发布消息，如果一样将被忽略.因此用户不能连续提交相同信息.
+		 * 系统将忽略重复发布的信息.每次发布将比较最后一条发布消息，如果一样将被忽略.因此用户不能连续提交相同信息。
+		 * 带图片的微博需要用户触发才能发布。
 		 */
-		public function updateStatus(status:String, filename:String=null, imgData:ByteArray=null):void
+		public function updateStatus(status:String, filename:String=null, imgData:ByteArray=null, inReplyToStatusID:String = "", lat:Number = NaN, long:Number = NaN, annotations:String = ""):void
 		{
 			addProcessor(UPDATE_STATUS_REQUEST_URL, processStatus, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
 			var req:URLRequest;
-			var params:URLVariables=new URLVariables();
-			
-			if ( status ) params.status = encodeMsg(status);
+			var params:URLVariables=new URLVariables();			
+			if ( status ) params.status = encodeMsg(status);			
 			else if ( imgData == null ) return;		
+			if(inReplyToStatusID != "") params.in_reply_to_status_id = inReplyToStatusID;
+			if(lat is Number) params.lat = lat;
+			if (long is Number) params.long = long;
+			if (annotations != "") params.annotations = annotations;			
 			var url:String;
 			if (imgData)
 			{
@@ -1749,8 +1932,7 @@ package com.sina.microblog
 				if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
 				else req = new URLRequest(API_BASE_URL + url + makeGETParamString(tempParams));
 				
-				if ( accessTokenKey.length > 0)
-				{
+				if ( accessTokenKey.length > 0){
 					req=signRequest(URLRequestMethod.POST, url, params, false);
 				}else{
 					if ( authHeader ) req.requestHeaders.push(authHeader);
@@ -1761,9 +1943,7 @@ package com.sina.microblog
 				var boundary:String=makeBoundary();
 				req.contentType = MULTIPART_FORMDATA + boundary;		
 				req.data=makeMultipartPostData(boundary, "pic", filename, imgData, params);
-			}
-			else
-			{
+			}else{
 				url = UPDATE_STATUS_REQUEST_URL;
 				params["_uri"] = url;
 				if(_useProxy) req=getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST);
@@ -1831,18 +2011,20 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.REPOST_STATUS_ERROR</b></p>
 		 *
-		 * @param id 必填参数，转发的微博ID.
-		 * @param status 可选参数，要更新的微博信息,信息内容部超过140个汉字.
+		 * @param id 			必填参数，转发的微博ID.
+		 * @param status 		可选参数，要更新的微博信息,信息内容部超过140个汉字.
+		 * @param isComment		是否在转发的同时发表评论。1表示发表评论，0表示不发表。默认为0。 
 		 * 
 		 * <p>如果没有登录或超过发布上限，将返回错误
 		 * 系统将忽略重复发布的信息.每次发布将比较最后一条发布消息，如果一样将被忽略.因此用户不能连续提交相同信息.
 		 * </p>
 		 */
-		public function repostStatus(id:String, status:String=null):void
+		public function repostStatus(id:String, status:String = null, isComment:int = 0):void
 		{
 			addProcessor(REPOST_STATUS_REQUEST_URL, processStatus, MicroBlogEvent.REPOST_STATUS_RESULT, MicroBlogErrorEvent.REPOST_STATUS_ERROR);
 			var params:URLVariables=new URLVariables();
-			params.id=id;
+			params.id = id;
+			if (isComment == 0 || isComment == 1) params.is_comment = isComment;
 			if (status && status.length > 0) params.status=encodeMsg(status);
 			params["_uri"] = REPOST_STATUS_REQUEST_URL;
 			var req:URLRequest= (_useProxy)?getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + REPOST_STATUS_REQUEST_URL, params, URLRequestMethod.POST);
@@ -1862,9 +2044,9 @@ package com.sina.microblog
 		 * <p>如果没有登录或超过发布上限，将返回错误<br/>
 		 * 系统将忽略重复发布的信息.每次发布将比较最后一条发布消息，如果一样将被忽略.因此用户不能连续提交相同信息.</p>
 		 *
-		 * @param id 必填参数， 要评论的微博ID.
-		 * @param comment 必选参数，要更新的微博信息,信息内容部超过140个汉字.
-		 * @param cid 选填参数，要评论的评论ID.
+		 * @param id 		必填参数， 要评论的微博ID.
+		 * @param comment 	必选参数，要更新的微博信息,信息内容部超过140个汉字.
+		 * @param cid 		选填参数，要评论的评论ID.
 		 *
 		 */
 		public function commentStatus(id:String, comment:String, cid:String="0"):void
@@ -1901,6 +2083,33 @@ package com.sina.microblog
 			var req:URLRequest = (_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
 			executeRequest(DELETE_COMMENT_REQUEST_URL, req);
 		}
+		
+		/**
+		 * 批量删除评论。注意：只能删除登录用户自己发布的评论，不可以删除其他人的评论。
+		 * 如果给出的一组欲删除的评论ID中一部分评论ID不在登录用户的comments_by_me列表中，则只删除存在于comments_by_me列表中的。
+		 * 评论，并返回成功删除的评论列表。 
+		 * 如果给出的一组欲删除的评论ID均不在登录用户的comments_by_me列表中，则返回一个空列表。 
+		 * 
+		 * @param	ids
+		 */
+		public function deleteCommentBatch(ids:Array):void
+		{
+			addProcessor(DELETE_COMMENT_BATCH_URL, processCommentArray, MicroBlogEvent.DELETE_COMMENT_PATCH_RESULT, MicroBlogErrorEvent.DELETE_COMMENT_PATCH_ERROR);
+			var idsParam:String="";	
+			if (null == ids || ids.length == 0) return;
+			var len:int=ids.length - 1;
+			for (var i:int=0; i < len; ++i)
+			{
+				idsParam+=ids[i].toString() + ",";
+			}
+			idsParam += ids[len].toString();
+			var params:Object = { };
+			params["ids"]=idsParam;
+			var url:String = DELETE_COMMENT_BATCH_URL;
+			params["_uri"] = url;
+			if(_useProxy) executeRequest(DELETE_COMMENT_BATCH_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
+			else executeRequest(DELETE_COMMENT_BATCH_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));			
+		}
 
 		/**
 		 * 对一条微博评论信息进行回复.为防止重复，发布的信息与当前最新信息一样话，将会被忽略.
@@ -1912,9 +2121,9 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.REPLY_STATUS_ERROR</b></p>
 		 *
-		 * @param id 必填参数， 要评论的微博消息ID.
-		 * @param comment 必选参数，要更新的微博信息,信息内容部超过140个汉字.
-		 * @param cid 必选参数，要评论的评论ID.
+		 * @param id 		必填参数，要评论的微博消息ID.
+		 * @param comment 	必选参数，要更新的微博信息,信息内容部超过140个汉字.
+		 * @param cid 		必选参数，要回复的评论ID。 
 		 * 
 		 * <p>如果没有登录或超过发布上限，将返回错误
 		 * 系统将忽略重复发布的信息.每次发布将比较最后一条发布消息，如果一样将被忽略.因此用户不能连续提交相同信息.
@@ -1979,14 +2188,15 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.LOAD_FRIENDS_INFO_ERROR</b></p>
 		 *
-		 * @param user 用户UID或用户帐号.
-		 * @param userID 指定用户UID,主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
-		 * @param screenName 指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
-		 * @param cursor 选填参数. 单页只能包含100个关注列表，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
+		 * @param user 			用户UID或用户帐号.
+		 * @param userID 		指定用户UID,主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
+		 * @param screenName 	指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
+		 * @param cursor		选填参数. 用于分页请求，请求第1页cursor传-1，在返回的结果中会得到next_cursor字段，表示下一页的cursor。next_cursor为0表示已经到记录末尾。
+		 * @param count			选填参数，每页返回的最大记录数，最大不能超过200，默认为20。 
 		 *
 		 * <p>为了保护用户隐私，只有用户设置了公开或对粉丝设置了公开的数据才会返回.</p>
 		 */
-		public function loadFriendsInfo(user:String=null, userID:String="0", screenName:String=null, cursor:Number=-1):void
+		public function loadFriendsInfo(user:String = null, userID:String = "0", screenName:String = null, cursor:Number = -1, count:int = 20):void
 		{
 			addProcessor(LOAD_FRIENDS_INFO_REQUEST_URL, processUserArray, MicroBlogEvent.LOAD_FRIENDS_INFO_RESULT, MicroBlogErrorEvent.LOAD_FRIENDS_INFO_ERROR);
 			if (user && user.length > 0) user="/" + user;
@@ -1995,6 +2205,7 @@ package com.sina.microblog
 			var params:Object=new Object();
 			makeUserParams(params, userID, screenName, cursor);
 			params["_uri"] = url;
+			if (count > 0) params.count = count;
 			if(_useProxy) executeRequest(LOAD_FRIENDS_INFO_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(LOAD_FRIENDS_INFO_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
 		}
@@ -2012,14 +2223,15 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.LOAD_FOLLOWERS_INFO_ERROR</b></p>
 		 *
-		 * @param user 用户UID或用户帐号.
-		 * @param userID 指定用户UID,主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
-		 * @param screenName 指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
-		 * @param cursor 选填参数. 单页只能包含100个关注列表，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
-		 *
+		 * @param user 			用户UID或用户帐号.
+		 * @param userID 		指定用户UID,主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
+		 * @param screenName 	指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
+		 * @param cursor 		选填参数. 单页只能包含100个关注列表，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
+		 * @param count			选填参数，每页返回的最大记录数，最大不能超过200，默认为20。 
+		 * 
 		 * <p>为了保护用户隐私，只有用户设置了公开或对粉丝设置了公开的数据才会返回.</p>
 		 */
-		public function loadFollowersInfo(user:String=null, userID:String="0", screenName:String=null, cursor:int=-1):void
+		public function loadFollowersInfo(user:String = null, userID:String = "0", screenName:String = null, cursor:int = -1, count:int = 20):void
 		{
 			addProcessor(LOAD_FOLLOWERS_INFO_REQUEST_URL, processUserArray, MicroBlogEvent.LOAD_FOLLOWERS_INFO_RESULT, MicroBlogErrorEvent.LOAD_FOLLOWERS_INFO_ERROR);
 			if (user && user.length > 0) user="/" + user;
@@ -2028,8 +2240,47 @@ package com.sina.microblog
 			var params:Object=new Object();
 			makeUserParams(params, userID, screenName, cursor);
 			params["_uri"] = url;
+			if (count > 0) params.count = count;
 			if(_useProxy) executeRequest(LOAD_FOLLOWERS_INFO_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(LOAD_FOLLOWERS_INFO_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
+		}
+		
+		/**
+		 * 返回系统推荐的用户列表。 
+		 * 
+		 * @param	category	分类，返回某一类别的推荐用户，默认为default。如果不在以下分类中，返回空列表：
+		 * default：人气关注	ent：影视名星	hk_famous：港台名人		model：模特
+		 * cooking：美食&健康	sport：体育名人	finance：商界名人		tech：IT互联网
+		 * singer：歌手			writer：作家	moderator：主持人		medium：媒体总编
+		 * stockplayer：炒股高手 
+		 */
+		public function loadHotUsers(category:String = "default"):void
+		{
+			addProcessor(LOAD_HOT_USERS_URL, processUserArray, MicroBlogEvent.LOAD_HOT_USERS_RESULT, MicroBlogErrorEvent.LOAD_HOT_USERS_ERROR);
+			var url:String = LOAD_HOT_USERS_URL;
+			var params:URLVariables = new URLVariables();
+			params.category = category;
+			params["_uri"] = url;	
+			var req:URLRequest = (_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
+			executeRequest(LOAD_HOT_USERS_URL, req);
+		}
+		
+		/**
+		 * 更新当前登录用户所关注的某个好友的备注信息。 
+		 * 
+		 * @param	userID	需要修改备注信息的用户ID。 
+		 * @param	remark	备注信息
+		 */
+		public function updateFriendsRemark(userID:String, remark:String):void
+		{
+			//curl -u user:password -d "text=all your bases are belong to us&user=user_2" http://api.t.sina.com.cn/direct_messages/new.xml
+			addProcessor(UPDATE_FRIENDS_REMARK_URL, processUser, MicroBlogEvent.UPDATE_FRIENDS_REMARK_RESULT, MicroBlogErrorEvent.UPDATE_FRIENDS_REMARK_ERROR);
+			var params:URLVariables=new URLVariables();
+			params.user_id = userID;
+			params.remark = encodeMsg(remark);		
+			params["_uri"] = UPDATE_FRIENDS_REMARK_URL;		
+			var req:URLRequest=(_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + UPDATE_FRIENDS_REMARK_URL, params, URLRequestMethod.POST);
+			executeRequest(UPDATE_FRIENDS_REMARK_URL, req);
 		}
 
 		/**
@@ -2044,14 +2295,15 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.LOAD_DIRECT_MESSAGES_RECEIVED_ERROR</b></p>
 		 *
-		 * @param sinceID 请求大于该id的所有消息更新，默认值为0，表示不限制.
-		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
-		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param sinceID 	请求大于该id的所有消息更新，默认值为0，表示不限制.
+		 * @param maxID 	请求小于该id的所有消息更新，默认为0，表示不限制.
+		 * @param maxID 	请求小于该id的所有消息更新，默认为0，表示不限制.
+		 * @param count 	请求的页大小，即一页包含多少条记录；默认值20，表示使用服务器默认分页大小.
+		 * @param page 		请求的页序号，默认值10，返回第一页.
 		 *
 		 * <p>为了保护用户隐私，只有用户设置了公开或对粉丝设置了公开的数据才会返回.</p>
 		 */
-		public function loadDirectMessagesReceived(sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadDirectMessagesReceived(sinceID:String = "0", maxID:String = "0", count:uint = 20, page:uint = 1):void
 		{
 			addProcessor(LOAD_DIRECT_MESSAGES_RECEIVED_REQUEST_URL, processDirectMessageArray, MicroBlogEvent.LOAD_DIRECT_MESSAGES_RECEIVED_RESULT, MicroBlogErrorEvent.LOAD_DIRECT_MESSAGES_RECEIVED_ERROR);
 			var url:String=LOAD_DIRECT_MESSAGES_RECEIVED_REQUEST_URL;
@@ -2074,14 +2326,14 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.LOAD_DIRECT_MESSAGES_SENT_ERROR</b></p>
 		 *
-		 * @param sinceID 请求大于该id的所有消息更新，默认值为0，表示不限制.
-		 * @param maxID 请求小于该id的所有消息更新，默认为0，表示不限制.
-		 * @param count 请求的页大小，即一页包含多少条记录；默认值0，表示使用服务器默认分页大小.
-		 * @param page 请求的页序号，默认值0，返回第一页.
+		 * @param sinceID 	请求大于该id的所有消息更新，默认值为0，表示不限制.
+		 * @param maxID 	请求小于该id的所有消息更新，默认为0，表示不限制.
+		 * @param count	 	请求的页大小，即一页包含多少条记录；默认值20，表示使用服务器默认分页大小.
+		 * @param page 		请求的页序号，默认值1，返回第一页.
 		 *
 		 * <p>为了保护用户隐私，只有用户设置了公开或对粉丝设置了公开的数据才会返回.</p>
 		 */
-		public function loadDirectMessagesSent(sinceID:String="0", maxID:String="0", count:uint=0, page:uint=0):void
+		public function loadDirectMessagesSent(sinceID:String = "0", maxID:String = "0", count:uint = 20, page:uint = 1):void
 		{
 			addProcessor(LOAD_DIRECT_MESSAGES_SENT_REQUEST_URL, processDirectMessageArray, MicroBlogEvent.LOAD_DIRECT_MESSAGES_SENT_RESULT, MicroBlogErrorEvent.LOAD_DIRECT_MESSAGES_SENT_ERROR);
 			var url:String=LOAD_DIRECT_MESSAGES_SENT_REQUEST_URL;
@@ -2105,7 +2357,7 @@ package com.sina.microblog
 		 * type为<b>MicroBlogErrorEvent.SEND_DIRECT_MESSAGE_ERROR</b></p>
 		 *
 		 * @param user 用户UID或用户帐号.
-		 * @param message 必须参数. 要发生的消息内容，文本大小必须小于140个汉字.
+		 * @param message 必须参数. 要发生的消息内容，文本大小必须小于300个汉字.
 		 * @param userID 指定用户UID,主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
 		 * @param screenName 指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
 		 *
@@ -2158,10 +2410,10 @@ package com.sina.microblog
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.FOLLOW_ERROR</b></p>
 		 *
-		 * @param user 用户UID或用户帐号.
-		 * @param userID 主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
-		 * @param screenName 指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
-		 * @param isFollow 可选参数.将是自己粉丝的用户加为关注.
+		 * @param user 			用户UID或用户帐号.
+		 * @param userID 		主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
+		 * @param screenName 	指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
+		 * @param isFollow 		!已经废弃! 可选参数.将是自己粉丝的用户加为关注.
 		 */
 		public function follow(user:String=null, userID:String="0", screenName:String=null, isFollow:Boolean=true):void
 		{
@@ -2173,7 +2425,7 @@ package com.sina.microblog
 			var params:URLVariables=new URLVariables();
 			if (userID.length > 0) params.user_id = userID;
 			if (screenName && screenName.length > 0) params.screen_name = screenName;;
-			params.follow = isFollow;
+			//params.follow = isFollow;
 			params["_uri"] = url;	
 			
 			var req:URLRequest=(_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
@@ -2274,13 +2526,13 @@ package com.sina.microblog
 		 * type为<b>MicroErrorEvent.LOAD_FRIENDS_ID_LIST_ERROR</b><br/>
 		 * message为错误描述.</p>
 		 *
-		 * @param user 用户UID或用户帐号.
-		 * @param userID 主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
-		 * @param screenName 指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
-		 * @param cursor 选填参数. 单页只能包含5000个id，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
-		 * @param count 可选参数. 每次返回的最大记录数（即页面大小），不大于5000。
+		 * @param user 			用户UID或用户帐号.
+		 * @param userID 		主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
+		 * @param screenName 	指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
+		 * @param cursor 		选填参数. 单页只能包含5000个id，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
+		 * @param count 		可选参数. 每次返回的最大记录数（即页面大小），不大于5000。
 		 */
-		public function loadFriendsIDList(user:String=null, userID:String="0", screenName:String=null, cursor:Number=-1, count:uint=5000):void
+		public function loadFriendsIDList(user:String = null, userID:String = "0", screenName:String = null, cursor:Number = -1, count:uint = 500):void
 		{
 			addProcessor(LOAD_FRIENDS_ID_LIST_REQUEST_URL, processIDSArray, MicroBlogEvent.LOAD_FRIENDS_ID_LIST_RESULT, MicroBlogErrorEvent.LOAD_FRIENDS_ID_LIST_ERROR);
 			if (user && user.length > 0)
@@ -2311,13 +2563,13 @@ package com.sina.microblog
 		 * type为<b>MicroErrorEvent.LOAD_FOLLOWERS_ID_LIST_ERROR</b><br/>
 		 * message为错误描述.</p>
 		 *
-		 * @param user 用户UID或用户帐号.
-		 * @param userID 主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
-		 * @param screenName 指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
-		 * @param cursor 选填参数. 单页只能包含5000个id，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
-		 * @param count 可选参数. 每次返回的最大记录数（即页面大小），不大于5000。
+		 * @param user 			用户UID或用户帐号.
+		 * @param userID 		主要是用来区分用户UID跟用户账号一样，产生歧义的时候，特别是在用户账号为数字导致和用户Uid发生歧义.
+		 * @param screenName 	指定微博昵称，主要是用来区分用户UID跟用户账号一样，产生歧义的时候.
+		 * @param cursor 		选填参数. 单页只能包含5000个id，为了获取更多则cursor默认从-1开始，通过增加或减少cursor来获取更多的关注列表.
+		 * @param count 		可选参数. 每次返回的最大记录数（即页面大小），不大于5000。
 		 */
-		public function loadFollowersIDList(user:String=null, userID:String="0", screenName:String=null, cursor:Number=-1, count:uint=5000):void
+		public function loadFollowersIDList(user:String=null, userID:String="0", screenName:String=null, cursor:Number=-1, count:uint=500):void
 		{
 			addProcessor(LOAD_FOLLOWERS_ID_LIST_REQUEST_URL, processIDSArray, MicroBlogEvent.LOAD_FOLLOWERS_ID_LIST_RESULT, MicroBlogErrorEvent.LOAD_FOLLOWERS_ID_LIST_ERROR);
 			if (user && user.length>0)
@@ -2596,109 +2848,7 @@ package com.sina.microblog
 			var req:URLRequest=(_useProxy)?getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST):getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
 			executeRequest(REMOVE_FROM_FAVORITES_REQUEST_URL, req);
 		}
-
-//		/**
-//		 * 允许/禁止通知更新给指定用户.
-//		 *
-//		 * <b>有请求数限制</b>
-//		 * 
-//		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件<br/>
-//		 * type为<b>MicroBlogEvent.FOLLOW_NOTIFICATION_RESULT</b><br/>
-//		 * result为一个MicroBlogUser对象.</p>
-//		 *
-//		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
-//		 * type为<b>MicroErrorEvent.FOLLOW_NOTIFICATION_ERROR</b><br/>
-//		 * message为错误描述.</p>
-//		 *
-//		 * @param isEnable 必选参数
-//		 * @param user 指定的用户ID或用户帐号.
-//		 * @param page  指定的用户UID.
-//		 * @param screenName 指定的用户帐号
-//		 *
-//		 * 以上三个可选参数必须设置一个
-//		 *
-//		 */
-//		public function enableNotification(isEnable:Boolean, user:String=null, userID:uint=0, screenName:String=null):void
-//		{
-//			addProcessor(ENABLE_NOTIFICATION_REQUEST_URL, processUser, MicroBlogEvent.ENABLE_NOTIFICATION_RESULT, MicroBlogErrorEvent.ENABLE_NOTIFICATION_ERROR);
-//			var hasParam:Boolean=false;
-//			if (user && user.length > 0)
-//			{
-//				user="/" + user;
-//				hasParam=true;
-//			}
-//			else
-//			{
-//				user="";
-//			}
-//			var url:String;
-//			if (isEnable)
-//			{
-//				url=ENABLE_NOTIFICATION_REQUEST_URL.replace("$enabled", "follow");
-//			}
-//			else
-//			{
-//				url=ENABLE_NOTIFICATION_REQUEST_URL.replace("$enabled", "leave");
-//			}
-//			url=url.replace("$user", user);
-//			var postData:URLVariables=new URLVariables();
-//			if (userID > 0)
-//			{
-//				postData.user_id=userID;
-//				hasParam=true;
-//			}
-//			if (screenName && screenName.length > 0)
-//			{
-//				postData.screen_name=StringEncoders.urlEncodeUtf8String(screenName);
-//				hasParam=true;
-//			}
-//			if (!hasParam)
-//			{
-//				return;
-//			}
-//			var req:URLRequest=getMicroBlogRequest(url, postData, URLRequestMethod.POST);
-//			req.data=postData;
-//			executeRequest(ENABLE_NOTIFICATION_REQUEST_URL, req);
-//		}
-//		
-		/**
-		 * @private
-		 * 返回省份，城市的名字对应id的列表，为xml格式.
-		 *
-		 * <b>有请求数限制</b>
-		 * 
-		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件<br/>
-		 * type为<b>MicroBlogEvent.LOAD_PROVINCE_CITY_ID_LIST_RESULT</b><br/>
-		 * result为一个XML对象.</p>
-		 *
-		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
-		 * type为<b>MicroErrorEvent.LOAD_PROVINCE_CITY_ID_LIST_ERROR</b><br/>
-		 * message为错误描述.</p>
-		 *
-		 * <p>返回的xml数据格式请参看新浪微博开放平台 http://open.t.sina.com.cn
-		 * </p>
-		 * 
-		 * <p>要想获取省份id为11，城市id为1的地址信息可以参考以下方法<br/>
-		 * <pre>
-		 * var prov:XML = provinces.province.(&#64;id == "11")[0];
-		 * province = prov.&#64;name;
-		 * city = prov.city.(&#64;id == "1")[0].&#64;name;
-		 * </pre>
-		 * 通过名字得到id可以参考如下方法<br/>
-		 * <pre>
-		 * var prov:XML = provinces.province.(&#64;name == "北京")[0];
-		 * provinceID = prov.&#64;id;
-		 * cityID = prov.city.(&#64;name == "东城区")[0].&#64;id;
-		 * </pre>
-		 * </p>
-		 */
-		public function loadProvinceCityIDList():void
-		{
-			addProcessor(LOAD_PROVINCE_CITY_ID_LIST, processProvincesXML, MicroBlogEvent.LOAD_PROVINCE_CITY_ID_LIST_RESULT, MicroBlogErrorEvent.LOAD_PROVINCE_CITY_ID_LIST_ERROR);
-			executeRequest(LOAD_PROVINCE_CITY_ID_LIST, getMicroBlogRequest(LOAD_PROVINCE_CITY_ID_LIST, null) );
-		}
-		//Event handler
-
+		
 		private function addProcessor(name:String, dataProcess:Function, resultEventType:String, errorEventType:String):void
 		{
 			if (null == serviceLoader[name])
@@ -2729,20 +2879,15 @@ package com.sina.microblog
 				ioError.message = "The network error";
 				dispatchEvent(ioError);
 				return;
-			}
-			
-			var result:XML=new XML(loader.data);
-			
-			//currentResult = result; ///////////////////////////////////////////////////////////////////////////////测试用途
-			
+			}		
+			var result:XML=new XML(loader.data);		
+			//currentResult = result; ///////////////////////////////////////////////////////////////////////////////测试用途		
 			if (result.child("error").length() > 0)
 			{
 				var error:MicroBlogErrorEvent=new MicroBlogErrorEvent(processor.errorEvent);
 				error.message="Error " + result.error_code + " : " + result.error;
 				dispatchEvent(error);
-			}
-			else
-			{
+			}else{
 				var e:MicroBlogEvent=new MicroBlogEvent(processor.resultEvent);
 				e.result=processor.dataFunc(result);
 				e.nextCursor=Number(result.next_cursor);
@@ -2768,10 +2913,7 @@ package com.sina.microblog
 		private function getMicroBlogRequest(url:String, params:Object, requestMethod:String="GET"):URLRequest
 		{
 			var req:URLRequest;		
-			if ( null == params )
-			{
-				params = {};
-			}
+			if ( null == params ) params = { };
 			params["source"] = source;
 			params["_method"] = requestMethod;
 			params["_cache_time"] = "0";
@@ -2946,23 +3088,10 @@ package com.sina.microblog
 
 		private function makeQueryCombinatory(params:Object, sinceID:String, maxID:String, count:uint, page:uint):void
 		{
-			if (sinceID.length > 0)
-			{
-				params[SINCE_ID]=sinceID;
-			}
-			if (maxID.length > 0)
-			{
-				params[MAX_ID]=maxID;
-			}
-			if (count > 0)
-			{
-				params[COUNT]=count;
-
-			}
-			if (page > 0)
-			{
-				params[PAGE]=page;
-			}
+			if (sinceID.length > 0) params[SINCE_ID] = sinceID;
+			if (maxID.length > 0) params[MAX_ID] = maxID;
+			if (count > 0) params[COUNT] = count;
+			if (page > 0) params[PAGE] = page;
 		}
 
 		private function makeUserParams(params:Object, userID:String, screenName:String, cursor:Number, verify:String = ""):void
@@ -3061,7 +3190,6 @@ package com.sina.microblog
 		{
 			data.writeShort(0x0d0a);
 		}
-
 
 		private function signRequest(requestMethod:String, url:String, requestParams:Object, useHead:Boolean=false):URLRequest
 		{

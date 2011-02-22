@@ -28,6 +28,8 @@ package com.sina.microblog.events
 		public static const LOAD_COMMENTS_TO_ME_ERROR:String = "loadCommentsToMeError";
 		public static const LOAD_COMMENTS_ERROR:String = "loadCommentsError";
 		public static const LOAD_STATUS_COUNTS_ERROR:String = "loadStatusCountsError";
+		public static const REPOST_TIMELINE_ERROR:String = "repostTimelineError";
+		public static const REPOST_BY_ME_ERROR:String = "repostByMeError";
 		public static const LOAD_STATUS_UNREAD_ERROR:String = "loadStatusUnreadError";
 		
 		public static const UPDATE_STATUS_ERROR:String = "updateStatusError";
@@ -38,6 +40,7 @@ package com.sina.microblog.events
 		public static const REPOST_STATUS_ERROR:String = "repostStatusError";
 		public static const REPLY_STATUS_ERROR:String = "replyStatusError";
 		public static const RESET_STATUS_COUNT_ERROR:String = "resetStatusError";
+		public static const DELETE_COMMENT_PATCH_ERROR:String = "deleteCommentPatchError";
 		
 		public static const LOAD_DIRECT_MESSAGES_RECEIVED_ERROR:String = "loadDirectMessagesReceivedError";
 		public static const LOAD_DIRECT_MESSAGES_SENT_ERROR:String = "loadDicrectMessagesSentError";
@@ -51,6 +54,8 @@ package com.sina.microblog.events
 		public static const FOLLOW_ERROR:String = "followError";
 		public static const CANCEL_FOLLOWING_ERROR:String = "cancelFollowingError";
 		public static const CHECK_IS_FOLLOWING_ERROR:String = "checkIsFollowingError";
+		public static const LOAD_HOT_USERS_ERROR:String = "loadHotUsersError";
+		public static const UPDATE_FRIENDS_REMARK_ERROR:String = "updateFriendsRemarkError";
 		
 		public static const LOAD_FRIENDS_ID_LIST_ERROR:String = "loadFriendsIDListError";
 		public static const LOAD_FOLLOWERS_ID_LIST_ERROR:String = "loadFollowersIDListError";
