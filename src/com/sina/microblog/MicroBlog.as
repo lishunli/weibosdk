@@ -1915,8 +1915,8 @@ package com.sina.microblog
 			if ( status ) params.status = encodeMsg(status);			
 			else if ( imgData == null ) return;		
 			if(inReplyToStatusID != "") params.in_reply_to_status_id = inReplyToStatusID;
-			if(lat is Number) params.lat = lat;
-			if (long is Number) params.long = long;
+			if (!isNaN(lat)) params.lat = lat;
+			if (!isNaN(long)) params.long = long;
 			if (annotations != "") params.annotations = annotations;			
 			var url:String;
 			if (imgData)
