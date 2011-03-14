@@ -1205,6 +1205,8 @@ package com.sina.microblog
 		private var _source:String = "";
 		private var _verifier:String = "";
 		private var authHeader:URLRequestHeader;
+		private var _xauthUser:String;
+		private var _xauthPass:String;
 		
 		///登录的时候临时建立的频道
 		private var _localConnectionChanel:String;
@@ -1216,6 +1218,7 @@ package com.sina.microblog
 		private var serviceLoader:Dictionary=new Dictionary();
 		private var loaderMap:Dictionary = new Dictionary();
 		private var oauthLoader:URLLoader;
+		private var xauthLoader:URLLoader;
 		
 		///设置当前应用是否所在新浪open api的白名单域，如果为true则接口会尝试直接访问api.t下的接口而不使用代理
 		private var _isTrustDomain:Boolean = false;
@@ -1385,7 +1388,7 @@ package com.sina.microblog
 		}
 		
 		/**
-		 * login封装了三种登录方式，anywhereToken的认证授权机制，OAuth的授权以及用户名密码的Base OAuth
+		 * login封装了四种登录方式，anywhereToken的认证授权机制，OAuth的授权，用户名密码的Basic OAuth以及XAuth
 		 * 用户民和密码的这种形式之能在Adobe AIR运行环境下才能使用，否则将会无效。
 		 * login函数封装了OAuth所要求的验证的三个步骤，
 		 * （之前输入的consumerKey和consumerSecret）
@@ -1393,18 +1396,37 @@ package com.sina.microblog
 		 * @param	userName			是合法的新浪微博用户名.
 		 * @param	password			是与用户名对应的密码.
 		 * @param	useStandardOAuth	使用标注OAuth登录，即PIN模式。这个模式必须在信任域的情况下才能使用。
+		 * @param	useXAuth			是否使用XAuth的登录方式，此登录方式首先必须提供用户名密码，其次此应用的appkey申请过使用权限
 		 * 
 		 * login函数没有返回值，验证结果将采用消息的方式通知api调用者.
 		 * @see com.sina.microblog.events.MicroBlogEvent#LOGIN_RESULT
 		 */
-		public function login(userName:String=null, password:String=null, useStandardOAuth:Boolean = false):void
+		public function login(userName:String=null, password:String=null, useStandardOAuth:Boolean = false, useXAuth:Boolean = false):void
 		{
+			_xauthUser = _xauthPass = "";
 			if (userName != null && password != null) {
-				var creds:String = userName + ":" + password;
-				var encodedCredentials:String=Base64.encode(StringEncoders.utf8Encode(creds)).toString();
-				authHeader=new URLRequestHeader("Authorization", "Basic " + encodedCredentials);
-				verifyCredentials();
-				return;
+				
+				if (useXAuth)
+				{
+					_xauthUser = userName;
+					_xauthPass = password;
+					if (null == xauthLoader)
+					{
+						xauthLoader = new URLLoader();
+						xauthLoader.addEventListener(Event.COMPLETE, xauthLoader_onComplete, false, 0, true);
+						xauthLoader.addEventListener(IOErrorEvent.IO_ERROR, xauthLoader_onError, false, 0, true);
+						xauthLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, oauthLoader_onSecurityError, false, 0, true);
+					}
+					var xreq:URLRequest=signRequest(URLRequestMethod.POST, OAUTH_ACCESS_TOKEN_REQUEST_URL, null);
+					xauthLoader.load(xreq);
+					return;
+				}else {
+					var creds:String = userName + ":" + password;
+					var encodedCredentials:String=Base64.encode(StringEncoders.utf8Encode(creds)).toString();
+					authHeader=new URLRequestHeader("Authorization", "Basic " + encodedCredentials);
+					verifyCredentials();
+					return;
+				}		
 			}
 			
 			if (useStandardOAuth && !_useProxy)
@@ -1448,6 +1470,13 @@ package com.sina.microblog
 			}else {
 				navigateToURL(new URLRequest(url), "_blank");
 			}
+		}
+		
+		private function xauthLoader_onError(evt:IOErrorEvent):void 
+		{
+			var e:MicroBlogErrorEvent = new MicroBlogErrorEvent(MicroBlogErrorEvent.OAUTH_CERTIFICATE_ERROR);
+			e.message = xauthLoader.data;
+			dispatchEvent(e);
 		}
 		
 		/**
@@ -3194,7 +3223,7 @@ package com.sina.microblog
 		private function signRequest(requestMethod:String, url:String, requestParams:Object, useHead:Boolean=false):URLRequest
 		{
 			var method:String = requestMethod.toUpperCase();
-			var oauthParams:Object=getOAuthParams();
+			var oauthParams:Object = getOAuthParams();
 			var params:Object = new Object;
 			for (var key:String in oauthParams)
 			{
@@ -3302,7 +3331,14 @@ package com.sina.microblog
 			params["oauth_timestamp"]=now.time.toString().substr(0, 10);
 			params["oauth_nonce"]=GUID.createGUID();
 			params["oauth_version"]="1.0";
-			params["oauth_callback"]="oob";
+			params["oauth_callback"] = "oob";
+			
+			if (_xauthPass != "" && _xauthUser != "")
+			{
+				params["x_auth_username"] = _xauthUser;
+				params["x_auth_password"] = _xauthPass;
+				params["x_auth_mode"] = "client_auth";
+			}			
 			return params;
 		}
 		
@@ -3327,6 +3363,23 @@ package com.sina.microblog
 					dispatchEvent(e);
 					verifyCredentials();
 				}
+			}
+		}
+		
+		private function xauthLoader_onComplete(evt:Event):void
+		{
+			var needRequestAuthorize:Boolean = _accessTokenKey.length == 0;
+			var result:String = xauthLoader.data as String;
+			if (result.length > 0)
+			{
+				_xauthPass = _xauthUser = "";
+				var urlVar:URLVariables=new URLVariables(xauthLoader.data);
+				_accessTokenKey=urlVar.oauth_token;
+				_accessTokenSecret = urlVar.oauth_token_secret;
+				var e:MicroBlogEvent=new MicroBlogEvent(MicroBlogEvent.OAUTH_CERTIFICATE_RESULT);
+				e.result={oauthTokenKey: _accessTokenKey, oauthTokenSecrect: _accessTokenSecret};
+				dispatchEvent(e);
+				verifyCredentials();		
 			}
 		}
 
