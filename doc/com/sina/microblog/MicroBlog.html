@@ -373,7 +373,7 @@
 		 跳转到单条微博的Web地址。可以通过此url跳转到微博对应的Web网页。
 		 如果允许当前flash访问js，会试图使用window.open的js方法打开，否则使用navigateToURL
 		 
-		 </div></td><td class="summaryTableOwnerCol">MicroBlog</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#removeFromFavorites()" class="signatureLink">removeFromFavorites</a>(statusID:uint):void</div><div class="summaryTableDescription">
+		 </div></td><td class="summaryTableOwnerCol">MicroBlog</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#removeFromFavorites()" class="signatureLink">removeFromFavorites</a>(statusID:String):void</div><div class="summaryTableDescription">
 		 删除微博收藏。注意：只能删除自己收藏的信息。 
 		 		 如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件
 		 type为MicroBlogEvent.REMOVE_FROM_FAVORITES_RESULT
@@ -892,7 +892,7 @@
 		 
 		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">uid</span>:String</code> &mdash; 		微博消息的发布者ID 
 		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">statusId</span>:String</code> &mdash; 微博消息的ID 
-		 </td></tr></table></p></div><a name="removeFromFavorites()"></a><a name="removeFromFavorites(uint)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">removeFromFavorites</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function removeFromFavorites(statusID:uint):void</code><p></p><p></p><p>
+		 </td></tr></table></p></div><a name="removeFromFavorites()"></a><a name="removeFromFavorites(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">removeFromFavorites</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function removeFromFavorites(statusID:String):void</code><p></p><p></p><p>
 		 删除微博收藏。注意：只能删除自己收藏的信息。 
 		 		 <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件
 		 type为<b>MicroBlogEvent.REMOVE_FROM_FAVORITES_RESULT</b>
@@ -900,7 +900,7 @@
 		 		 <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件
 		 type为<b>MicroErrorEvent.REMOVE_FROM_FAVORITES_ERROR</b>
 		 message为错误描述.</p>
-		 		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">statusID</span>:uint</code> &mdash; 必填参数， 要删除的已收藏的微博消息ID
+		 		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">statusID</span>:String</code> &mdash; 必填参数， 要删除的已收藏的微博消息ID
 		 		 </td></tr></table></p></div><a name="replyStatus()"></a><a name="replyStatus(String,String,String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">replyStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function replyStatus(id:String, comment:String, cid:String):void</code><p></p><p></p><p>
 		 对一条微博评论信息进行回复.为防止重复，发布的信息与当前最新信息一样话，将会被忽略.
 		 		 <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件
@@ -1414,4 +1414,4 @@
 	 	  <p>调用verifyCrendentials成功时，事件的<code>result</code>属性<code>MicroBlogUser</code>
 	  对象.</p>
 	  <p>注意：当使用Basic方式验证的时候调用login成功时也会触发该事件</p>
-	  </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Mon Mar 14 2011, 06:18 PM +08:00  </center></div></body></html><!--<br/>Mon Mar 14 2011, 06:18 PM +08:00  -->
+	  </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Fri Apr 1 2011, 04:15 PM +08:00  </center></div></body></html><!--<br/>Fri Apr 1 2011, 04:15 PM +08:00  -->

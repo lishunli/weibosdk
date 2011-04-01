@@ -1205,8 +1205,8 @@ package com.sina.microblog
 		private var _source:String = "";
 		private var _verifier:String = "";
 		private var authHeader:URLRequestHeader;
-		private var _xauthUser:String;
-		private var _xauthPass:String;
+		private var _xauthUser:String = "";
+		private var _xauthPass:String = "";
 		
 		///登录的时候临时建立的频道
 		private var _localConnectionChanel:String;
@@ -1958,20 +1958,20 @@ package com.sina.microblog
 				tempParams["_cache_time"] = "0";
 				tempParams["_anywhereToken"] = _anywhereToken;
 				
-				if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
-				else req = new URLRequest(API_BASE_URL + url + makeGETParamString(tempParams));
-				
+				params.source = source;			
 				if ( accessTokenKey.length > 0){
-					req=signRequest(URLRequestMethod.POST, url, params, false);
-				}else{
+					if(_useProxy) req = signRequest(URLRequestMethod.POST, PROXY_URL + makeGETParamString(tempParams), params, false)
+					else req = signRequest(URLRequestMethod.POST, API_BASE_URL + url, params, false)				
+				}else {
+					if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
+					else req = new URLRequest(API_BASE_URL + url);				
 					if ( authHeader ) req.requestHeaders.push(authHeader);
 				}		
-				req.method = URLRequestMethod.POST;			
-				params.source = source;
 				
+				req.method = URLRequestMethod.POST;
 				var boundary:String=makeBoundary();
 				req.contentType = MULTIPART_FORMDATA + boundary;		
-				req.data=makeMultipartPostData(boundary, "pic", filename, imgData, params);
+				req.data = makeMultipartPostData(boundary, "pic", filename, imgData, req.data);
 			}else{
 				url = UPDATE_STATUS_REQUEST_URL;
 				params["_uri"] = url;
@@ -2718,20 +2718,26 @@ package com.sina.microblog
 			tempParams["_method"] = URLRequestMethod.POST;
 			tempParams["_cache_time"] = "0";
 			tempParams["_anywhereToken"] = _anywhereToken;
-			var req:URLRequest = (_useProxy) ? new URLRequest(PROXY_URL + makeGETParamString(tempParams)) : new URLRequest(API_BASE_URL + UPDATE_PROFILE_IMAGE_REQUEST_URL + makeGETParamString(tempParams));
 			
+			params.source = source;
+			
+			var req:URLRequest;
 			if ( accessTokenKey.length > 0)
 			{
-				req=signRequest(URLRequestMethod.POST, UPDATE_PROFILE_IMAGE_REQUEST_URL, params, false);
-			}else{
+				//req=signRequest(URLRequestMethod.POST, UPDATE_PROFILE_IMAGE_REQUEST_URL, params, false);
+				
+				if (_useProxy) req = signRequest(URLRequestMethod.POST, PROXY_URL + makeGETParamString(tempParams), params, false);
+				else req = signRequest(URLRequestMethod.POST, API_BASE_URL + UPDATE_PROFILE_IMAGE_REQUEST_URL, params, false);		
+			}else {
+				if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
+				else req = new URLRequest(API_BASE_URL + UPDATE_PROFILE_IMAGE_REQUEST_URL);	
 				if ( authHeader ) req.requestHeaders.push(authHeader);
-			}			
-			
+			}
 			req.method = URLRequestMethod.POST;	
-			params.source = source;			
+			
 			var boundary:String=makeBoundary();
 			req.contentType = MULTIPART_FORMDATA + boundary;		
-			req.data=makeMultipartPostData(boundary, "image", filename, imgData, params);
+			req.data = makeMultipartPostData(boundary, "image", filename, imgData, req.data);
 			
 			//var req:URLRequest=getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST);
 			//delete params["image"];
@@ -2864,9 +2870,9 @@ package com.sina.microblog
 		 * @param statusID 必填参数， 要删除的已收藏的微博消息ID
 		 *
 		 */
-		public function removeFromFavorites(statusID:uint):void
+		public function removeFromFavorites(statusID:String):void
 		{
-			if ( statusID <= 0)
+			if ( statusID.length == 0)
 			{
 				return;
 			}
@@ -3284,7 +3290,7 @@ package com.sina.microblog
 			{
 				if (param != "oauth_signature")
 				{
-					retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
+					if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
 					//retParams.push(param + "=" +params[param].toString());
 				}
 			}
