@@ -1964,7 +1964,7 @@ package com.sina.microblog
 					else req = signRequest(URLRequestMethod.POST, API_BASE_URL + url, params, false)				
 				}else {
 					if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
-					else req = new URLRequest(API_BASE_URL + url);				
+					else req = signRequest(URLRequestMethod.POST, API_BASE_URL + url, params, false);		
 					if ( authHeader ) req.requestHeaders.push(authHeader);
 				}		
 				
@@ -2730,7 +2730,7 @@ package com.sina.microblog
 				else req = signRequest(URLRequestMethod.POST, API_BASE_URL + UPDATE_PROFILE_IMAGE_REQUEST_URL, params, false);		
 			}else {
 				if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
-				else req = new URLRequest(API_BASE_URL + UPDATE_PROFILE_IMAGE_REQUEST_URL);	
+				else req = signRequest(URLRequestMethod.POST, API_BASE_URL + UPDATE_PROFILE_IMAGE_REQUEST_URL, params, false);	
 				if ( authHeader ) req.requestHeaders.push(authHeader);
 			}
 			req.method = URLRequestMethod.POST;	
