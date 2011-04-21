@@ -1963,7 +1963,7 @@ package com.sina.microblog
 					if(_useProxy) req = signRequest(URLRequestMethod.POST, PROXY_URL + makeGETParamString(tempParams), params, false)
 					else req = signRequest(URLRequestMethod.POST, API_BASE_URL + url, params, false)				
 				}else {
-					if(_useProxy) req = new URLRequest(PROXY_URL + makeGETParamString(tempParams));
+					if (_useProxy) req = signRequest(URLRequestMethod.POST, PROXY_URL + makeGETParamString(tempParams), params, false);
 					else req = signRequest(URLRequestMethod.POST, API_BASE_URL + url, params, false);		
 					if ( authHeader ) req.requestHeaders.push(authHeader);
 				}		
