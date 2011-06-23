@@ -1231,7 +1231,7 @@ package com.sina.microblog
 		
 		private var _debugMode:Boolean = false;
 		
-		//public var currentResult:XML;/////////////////////////////////////////////////////////////////////////Test Purpose
+		public var currentResult:XML;/////////////////////////////////////////////////////////////////////////Test Purpose
 		
 		/**
 		 * 构造函数
@@ -1388,26 +1388,32 @@ package com.sina.microblog
 		}
 		
 		/**
-		 * login封装了四种登录方式，anywhereToken的认证授权机制，OAuth的授权，用户名密码的Basic OAuth以及XAuth
-		 * 用户民和密码的这种形式之能在Adobe AIR运行环境下才能使用，否则将会无效。
-		 * login函数封装了OAuth所要求的验证的三个步骤，
-		 * （之前输入的consumerKey和consumerSecret）
+		 * login封装了四种登录方式，OAuth授权(Web应用)，用户名密码XAuth，以及PIN授权登录
+		 * 用户民和密码的这种形式之能在非网络应用才能使用，详见XAuth相关说明：http://open.weibo.com/wiki/index.php/XAuth
+		 * login函数没有返回值，验证结果将采用消息的方式通知api调用者，对于使用login()方式调用的等成功后会收到事件MicroBlogEvent.LOGIN_RESULT
+		 * 其余的登录方式，例如 login(user,pass)，登录成功与否是内部判断，所以，会调用一个接口校验。
+		 * 除了发出MicroBlogEvent.LOGIN_RESULT以外还会抛出MicroBlogEvent.VERIFY_CREDENTIALS_RESULT
+		 * 这个事件的result对象是当前登录用户，类型MicorBlogUser
+		 * 如果登录失败则抛出MicroBlogErrorEvent.VERIFY_CREDENTIALS_ERROR
 		 * 
-		 * @param	userName			是合法的新浪微博用户名.
-		 * @param	password			是与用户名对应的密码.
+		 * @param	userName			是合法的新浪微博用户名。如果用户名密不为空，则会使用XAuth。
+		 * @param	password			是与用户名对应的密码。
 		 * @param	useStandardOAuth	使用标注OAuth登录，即PIN模式。这个模式必须在信任域的情况下才能使用。
-		 * @param	useXAuth			是否使用XAuth的登录方式，此登录方式首先必须提供用户名密码，其次此应用的appkey申请过使用权限
+		 * @param	useXAuth			是否使用XAuth的登录方式，此登录方 首先必须提供用户名密码，其次此应用的appkey申请过使用权限
 		 * 
-		 * login函数没有返回值，验证结果将采用消息的方式通知api调用者.
 		 * @see com.sina.microblog.events.MicroBlogEvent#LOGIN_RESULT
+		 * @see com.sina.microblog.events.MicroBlogEvent#VERIFY_CREDENTIALS_RESULT
+		 * @see com.sina.microblog.data.MicroBlogUser
+		 * 
+		 * 
+		 * @see com.sina.microblog.events.MicroBlogErrorEvent#VERIFY_CREDENTIALS_ERROR
 		 */
 		public function login(userName:String=null, password:String=null, useStandardOAuth:Boolean = false, useXAuth:Boolean = false):void
 		{
 			_xauthUser = _xauthPass = "";
 			if (userName != null && password != null) {
-				
-				if (useXAuth)
-				{
+				useXAuth = true; ///如果传了用户名密码，由于取消了BasicOauth所以只能使用XAuth!
+				if (useXAuth){
 					_xauthUser = userName;
 					_xauthPass = password;
 					if (null == xauthLoader)
@@ -1421,23 +1427,21 @@ package com.sina.microblog
 					xauthLoader.load(xreq);
 					return;
 				}else {
+					////已经在2011年6月1日停止支持BasicOAuth
 					var creds:String = userName + ":" + password;
 					var encodedCredentials:String=Base64.encode(StringEncoders.utf8Encode(creds)).toString();
 					authHeader=new URLRequestHeader("Authorization", "Basic " + encodedCredentials);
 					verifyCredentials();
 					return;
-				}		
+				}
 			}
-			
 			if (useStandardOAuth && !_useProxy)
 			{				
 				//if (_accessTokenKey.length > 0 && _accessTokenSecret.length > 0) return;
 				_accessTokenKey = "";
 				_accessTokenSecret = "";
-				if (_consumerKey.length > 0 && _consumerSecret.length > 0)
-				{
-					if (null == oauthLoader)
-					{
+				if (_consumerKey.length > 0 && _consumerSecret.length > 0){
+					if (null == oauthLoader){
 						oauthLoader=new URLLoader();
 						oauthLoader.addEventListener(Event.COMPLETE, oauthLoader_onComplete, false, 0, true);
 						oauthLoader.addEventListener(IOErrorEvent.IO_ERROR, oauthLoader_onError, false, 0, true);
@@ -2453,7 +2457,7 @@ package com.sina.microblog
 			var url:String=FOLLOW_REQUEST_URL.replace("$user", user);
 			var params:URLVariables=new URLVariables();
 			if (userID.length > 0) params.user_id = userID;
-			if (screenName && screenName.length > 0) params.screen_name = screenName;;
+			if (screenName && screenName.length > 0) params.screen_name = encodeMsg(screenName);
 			//params.follow = isFollow;
 			params["_uri"] = url;	
 			
@@ -2485,10 +2489,15 @@ package com.sina.microblog
 			var url:String=CANCEL_FOLLOWING_REQUEST_URL.replace("$user", user);
 			var params:URLVariables=new URLVariables();
 			if ( userID.length > 0 ) params.user_id = userID;
-			if ( screenName && screenName.length > 0 ) params.screen_name = screenName;
+			if ( screenName && screenName.length > 0 ) params["screen_name"] = encodeMsg(screenName);
 			params["_uri"] = url;	
-			var req:URLRequest=(_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
-			executeRequest(CANCEL_FOLLOWING_REQUEST_URL, req);
+			
+			//var req:URLRequest=(_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
+			//executeRequest(CANCEL_FOLLOWING_REQUEST_URL, req);
+			if(_useProxy) executeRequest(CANCEL_FOLLOWING_REQUEST_URL,getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
+			else executeRequest(CANCEL_FOLLOWING_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));	
+			//if(_useProxy) executeRequest(LOAD_FRIENDS_ID_LIST_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
+			//else executeRequest(LOAD_FRIENDS_ID_LIST_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));			
 		}
 
 		/**
@@ -2521,7 +2530,8 @@ package com.sina.microblog
 			}
 			if (targetScreenName && targetScreenName.length > 0)
 			{
-				params[TARGET_SCREEN_NAME]=StringEncoders.urlEncodeUtf8String(targetScreenName);
+				//params[TARGET_SCREEN_NAME]=StringEncoders.urlEncodeUtf8String(targetScreenName);
+				params[TARGET_SCREEN_NAME] = targetScreenName;
 				needExecute=true;
 			}
 			if (!needExecute)
@@ -2534,7 +2544,8 @@ package com.sina.microblog
 			}
 			if (sourceScreenName && sourceScreenName.length > 0)
 			{
-				params[SOURCE_SCREEN_NAME]=StringEncoders.urlEncodeUtf8String(sourceScreenName);
+				//params[SOURCE_SCREEN_NAME]=StringEncoders.urlEncodeUtf8String(sourceScreenName);
+				params[SOURCE_SCREEN_NAME] = sourceScreenName;
 			}
 			var url:String = CHECK_IS_FOLLOWING_REQUEST_URL;
 			params["_uri"] = url;	
@@ -2916,7 +2927,7 @@ package com.sina.microblog
 				return;
 			}		
 			var result:XML=new XML(loader.data);		
-			//currentResult = result; ///////////////////////////////////////////////////////////////////////////////测试用途		
+			currentResult = result; ///////////////////////////////////////////////////////////////////////////////测试用途		
 			if (result.child("error").length() > 0)
 			{
 				var error:MicroBlogErrorEvent=new MicroBlogErrorEvent(processor.errorEvent);
@@ -3132,6 +3143,7 @@ package com.sina.microblog
 		private function makeUserParams(params:Object, userID:String, screenName:String, cursor:Number, verify:String = ""):void
 		{
 			if (userID.length > 0 && userID != "0") params[USER_ID] = userID;			
+			//if (screenName) params[SCREEN_NAME] = encodeMsg(screenName);			
 			if (screenName) params[SCREEN_NAME] = screenName;			
 			if (cursor >= 0) params[CURSOR] = cursor;			
 			if (verify != "") params[VERIFIER] = verify;
@@ -3225,7 +3237,7 @@ package com.sina.microblog
 		{
 			data.writeShort(0x0d0a);
 		}
-
+		
 		private function signRequest(requestMethod:String, url:String, requestParams:Object, useHead:Boolean=false):URLRequest
 		{
 			var method:String = requestMethod.toUpperCase();
@@ -3238,16 +3250,22 @@ package com.sina.microblog
 			
 			for (var key1:String in requestParams)
 			{
-				params[key1] = requestParams[key1];
+				params[key1] = encodeMsg(requestParams[key1]);
 			}
 			var req:URLRequest=new URLRequest();
 			req.method=method;
 			req.url=url;
-			var paramsStr:String=makeSignableParamStr(params);
-			var msgStr:String=StringEncoders.urlEncodeUtf8String(requestMethod.toUpperCase()) + "&";
-			msgStr+=StringEncoders.urlEncodeUtf8String(url);
+			//var paramsStr:String=makeSignableParamStr(params);
+			//var msgStr:String=StringEncoders.urlEncodeUtf8String(requestMethod.toUpperCase()) + "&";
+			//msgStr+=StringEncoders.urlEncodeUtf8String(url);
+			//msgStr+="&";
+			//msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);	
+			var paramsStr:String = makeSignableParamStr(params);			
+			
+			var msgStr:String= encodeMsg(requestMethod.toUpperCase()) + "&";
+			msgStr+=encodeMsg(url);
 			msgStr+="&";
-			msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);
+			msgStr += encodeMsg(paramsStr);				
 			
 			var secrectStr:String = _consumerSecret + "&";
 			if (_accessTokenSecret.length > 0 && _accessTokenKey.length > 0)
@@ -3256,7 +3274,9 @@ package com.sina.microblog
 			}
 			var sig:String=Base64.encode(HMAC.hash(secrectStr, msgStr, SHA1));
 			// The matchers are specified in OAuth only.
-			sig = sig.replace(/\+/g, "%2B");
+			
+			//sig = sig.replace(/\+/g, "%2B"); //////////////////////////////////////////////////////////
+			
 			oauthParams["oauth_signature"] = sig;
 			
 			if (method == URLRequestMethod.GET)
@@ -3290,7 +3310,9 @@ package com.sina.microblog
 			{
 				if (param != "oauth_signature")
 				{
-					if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
+					//if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
+					if(params[param] != null) retParams.push(param + "=" + encodeMsg(params[param].toString()));
+					//if(params[param] != null) retParams.push(param + "=" + params[param].toString());
 					//retParams.push(param + "=" +params[param].toString());
 				}
 			}
