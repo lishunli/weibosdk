@@ -1275,7 +1275,8 @@ package com.sina.microblog
 			if ( oauthLoader )
 			{
 				var url:String=OAUTH_ACCESS_TOKEN_REQUEST_URL;
-				var req:URLRequest=signRequest(URLRequestMethod.GET, url, null);
+				//var req:URLRequest=signRequest(URLRequestMethod.GET, url, null);
+				var req:URLRequest=signRequest(URLRequestMethod.POST, url, null);
 				oauthLoader.load(req);
 				_pin = ""; // Just use once.
 			}
@@ -1447,7 +1448,7 @@ package com.sina.microblog
 						oauthLoader.addEventListener(IOErrorEvent.IO_ERROR, oauthLoader_onError, false, 0, true);
 						oauthLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, oauthLoader_onSecurityError, false, 0, true);
 					}
-					var req:URLRequest=signRequest(URLRequestMethod.GET, OAUTH_REQUEST_TOKEN_REQUEST_URL, null);
+					var req:URLRequest = signRequest(URLRequestMethod.POST, OAUTH_REQUEST_TOKEN_REQUEST_URL, null);
 					oauthLoader.load(req);
 				}
 				return;
@@ -3143,8 +3144,8 @@ package com.sina.microblog
 		private function makeUserParams(params:Object, userID:String, screenName:String, cursor:Number, verify:String = ""):void
 		{
 			if (userID.length > 0 && userID != "0") params[USER_ID] = userID;			
-			//if (screenName) params[SCREEN_NAME] = encodeMsg(screenName);			
-			if (screenName) params[SCREEN_NAME] = screenName;			
+			if (screenName) params[SCREEN_NAME] = encodeMsg(screenName);			
+			//if (screenName) params[SCREEN_NAME] = screenName;			
 			if (cursor >= 0) params[CURSOR] = cursor;			
 			if (verify != "") params[VERIFIER] = verify;
 		}
@@ -3246,26 +3247,27 @@ package com.sina.microblog
 			for (var key:String in oauthParams)
 			{
 				params[key] = oauthParams[key];
-			}
-			
+			}			
 			for (var key1:String in requestParams)
 			{
-				params[key1] = encodeMsg(requestParams[key1]);
+				params[key1] = requestParams[key1];
 			}
+			
 			var req:URLRequest=new URLRequest();
 			req.method=method;
-			req.url=url;
-			//var paramsStr:String=makeSignableParamStr(params);
-			//var msgStr:String=StringEncoders.urlEncodeUtf8String(requestMethod.toUpperCase()) + "&";
-			//msgStr+=StringEncoders.urlEncodeUtf8String(url);
-			//msgStr+="&";
-			//msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);	
-			var paramsStr:String = makeSignableParamStr(params);			
+			req.url = url;
 			
-			var msgStr:String= encodeMsg(requestMethod.toUpperCase()) + "&";
-			msgStr+=encodeMsg(url);
+			var paramsStr:String=makeSignableParamStr(params);
+			var msgStr:String=StringEncoders.urlEncodeUtf8String(requestMethod.toUpperCase()) + "&";
+			msgStr+=StringEncoders.urlEncodeUtf8String(url);
 			msgStr+="&";
-			msgStr += encodeMsg(paramsStr);				
+			msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);
+			
+			//var paramsStr:String = makeSignableParamStr(params);			
+			//var msgStr:String= encodeMsg(requestMethod.toUpperCase()) + "&";
+			//msgStr+=encodeMsg(url);
+			//msgStr+="&";
+			//msgStr += encodeMsg(paramsStr);				
 			
 			var secrectStr:String = _consumerSecret + "&";
 			if (_accessTokenSecret.length > 0 && _accessTokenKey.length > 0)
@@ -3310,14 +3312,14 @@ package com.sina.microblog
 			{
 				if (param != "oauth_signature")
 				{
-					//if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
-					if(params[param] != null) retParams.push(param + "=" + encodeMsg(params[param].toString()));
+					if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
+					//if(params[param] != null) retParams.push(param + "=" + encodeMsg(params[param].toString()));
+					//if(params[param] != null) retParams.push(param + "%3D" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
 					//if(params[param] != null) retParams.push(param + "=" + params[param].toString());
 					//retParams.push(param + "=" +params[param].toString());
 				}
 			}
 			retParams.sort();
-
 			return retParams.join("&");
 		}
 
