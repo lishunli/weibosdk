@@ -3144,8 +3144,8 @@ package com.sina.microblog
 		private function makeUserParams(params:Object, userID:String, screenName:String, cursor:Number, verify:String = ""):void
 		{
 			if (userID.length > 0 && userID != "0") params[USER_ID] = userID;			
-			if (screenName) params[SCREEN_NAME] = encodeMsg(screenName);			
-			//if (screenName) params[SCREEN_NAME] = screenName;			
+			//if (screenName) params[SCREEN_NAME] = StringEncoders.urlEncodeUtf8String(screenName);			
+			if (screenName) params[SCREEN_NAME] = screenName;			
 			if (cursor >= 0) params[CURSOR] = cursor;			
 			if (verify != "") params[VERIFIER] = verify;
 		}

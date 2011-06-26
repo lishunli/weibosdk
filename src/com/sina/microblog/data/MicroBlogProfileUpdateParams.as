@@ -26,7 +26,8 @@ package com.sina.microblog.data
 		{
 			if (value && value.length > 0)
 			{
-				_postData.name=StringEncoders.urlEncodeUtf8String(value);
+				//_postData.name=StringEncoders.urlEncodeUtf8String(value);
+				_postData.name = value;
 				_isEmpty=false;
 			}
 		}
