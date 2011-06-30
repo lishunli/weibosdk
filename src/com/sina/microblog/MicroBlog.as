@@ -3164,11 +3164,15 @@ package com.sina.microblog
 		private function encodeMsg(status:String):String
 		{
 			var source:String = status;
-			var pattern:RegExp = new RegExp('[ \n\t\r]', 'g');
-			source = source.replace(pattern, ' ');			
+			var pattern1:RegExp = new RegExp('^[ ]+|[ ]+$', 'g');
+			source = source.replace(pattern1, '');		
+			var pattern2:RegExp = new RegExp('[ \n\t\r]', 'g');
+			source = source.replace(pattern2, ' ');				
+			var pattern3:RegExp = /( )+/g;
+			source = source.replace(pattern3, ' ');			
 			return StringEncoders.urlEncodeSpecial(source);
 		}
-
+		
 		private function makeMultipartPostData(boundary:String, imgFieldName:String, filename:String, imgData:ByteArray, params:Object):Object
 		{
 			var req:URLRequest=new URLRequest();
