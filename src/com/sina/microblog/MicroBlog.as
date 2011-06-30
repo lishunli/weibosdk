@@ -2458,7 +2458,7 @@ package com.sina.microblog
 			var url:String=FOLLOW_REQUEST_URL.replace("$user", user);
 			var params:URLVariables=new URLVariables();
 			if (userID.length > 0) params.user_id = userID;
-			if (screenName && screenName.length > 0) params.screen_name = encodeMsg(screenName);
+			if (screenName && screenName.length > 0) params.screen_name = screenName;
 			//params.follow = isFollow;
 			params["_uri"] = url;	
 			
@@ -2490,7 +2490,7 @@ package com.sina.microblog
 			var url:String=CANCEL_FOLLOWING_REQUEST_URL.replace("$user", user);
 			var params:URLVariables=new URLVariables();
 			if ( userID.length > 0 ) params.user_id = userID;
-			if ( screenName && screenName.length > 0 ) params["screen_name"] = encodeMsg(screenName);
+			if ( screenName && screenName.length > 0 ) params["screen_name"] = screenName;
 			params["_uri"] = url;	
 			
 			//var req:URLRequest=(_useProxy) ? getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST) : getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST);
@@ -3163,7 +3163,10 @@ package com.sina.microblog
 
 		private function encodeMsg(status:String):String
 		{
-			return StringEncoders.urlEncodeSpecial(status);
+			var source:String = status;
+			var pattern:RegExp = new RegExp('[ \n\t\r]', 'g');
+			source = source.replace(pattern, ' ');			
+			return StringEncoders.urlEncodeSpecial(source);
 		}
 
 		private function makeMultipartPostData(boundary:String, imgFieldName:String, filename:String, imgData:ByteArray, params:Object):Object
@@ -3261,13 +3264,7 @@ package com.sina.microblog
 			var msgStr:String=StringEncoders.urlEncodeUtf8String(requestMethod.toUpperCase()) + "&";
 			msgStr+=StringEncoders.urlEncodeUtf8String(url);
 			msgStr+="&";
-			msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);
-			
-			//var paramsStr:String = makeSignableParamStr(params);			
-			//var msgStr:String= encodeMsg(requestMethod.toUpperCase()) + "&";
-			//msgStr+=encodeMsg(url);
-			//msgStr+="&";
-			//msgStr += encodeMsg(paramsStr);				
+			msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);		
 			
 			var secrectStr:String = _consumerSecret + "&";
 			if (_accessTokenSecret.length > 0 && _accessTokenKey.length > 0)
@@ -3313,10 +3310,6 @@ package com.sina.microblog
 				if (param != "oauth_signature")
 				{
 					if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
-					//if(params[param] != null) retParams.push(param + "=" + encodeMsg(params[param].toString()));
-					//if(params[param] != null) retParams.push(param + "%3D" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
-					//if(params[param] != null) retParams.push(param + "=" + params[param].toString());
-					//retParams.push(param + "=" +params[param].toString());
 				}
 			}
 			retParams.sort();
