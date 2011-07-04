@@ -2201,8 +2201,8 @@ package com.sina.microblog
 			if (user && user.length > 0) user="/" + user;
 			else user="";
 			var url:String=LOAD_USER_INFO_REQUEST_URL.replace("$user", user);
-			var params:Object=new Object();
-			makeUserParams(params, userID, screenName, -1, verifier);		
+			var params:Object = new Object();
+			makeUserParams(params, userID, screenName, -1, verifier);
 			params["_uri"] = url;
 			if(_useProxy) executeRequest(LOAD_USER_INFO_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
 			else executeRequest(LOAD_USER_INFO_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
@@ -2650,8 +2650,8 @@ package com.sina.microblog
 			//TO-DO: if the parameter equals to zero, don't include this parameter when build request url.
 			//curl -u user:password http://api.t.sina.com.cn/account/verify_credentials.xml
 			addProcessor(VERIFY_CREDENTIALS_REQUEST_URL, processUser, MicroBlogEvent.VERIFY_CREDENTIALS_RESULT, MicroBlogErrorEvent.VERIFY_CREDENTIALS_ERROR);
-			var params:Object = new Object();	
-			params["_uri"] = VERIFY_CREDENTIALS_REQUEST_URL;
+			var params:Object = new Object();		
+			params["_uri"] = VERIFY_CREDENTIALS_REQUEST_URL;		
 			if(_useProxy) executeRequest(VERIFY_CREDENTIALS_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));	
 			else executeRequest(VERIFY_CREDENTIALS_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + VERIFY_CREDENTIALS_REQUEST_URL, params, URLRequestMethod.POST));	
 		}
@@ -2967,8 +2967,8 @@ package com.sina.microblog
 			params["_anywhereToken"] = _anywhereToken;
 			if ( accessTokenKey.length > 0)
 			{
-				req=signRequest(requestMethod, url, params, false);
-			}else{
+				req = signRequest(requestMethod, url, params, false);
+			}else {
 				if (requestMethod == URLRequestMethod.GET)
 				{
 					url+=makeGETParamString(params);
@@ -2985,10 +2985,7 @@ package com.sina.microblog
 					req.data = val;
 				}
 				///////////////////////////////////////////////////////////////////////////
-				if ( authHeader )
-				{
-					req.requestHeaders.push(authHeader);
-				}
+				if ( authHeader ) req.requestHeaders.push(authHeader);
 			}
 			req.method=requestMethod;
 			return req;
@@ -3143,8 +3140,7 @@ package com.sina.microblog
 
 		private function makeUserParams(params:Object, userID:String, screenName:String, cursor:Number, verify:String = ""):void
 		{
-			if (userID.length > 0 && userID != "0") params[USER_ID] = userID;			
-			//if (screenName) params[SCREEN_NAME] = StringEncoders.urlEncodeUtf8String(screenName);			
+			if (userID.length > 0 && userID != "0") params[USER_ID] = userID;		
 			if (screenName) params[SCREEN_NAME] = screenName;			
 			if (cursor >= 0) params[CURSOR] = cursor;			
 			if (verify != "") params[VERIFIER] = verify;
@@ -3247,7 +3243,7 @@ package com.sina.microblog
 		}
 		
 		private function signRequest(requestMethod:String, url:String, requestParams:Object, useHead:Boolean=false):URLRequest
-		{
+		{			
 			var method:String = requestMethod.toUpperCase();
 			var oauthParams:Object = getOAuthParams();
 			var params:Object = new Object;
@@ -3268,18 +3264,17 @@ package com.sina.microblog
 			var msgStr:String=StringEncoders.urlEncodeUtf8String(requestMethod.toUpperCase()) + "&";
 			msgStr+=StringEncoders.urlEncodeUtf8String(url);
 			msgStr+="&";
-			msgStr += StringEncoders.urlEncodeUtf8String(paramsStr);		
+			msgStr += StringEncoders.urlEncodeSpecial(paramsStr);	
 			
 			var secrectStr:String = _consumerSecret + "&";
 			if (_accessTokenSecret.length > 0 && _accessTokenKey.length > 0)
 			{
 				secrectStr+=_accessTokenSecret;
 			}
-			var sig:String=Base64.encode(HMAC.hash(secrectStr, msgStr, SHA1));
-			// The matchers are specified in OAuth only.
 			
-			//sig = sig.replace(/\+/g, "%2B"); //////////////////////////////////////////////////////////
-			
+			var sig:String = Base64.encode(HMAC.hash(secrectStr, msgStr, SHA1));		
+			// The matchers are specified in OAuth only.		
+			//sig = sig.replace(/\+/g, "%2B"); //////////////////////////////////////////////////////////	
 			oauthParams["oauth_signature"] = sig;
 			
 			if (method == URLRequestMethod.GET)
@@ -3293,7 +3288,7 @@ package com.sina.microblog
 				{
 					req.url+=("?" + paramsStr + '&oauth_signature=' + sig);
 				}
-			}else if (requestMethod == URLRequestMethod.POST){					
+			}else if (requestMethod == URLRequestMethod.POST) {
 				var val:URLVariables = new URLVariables();
 				for (var paramkey:* in params)
 				{
@@ -3313,7 +3308,7 @@ package com.sina.microblog
 			{
 				if (param != "oauth_signature")
 				{
-					if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeUtf8String(params[param].toString()));
+					if(params[param] != null) retParams.push(param + "=" + StringEncoders.urlEncodeSpecial(params[param].toString()));
 				}
 			}
 			retParams.sort();
