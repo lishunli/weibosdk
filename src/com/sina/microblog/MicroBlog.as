@@ -3216,8 +3216,7 @@ package com.sina.microblog
 
 			boundaryPostData(postData, boundary);
 			addDoubleDash(postData);
-
-			//trace(postData.toString());
+			
 			postData.position=0;
 			return postData;
 		}
@@ -3407,7 +3406,6 @@ package com.sina.microblog
 
 		private function oauthLoader_onError(event:IOErrorEvent):void
 		{
-			//var urlData:URLVariables = new URLVariables(oauthLoader.data);
 			var e:MicroBlogErrorEvent = new MicroBlogErrorEvent(MicroBlogErrorEvent.OAUTH_CERTIFICATE_ERROR);
 			e.message = oauthLoader.data;
 			dispatchEvent(e);
