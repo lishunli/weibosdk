@@ -2204,8 +2204,21 @@ package com.sina.microblog
 			var params:Object = new Object();
 			makeUserParams(params, userID, screenName, -1, verifier);
 			params["_uri"] = url;
-			if(_useProxy) executeRequest(LOAD_USER_INFO_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
-			else executeRequest(LOAD_USER_INFO_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
+			if(_useProxy) {
+				executeRequest(LOAD_USER_INFO_REQUEST_URL, getMicroBlogRequest(PROXY_URL, params, URLRequestMethod.POST));
+			}else{
+				if(screenName != null)
+				{
+					var req:URLRequest = new URLRequest(API_BASE_URL + url);
+					var val:URLVariables = new URLVariables();
+					val.screen_name = screenName;
+					val.source = source;
+					req.data = val;
+					executeRequest(LOAD_USER_INFO_REQUEST_URL, req);
+				}else{
+					executeRequest(LOAD_USER_INFO_REQUEST_URL, getMicroBlogRequest(API_BASE_URL + url, params, URLRequestMethod.POST));
+				}				
+			} 
 		}
 
 		/**
