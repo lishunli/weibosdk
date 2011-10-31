@@ -1,0 +1,7 @@
+当前flash sdk版本:v2
+认证机制:OAuth2
+
+文件夹说明：
+bin：flash sdk的swc文件
+src：flash sdk源代码
+v1_oauth1：OAuth1版本的flash sdk全部文件。
