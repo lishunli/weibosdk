@@ -77,6 +77,11 @@ package com.sina.microblog.events
 		public static const NET_WORK_ERROR:String = "networkError";
 		
 		/**
+		 * 函数调用时参数错误 
+		 */		
+		public static const PARAMETER_ERROR:String = "parameterError";
+		
+		/**
 		 * 请求失败后返回的错误信息
 		 */ 
 		public var message:String;

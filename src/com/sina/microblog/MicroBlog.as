@@ -1468,7 +1468,7 @@ package com.sina.microblog
 			if (ExternalInterface.available && !_debugMode)
 			{
 				try {
-					ExternalInterface.call("window.open", url,'newwindow','height=420,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
+					ExternalInterface.call("window.open", url,'newwindow','height=410,width=500,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
 				}catch (err:Error) {
 					navigateToURL(new URLRequest(url), "_blank");
 				}
@@ -1762,7 +1762,11 @@ package com.sina.microblog
 		{
 			addProcessor(STATUS_COUNTS_REQUEST_URL, processCounts, MicroBlogEvent.LOAD_STATUS_COUNTS_RESULT, MicroBlogErrorEvent.LOAD_STATUS_COUNTS_ERROR);
 			var idsParam:String="";	
-			if (null == ids || ids.length == 0) return;
+			if (null == ids || ids.length == 0)
+			{
+				dispatchParameterError("传入数组为空");
+				return;
+			}
 			var len:int=ids.length - 1;
 			for (var i:int=0; i < len; ++i)
 			{
@@ -1862,7 +1866,11 @@ package com.sina.microblog
 		 */
 		public function resetCount(type:int):void
 		{
-			if (!(type == 1 || type == 2 || type == 3 || type == 4)) return;
+			if (!(type == 1 || type == 2 || type == 3 || type == 4))
+			{
+				dispatchParameterError("参数错误，type只能是1、2、3、4");
+				return;
+			}
 			addProcessor(RESET_STATUS_COUNT_REQUEST_URL, processBooleanResult, MicroBlogEvent.RESET_STATUS_COUNT_RESULT, MicroBlogErrorEvent.RESET_STATUS_COUNT_ERROR);
 			var params:URLVariables = new URLVariables();
 			params.type = type;
@@ -1947,7 +1955,10 @@ package com.sina.microblog
 			var req:URLRequest;
 			var params:URLVariables=new URLVariables();			
 			if ( status ) params.status = encodeMsg(status);			
-			else if ( imgData == null ) return;		
+			else if ( imgData == null ) {			
+				dispatchParameterError();
+				return;
+			}		
 			if(inReplyToStatusID != "") params.in_reply_to_status_id = inReplyToStatusID;
 			if (!isNaN(lat)) params.lat = lat;
 			if (!isNaN(long)) params.long = long;
@@ -2130,7 +2141,11 @@ package com.sina.microblog
 		{
 			addProcessor(DELETE_COMMENT_BATCH_URL, processCommentArray, MicroBlogEvent.DELETE_COMMENT_PATCH_RESULT, MicroBlogErrorEvent.DELETE_COMMENT_PATCH_ERROR);
 			var idsParam:String="";	
-			if (null == ids || ids.length == 0) return;
+			if (null == ids || ids.length == 0)
+			{
+				dispatchParameterError("传入数组为空");
+				return;
+			}
 			var len:int=ids.length - 1;
 			for (var i:int=0; i < len; ++i)
 			{
@@ -3427,6 +3442,13 @@ package com.sina.microblog
 		private function oauthLoader_onSecurityError(event:SecurityErrorEvent):void
 		{
 			dispatchEvent(event);
+		}
+		
+		private function dispatchParameterError(msg:String = "参数错误"):void
+		{
+			var e:MicroBlogErrorEvent = new MicroBlogErrorEvent(MicroBlogErrorEvent.PARAMETER_ERROR);
+			e.message = msg;
+			dispatchEvent(e);
 		}
 
 		///弹出pin登录的授权框

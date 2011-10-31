@@ -162,6 +162,7 @@ package com.sina.microblog.data
 			city = user.city;
 			location = user.location;
 			description = user.description;
+			url = user.url;
 			profileImageUrl = user.profile_image_url;
 			domain = user.domain;
 			gender = user.gender;
@@ -172,12 +173,10 @@ package com.sina.microblog.data
 			friendsCount = uint(user.friends_count);
 			statusesCount = uint(user.statuses_count);
 			favouritesCount = uint(user.favourites_count);
-			
-			isFollowingMe = user.following == "true";
-			
+			createdAt = MicroBlogDataUtil.resolveDate(user.created_at);
 			isVerified = user.verified == "true";
-			//profileBackgroundImageUrl = user.profile_background_image_url;
-			url = user.url;
+			isFollowingMe = user.following == "true";		
+			//profileBackgroundImageUrl = user.profile_background_image_url;	
 			//isProtected = user.protected == "true";
 			//profileBackgroundColor = Number("0x" + user.profile_background_color);
 			//profileTextColor = Number("0x" + user.profile_text_color);
@@ -188,8 +187,8 @@ package com.sina.microblog.data
 			//timeZone = user.time_zone;
 			//isProfileBackgroundTile = user.profile_background_tile == "true";
 			//notificationsEnabled = user.notifications == "true";
-			geoEnabled = user.geo_enabled == "true";
 			allowAllActMsg = user.allow_all_act_msg == "true";
+			geoEnabled = user.geo_enabled == "true";		
 			if ( user.child("status").length() > 0)
 			{
 				status = new MicroBlogStatus(user.status[0]);
