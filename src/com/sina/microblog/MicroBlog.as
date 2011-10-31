@@ -3,7 +3,6 @@ package com.sina.microblog
 	import com.adobe.crypto.HMAC;
 	import com.adobe.crypto.SHA1;
 	import com.adobe.serialization.json.JSON;
-	import com.dynamicflash.util.Base64;
 	import com.sina.microblog.events.MicroBlogErrorEvent;
 	import com.sina.microblog.events.MicroBlogEvent;
 	import com.sina.microblog.utils.GUID;
