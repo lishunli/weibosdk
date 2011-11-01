@@ -1,0 +1,6 @@
+Text for description in com.sina.microblog:MicroBlog is not valid.
+org.xml.sax.SAXParseException: 元素类型“p”必须以匹配的结束标签“</p>”结束。
+
+Text for example in com.sina.microblog:MicroBlog is not valid.
+org.xml.sax.SAXParseException: 元素类型“test”必须以匹配的结束标签“</test>”结束。
+

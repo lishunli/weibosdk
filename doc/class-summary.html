@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>All Classes</title><link rel="stylesheet" href="style.css" type="text/css" media="screen"><link rel="stylesheet" href="print.css" type="text/css" media="print"><link rel="stylesheet" href="override.css" type="text/css"></head><body><script language="javascript" type="text/javascript" src="asdoc.js"></script><script language="javascript" type="text/javascript" src="help.js"></script><script language="javascript" type="text/javascript" src="cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'All Classes - API Documentation';
+				var baseRef = '';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="package-summary.html" onclick="loadClassListFrame('all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="all-index-A.html" onclick="loadClassListFrame('index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="index.html?class-summary.html&amp;all-classes.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">All&nbsp;Classes</td><td class="titleTableSubNav" id="subNav" align="right"></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("All Classes"); titleBar_setSubNav(false,false,false,false,false,false,false,false,false,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div class="MainContent"><br><p>Documentation for classes includes syntax, usage information, and code samples for methods, properties, and event handlers and listeners for those APIs that belong to a specific class in ActionScript. The classes are listed alphabetically. If you are not sure to which class a certain method or property belongs, you can look it up in the Index.</p><br><table cellpadding="3" cellspacing="0" class="summaryTable"><tr><th>&nbsp;</th><th width="20%">Class</th><th width="20%">Package</th><th width="60%">Description</th></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="com/sina/microblog/MicroBlog.html">MicroBlog</a><br></td><td class="summaryTableCol"><a href="com/sina/microblog/package-detail.html" onclick="javascript:loadClassListFrame('com/sina/microblog/class-list.html');">com.sina.microblog</a></td><td class="summaryTableLastCol">
+	 新浪网微博开放平台AS3 API的核心类。主要封装了微博的OAuth2授权机制，和基本的几个api。 
+	 
+	 主要功能包括
+	 
+	 OAuth2的授权机制，包括客户端的和网络端的均可使用
+	 开放平台的api调用机制，和几个核心的api
+	 使用事件机制返回API调用结果
+	 对后端返回结果进行强类型封装
+	 提供通用接口callWeiboAPI(...)方便开发者自己按照线上文档调用接口
+	 
+	 一般情况下，当一个API调用成功的时候，会抛出MicroBlogEvent，而调用失败则会抛出MicroBlogErrorEvent
+	 MicroBlogEvent的每个事件会带上result对象，这个对象的结构和类型详细参照事件的说明。这个result也就是最终api调用获得的数据。
+	 
+	 
+	 
+	 网络端授权登陆，1、信任域下的网络应用。2、非信任域下的网络应用（暂未提供）。3、客户端
+	 这里说的信任域其实就是你的应用所在的域，在http://api.weibo.com/crossdomain.xml的白名单里面，否则则是非信任域。
+	 
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="com/sina/microblog/events/MicroBlogErrorEvent.html">MicroBlogErrorEvent</a><br></td><td class="summaryTableCol"><a href="com/sina/microblog/events/package-detail.html" onclick="javascript:loadClassListFrame('com/sina/microblog/events/class-list.html');">com.sina.microblog.events</a></td><td class="summaryTableLastCol">
+	 所有对新浪微博API的请求会以事件的形式返回给调用者。当API请求出现错误时，MicroBlog类会派发MicroBlogErrorEvent事件.</td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="com/sina/microblog/events/MicroBlogEvent.html">MicroBlogEvent</a><br></td><td class="summaryTableCol"><a href="com/sina/microblog/events/package-detail.html" onclick="javascript:loadClassListFrame('com/sina/microblog/events/class-list.html');">com.sina.microblog.events</a></td><td class="summaryTableLastCol">
+	 所有对新浪微博API的请求会以事件的形式返回给调用者.当API请求正常返回时，MicroBlog类会派发MicroBlogEvent事件.</td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="com/sina/microblog/data/MicroBlogStatus.html">MicroBlogStatus</a><br></td><td class="summaryTableCol"><a href="com/sina/microblog/data/package-detail.html" onclick="javascript:loadClassListFrame('com/sina/microblog/data/class-list.html');">com.sina.microblog.data</a></td><td class="summaryTableLastCol">
+	 MicroBlogStatus是一个数据封装类(Value Object)，该类代表一条微博
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="com/sina/microblog/data/MicroBlogUser.html">MicroBlogUser</a><br></td><td class="summaryTableCol"><a href="com/sina/microblog/data/package-detail.html" onclick="javascript:loadClassListFrame('com/sina/microblog/data/class-list.html');">com.sina.microblog.data</a></td><td class="summaryTableLastCol">
+	 MicroBlogUser是一个数据封装类(Value Object)，该类代表一个微博用户
+	 </td></tr></table><p></p><center class="copyright"><footer></footer><br/>Tue Nov 1 2011, 03:49 PM +08:00  </center></div></body></html><!--<br/>Tue Nov 1 2011, 03:49 PM +08:00  -->
