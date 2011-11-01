@@ -1,5 +1,11 @@
 package com.sina.microblog
 {
+	/**
+	 * @private
+	 * 所有微博开放平台api的地址配置 
+	 * @author qidonghui
+	 * 
+	 */	
 	public class API
 	{	
 		public static const API_BASE_URL:String = "https://api.weibo.com/";
