@@ -1,0 +1,681 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>MicroBlog.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">adobe</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">serialization</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">json</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JSON</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MicroBlogStatus</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MicroBlogEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">StringEncoders</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">EventDispatcher</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IOErrorEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SecurityErrorEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">external</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ExternalInterface</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LocalConnection</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">URLLoader</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">URLRequest</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">URLRequestMethod</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">URLVariables</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">navigateToURL</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ByteArray</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Dictionary</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Endian</span>;
+    
+    <span class="ActionScriptASDoc">/**
+     * 新浪网微博开放平台AS3 API的核心类。主要封装了微博的OAuth2授权机制，和基本的几个api。 
+     * 
+     * &lt;p&gt;主要功能包括&lt;br/&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt;OAuth2的授权机制，包括客户端的和网络端的均可使用&lt;/li&gt;
+     * &lt;li&gt;开放平台的api调用机制，和几个核心的api&lt;/li&gt;
+     * &lt;li&gt;使用事件机制返回API调用结果&lt;/li&gt;
+     * &lt;li&gt;对后端返回结果进行强类型封装&lt;/li&gt;
+     * &lt;li&gt;提供通用接口callWeiboAPI(...)方便开发者自己按照线上文档调用接口&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 一般情况下，当一个API调用成功的时候，会抛出&lt;b&gt;MicroBlogEvent&lt;/b&gt;，而调用失败则会抛出&lt;b&gt;MicroBlogErrorEvent&lt;/b&gt;
+     * MicroBlogEvent的每个事件会带上result对象，这个对象的结构和类型详细参照事件的说明。这个result也就是最终api调用获得的数据。
+     * &lt;/p&gt;
+     * 
+     * 
+     * 网络端授权登陆，1、信任域下的网络应用。2、非信任域下的网络应用&lt;b&gt;（暂未提供）&lt;/b&gt;。3、客户端&lt;br/&gt;
+     * 这里说的信任域其实就是你的应用所在的域，在http://api.weibo.com/crossdomain.xml的白名单里面，否则则是非信任域。&lt;br/&gt;
+     * 
+     * @example 信任域下的网络应用授权登陆
+     * &lt;listing version="3.0"&gt;
+     * private function init():void
+     * {
+     *         _mb = new MicroBlog();
+     *         _mb.consumerKey = ""; //App Key
+     *         _mb.consumerSecret = ""; // App Secrect
+     *         btn.addEventListener(MouseEvent.CLICK, onBtnClick);
+     * }
+     * 
+     * private function onBtnClick(e:MouseEvent):void
+     * {
+     *         _mb.addEventListener(MicroBlogEvent.LOGIN_RESULT, onLoginResult);
+     *         _mb.login();
+     * }
+     * 
+     * //登陆成功，获取到access_token，expires_in和refresh_token三个值
+     * private function onLoginResult(e:MicroBlogEvent):void
+     * {
+     *         _mb.removeEventListener(MicroBlogEvent.LOGIN_RESULT, onLoginResult);
+     *         trace(e.result["access_token"] + "::" + e.result["expires_in"] + "::" + e.result["refresh_token"]);    
+     *         //接下来就可以调用其余的api了
+     * }
+     * &lt;/listing&gt;
+     *
+     * @example 客户端应用授权登陆
+     * &lt;listing version="3.0"&gt;
+     * private function init():void
+     * {
+     *         _mb = new MicroBlog();
+     *         _mb.consumerKey = ""; //App Key
+     *         _mb.consumerSecret = ""; // App Secrect
+     *         btn.addEventListener(MouseEvent.CLICK, onBtnClick);
+     * }
+     * 
+     * private function onBtnClick(e:MouseEvent):void
+     * {
+     *         _mb.addEventListener(MicroBlogEvent.LOGIN_RESULT, onLoginResult);
+     *         _mb.login(username, password);//传入用户名密码
+     * }
+     * 
+     * //登陆成功，获取到access_token，expires_in和refresh_token三个值
+     * private function onLoginResult(e:MicroBlogEvent):void
+     * {
+     *         _mb.removeEventListener(MicroBlogEvent.LOGIN_RESULT, onLoginResult);
+     *         trace(e.result["access_token"] + "::" + e.result["expires_in"] + "::" + e.result["refresh_token"]);    
+     *         //接下来就可以调用其余的api了
+     * }
+     * &lt;/listing&gt;
+     * 
+     * @example 通用接口callWeiboAPI的使用
+     * &lt;listing version="3.0"&gt;
+     * //callWeiboAPI第一个参数是接口uri，可以在open.weibo.com里面的API文档中查找你想要调用的API。
+     * private funcion testAPI():void
+     * {
+     *         _mb.addEventListener("myResultEvent", onUserResult);
+     *         _mb.addEventListener("myErrorEvent", onUserError);
+     *         _mb.callWeiboAPI("2/users/show", {"screen_name":"flashache"}, "GET", "myResultEvent", "myErrorEvent");
+     * }
+     * 
+     * //成功调用API，事件名称是你自定义的字符串，而最终结果e.result的结构按照线上文档对应。
+     * private function onUserResult(e:MicroBlogEvent):void
+     * {
+     *         var data:Object = e.result;
+     *         trace(data.id + "::" + data.name);
+     * }
+     * 
+     * private function onUserResult(e:MicroBlogErrorEvent):void
+     * {
+     *         trace(e.message);
+     * }
+     * 
+     * &lt;/listing&gt;
+     * 
+     * @author qidonghui
+     * 
+     */</span>    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">MicroBlog</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">EventDispatcher</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">MULTIPART_FORMDATA</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"multipart/form-data; boundary="</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">CONTENT_DISPOSITION_BASIC</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">'Content-Disposition: form-data; name="$name"'</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">CONTENT_TYPE_JPEG</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Content-Type: image/pjpeg"</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">CONTENT_TRANSFER_ENCODING</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Content-Transfer-Encoding: binary"</span>;    
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_consumerKey</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_consumerSecret</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_access_token</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_expires_in</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_refresh_token</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_source</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptComment">//        private var _isTrustDomain:Boolean = true;
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_xauthUser</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_xauthPass</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xauthLoader</span>:<span class="ActionScriptDefault_Text">URLLoader</span>;
+        
+        <span class="ActionScriptComment">///登录的时候临时建立的频道
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_localConnectionChanel</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptComment">///获取anywheretoken值的连接
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_conn</span>:<span class="ActionScriptDefault_Text">LocalConnection</span>;
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">serviceLoader</span>:<span class="ActionScriptDefault_Text">Dictionary</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Dictionary</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loaderMap</span>:<span class="ActionScriptDefault_Text">Dictionary</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Dictionary</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 构造函数
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">MicroBlog</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptComment">// Event Handler
+</span>        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptASDoc">/**
+         * 客户端登陆成功的事件 
+         * @param e
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">xauthLoader_onComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">e</span>:<span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">result</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">String</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">&gt;</span> 0<span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_xauthPass</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_xauthUser</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">resultObj</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">JSON</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">decode</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">access_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">resultObj</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"access_token"</span><span class="ActionScriptBracket/Brace">]</span>;
+                <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">expires_in</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">resultObj</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"expires_in"</span><span class="ActionScriptBracket/Brace">]</span>;
+                <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">refresh_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">resultObj</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"refresh_token"</span><span class="ActionScriptBracket/Brace">]</span>;    
+                <span class="ActionScriptComment">//                trace(access_token + "::" + expires_in + "::" + refresh_token);            
+</span>                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loginEvt</span>:<span class="ActionScriptDefault_Text">MicroBlogEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LOGIN_RESULT</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">loginEvt</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span><span class="ActionScriptString">"access_token"</span>: <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">access_token</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"expires_in"</span>: <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">expires_in</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"refresh_token"</span>: <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">refresh_token</span><span class="ActionScriptBracket/Brace">}</span>;
+                <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">loginEvt</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">loader_onComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loader</span>:<span class="ActionScriptDefault_Text">URLLoader</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">URLLoader</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">processor</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">loaderMap</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dataStr</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">String</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">dataStr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>  <span class="ActionScriptOperator">&lt;=</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">ioError</span>:<span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">NET_WORK_ERROR</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">ioError</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">message</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"The network error"</span>;
+                <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ioError</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">result</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">JSON</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">decode</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">dataStr</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"error"</span><span class="ActionScriptBracket/Brace">]</span>  <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">error</span>:<span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">processor</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">errorEvent</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">error</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">message</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Error "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">error_code</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">" : "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">error</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">",description:"</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">error_description</span>;
+                <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">error</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">else</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">e</span>:<span class="ActionScriptDefault_Text">MicroBlogEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">processor</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">resultEvent</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">e</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">processor</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataFunc</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">e</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">nextCursor</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">next_cursor</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">e</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">previousCursor</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">previous_cursor</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">e</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">loader_onError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">IOErrorEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loader</span>:<span class="ActionScriptDefault_Text">URLLoader</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">URLLoader</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">processor</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">loaderMap</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">error</span>:<span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">processor</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">errorEvent</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">error</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">message</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span>;
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">error</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">loader_onSecurityError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">SecurityErrorEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">xauthLoader_onError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">evt</span>:<span class="ActionScriptDefault_Text">IOErrorEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> 
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">e</span>:<span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LOGIN_ERROR</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">e</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">message</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span>;
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">e</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         * 
+         * 使用localConnection从登陆组件传入token相关信息 
+         * @param access_token
+         * @param expires_in
+         * @param refresh_token
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">loginResult</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">access_token</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">expires_in</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">refresh_token</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>            
+<span class="ActionScriptComment">//            trace(access_token + "::" + expires_in + "::" + refresh_token);    
+</span>            <span class="ActionScriptDefault_Text">_access_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">access_token</span>;
+            <span class="ActionScriptDefault_Text">_expires_in</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">expires_in</span>;
+            <span class="ActionScriptDefault_Text">_refresh_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">refresh_token</span>;
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loginEvt</span>:<span class="ActionScriptDefault_Text">MicroBlogEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LOGIN_RESULT</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">loginEvt</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span><span class="ActionScriptString">"access_token"</span>: <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">access_token</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"expires_in"</span>: <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">expires_in</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"refresh_token"</span>: <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">refresh_token</span><span class="ActionScriptBracket/Brace">}</span>;
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">loginEvt</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptComment">// Weibo API
+</span>        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptASDoc">/**
+         * 封装了OAuth2的授权登陆逻辑，登陆成功后抛出MicroBlogEvent.LOGIN_RESULT，失败则抛出MicroBlogErrorEvent.LOGIN_ERROR &lt;br/&gt;
+         * 用户名密码都不为空时，走的是客户端授权登陆逻辑。注意：&lt;b&gt;使用用户名密码的客户端授权逻辑需要申请使用全权限&lt;/b&gt;，规则详见线上文档。
+         * 
+         * @param userName            用户名
+         * @param password            密码
+         * 
+         * @see com.sina.microblog.events.MicroBlogEvent#LOGIN_RESULT
+         * @see com.sina.microblog.events.MicroBlogErrorEvent#LOGIN_ERROR
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">login</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">userName</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">password</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>        
+            <span class="ActionScriptDefault_Text">_xauthUser</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_xauthPass</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">userName</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">password</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> 
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_xauthUser</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">userName</span>;
+                <span class="ActionScriptDefault_Text">_xauthPass</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">password</span>;
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">xauthLoader</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLLoader</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COMPLETE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">xauthLoader_onComplete</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">IOErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IO_ERROR</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">xauthLoader_onError</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">SecurityErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SECURITY_ERROR</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">loader_onSecurityError</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>        
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xval</span>:<span class="ActionScriptDefault_Text">URLVariables</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLVariables</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">xval</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">client_id</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_consumerKey</span>;
+                <span class="ActionScriptDefault_Text">xval</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">client_secret</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_consumerSecret</span>;
+                <span class="ActionScriptDefault_Text">xval</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">grant_type</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"password"</span>;
+                <span class="ActionScriptDefault_Text">xval</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">username</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_xauthUser</span>;
+                <span class="ActionScriptDefault_Text">xval</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">password</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_xauthPass</span>;            
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xurl</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">OAUTH_ACCESS_TOKEN_REQUEST_URL</span>;
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xreq</span>:<span class="ActionScriptDefault_Text">URLRequest</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">xurl</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">xreq</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">method</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">POST</span>;
+                <span class="ActionScriptDefault_Text">xreq</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">xval</span>;
+                <span class="ActionScriptDefault_Text">xauthLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">load</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">xreq</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">else</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_localConnectionChanel</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_source</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">round</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">random</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> 1000000<span class="ActionScriptBracket/Brace">)</span>;    
+                <span class="ActionScriptDefault_Text">_conn</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">LocalConnection</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">_conn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">client</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">this</span>;
+                <span class="ActionScriptDefault_Text">_conn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">connect</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"_"</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_localConnectionChanel</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">_conn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">allowDomain</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"*"</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">url</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">OAUTH_AUTHORIZE_REQUEST_URL</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">"?client_id="</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">_source</span>;
+                <span class="ActionScriptComment">//url += "&amp;redirect_uri=" + API.CONNECT_COMP;
+</span>                <span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptString">"&amp;state="</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">_localConnectionChanel</span>; <span class="ActionScriptComment">//登陆的频道会通过这个state传回callback.htm页面中。并使用localconnection去连接
+</span>                <span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptString">"&amp;display=flash"</span>;    
+                <span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptString">"&amp;response_type=token"</span>;
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ExternalInterface</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">available</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptReserved">try</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">ExternalInterface</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">call</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"window.open"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">url</span><span class="ActionScriptOperator">,</span><span class="ActionScriptString">'newwindow'</span><span class="ActionScriptOperator">,</span><span class="ActionScriptString">'height=353,width=570,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes'</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">catch</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">err</span>:<span class="ActionScriptDefault_Text">Error</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">navigateToURL</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">url</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"_blank"</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">navigateToURL</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">url</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"_blank"</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 发布一条新微博，可以带上图片的二进制数据，或者线上的pic_url，调用成功后抛出MicroBlogEvent.UPDATE_STATUS_RESULT，失败则抛出MicroBlogErrorEvent.UPDATE_STATUS_ERROR 
+         * 
+         * @param status        要发布的微博文本内容，必须做URLencode，内容不超过140个汉字。
+         * @param pic            要上传的图片，仅支持JPEG、GIF、PNG格式，图片大小小于5M。 
+         * @param pic_url        图片的URL地址，必须以http开头。 
+         * @param lat            纬度，有效范围：-90.0到+90.0，+表示北纬，默认为0.0。
+         * @param long            经度，有效范围：-180.0到+180.0，+表示东经，默认为0.0。 
+         * @param annotations    元数据，主要是为了方便第三方应用记录一些适合于自己使用的信息，每条微博可以包含一个或者多个元数据，必须以json字串的形式提交，字串长度不超过512个字符，具体内容可以自定。
+         * 
+         * @see com.sina.microblog.events.MicroBlogEvent#UPDATE_STATUS_RESULT
+         * @see com.sina.microblog.events.MicroBlogErrorEvent#UPDATE_STATUS_ERROR
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">updateStatus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">pic</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">pic_url</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">lat</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">NaN</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">long</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">NaN</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">annotations</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">req</span>:<span class="ActionScriptDefault_Text">URLRequest</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">params</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> {};
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">status</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">status</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">encodeMsg</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">)</span>;            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">lat</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lat</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">lat</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">long</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">long</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">long</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">annotations</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">annotations</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">annotations</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">uri</span>:<span class="ActionScriptDefault_Text">String</span>;
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">pic</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATUS_UPLOAD</span>;
+                <span class="ActionScriptDefault_Text">addProcessor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">uri</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">processStatus</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPDATE_STATUS_RESULT</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPDATE_STATUS_ERROR</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">req</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getMicroBlogRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">API_BASE_URL</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">".json"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">POST</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">boundary</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">makeBoundary</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">req</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contentType</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">MULTIPART_FORMDATA</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">boundary</span>;        
+                <span class="ActionScriptDefault_Text">req</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">makeMultipartPostData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"pic"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"pic"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">pic</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">req</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">pic_url</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATUS_UPLOAD_URL_TEXT</span>;
+                <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">pic_url</span>;
+                <span class="ActionScriptDefault_Text">req</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getMicroBlogRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">API_BASE_URL</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">".json"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">POST</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptDefault_Text">addProcessor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATUS_UPLOAD_URL_TEXT</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">processStatus</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPDATE_STATUS_RESULT</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPDATE_STATUS_ERROR</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">else</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATUS_UPDATE</span>;
+                <span class="ActionScriptDefault_Text">req</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getMicroBlogRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">API_BASE_URL</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">".json"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">POST</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptDefault_Text">addProcessor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATUS_UPDATE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">processStatus</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">MicroBlogEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPDATE_STATUS_RESULT</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">MicroBlogErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPDATE_STATUS_ERROR</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">executeRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">uri</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">req</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 通用接口，可以调用线上大部分api。只用传入uri，所需要的请求参数，调用方法以及成功错误事件类型即可。&lt;br/&gt;
+         * 注意：&lt;b&gt;metho:"GET"或者"POST"需要严格按照线上文档传入，OAuth2的接口将不再混用。&lt;/b&gt;
+         *  
+         * @param uri                线上开放平台接口的uri
+         * @param params            接口需要的请求参数。无需传入source等，这些会在sdk内部封装加入。
+         * @param method            请求方法，"GET"或"POST"，需要严格参照线上文档设置
+         * @param resultEventType    成功调用api后的自定义事件类型
+         * @param errorEventType    失败调用api后的自定义事件类型
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">callWeiboAPI</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">uri</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">method</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"GET"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">resultEventType</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"callWeiboApiResult"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">errorEventType</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"callWeiboApiError"</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">addProcessor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">uri</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">processGeneralApi</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">resultEventType</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">errorEventType</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">params</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">params</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptBracket/Brace">}</span>;
+            <span class="ActionScriptDefault_Text">executeRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">uri</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">getMicroBlogRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">API</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">API_BASE_URL</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">uri</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">".json"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">method</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptComment">// getter/setters
+</span>        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptASDoc">/**
+         * consumerKey是一个只写属性，用于验证客户端的合法性，
+         * 必须在调用login之前将其设置为合适值.
+         * @param value
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">consumerKey</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_consumerKey</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">_source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * consumerSecret是一个只写属性，用于和consumerKey一起验证客户端的合法性，
+         * 必须在调用login之前将其设置为合适值.
+         * @param value
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">consumerSecret</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_consumerSecret</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">access_token</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_access_token</span>; <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">access_token</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_access_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">expires_in</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_expires_in</span>; <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">expires_in</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_expires_in</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">refresh_token</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_refresh_token</span>; <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">refresh_token</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_refresh_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * source是标识客户端来源.必须设置为新浪认证的应用程序id 
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_source</span>; <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">_consumerKey</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptComment">// Data Process Function
+</span>        <span class="ActionScriptComment">///////////////////////////////////    
+</span>        <span class="ActionScriptASDoc">/**
+         * @private 
+         * 
+         * @param value
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">processGeneralApi</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *  
+         * @param value
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">processStatus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">MicroBlogStatus</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogStatus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span><span class="ActionScriptBracket/Brace">)</span>;;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptComment">///////////////////////////////////
+</span>        <span class="ActionScriptComment">// Util Function
+</span>        <span class="ActionScriptComment">///////////////////////////////////    
+</span>        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param name
+         * @param dataProcess
+         * @param resultEventType
+         * @param errorEventType
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addProcessor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">name</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dataProcess</span>:<span class="ActionScriptDefault_Text">Function</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">resultEventType</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">errorEventType</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">serviceLoader</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loader</span>:<span class="ActionScriptDefault_Text">URLLoader</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLLoader</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COMPLETE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">loader_onComplete</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">IOErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IO_ERROR</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">loader_onError</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">SecurityErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SECURITY_ERROR</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">loader_onSecurityError</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">serviceLoader</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">loader</span>;
+                <span class="ActionScriptDefault_Text">loaderMap</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">=</span><span class="ActionScriptBracket/Brace">{</span><span class="ActionScriptDefault_Text">dataFunc</span>: <span class="ActionScriptDefault_Text">dataProcess</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">resultEvent</span>: <span class="ActionScriptDefault_Text">resultEventType</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">errorEvent</span>: <span class="ActionScriptDefault_Text">errorEventType</span><span class="ActionScriptBracket/Brace">}</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param url
+         * @param params
+         * @param requestMethod
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getMicroBlogRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">url</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">requestMethod</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"GET"</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">URLRequest</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">req</span>:<span class="ActionScriptDefault_Text">URLRequest</span>;        
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">params</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">params</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptBracket/Brace">}</span>;        
+            <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">_consumerKey</span>;        
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">access_token</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">access_token</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">access_token</span>;
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">requestMethod</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GET</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">url</span><span class="ActionScriptOperator">+=</span><span class="ActionScriptDefault_Text">makeGETParamString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">req</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">url</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">requestMethod</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">POST</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">req</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">url</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">val</span>:<span class="ActionScriptDefault_Text">URLVariables</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLVariables</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">key</span>:<span class="ActionScriptOperator">*</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">val</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">key</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">key</span><span class="ActionScriptBracket/Brace">]</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptDefault_Text">req</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">val</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">req</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">method</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">requestMethod</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">req</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param name
+         * @param req
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">executeRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">name</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">req</span>:<span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">urlLoader</span>:<span class="ActionScriptDefault_Text">URLLoader</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">serviceLoader</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">URLLoader</span>;
+            <span class="ActionScriptDefault_Text">urlLoader</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">load</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">req</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param parameters
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">makeGETParamString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">parameters</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">paramStr</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">makeParamsToUrlString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">parameters</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">paramStr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">&gt;</span> 0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">paramStr</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"?"</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">paramStr</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">paramStr</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param params
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">makeParamsToUrlString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">params</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">retParams</span>:<span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptOperator">=</span>[];            
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">param</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">retParams</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">param</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">"="</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">param</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">retParams</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sort</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">retParams</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">join</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"&amp;"</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param status
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">encodeMsg</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">source</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">pattern1</span>:<span class="ActionScriptDefault_Text">RegExp</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RegExp</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">'^[ ]+|[ ]+$'</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">'g'</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">pattern1</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">''</span><span class="ActionScriptBracket/Brace">)</span>;        
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">pattern2</span>:<span class="ActionScriptDefault_Text">RegExp</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RegExp</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">'[ \n\t\r]'</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">'g'</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">pattern2</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">' '</span><span class="ActionScriptBracket/Brace">)</span>;                
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">pattern3</span>:<span class="ActionScriptDefault_Text">RegExp</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">/( )+/g</span>;
+            <span class="ActionScriptDefault_Text">source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">pattern3</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">' '</span><span class="ActionScriptBracket/Brace">)</span>;            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">StringEncoders</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">urlEncodeSpecial</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">source</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param boundary
+         * @param imgFieldName
+         * @param filename
+         * @param imgData
+         * @param params
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">makeMultipartPostData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">boundary</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">imgFieldName</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">filename</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">imgData</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">params</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">req</span>:<span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">postData</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">endian</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">Endian</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BIG_ENDIAN</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">name</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">boundaryPostData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeUTFBytes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">CONTENT_DISPOSITION_BASIC</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"$name"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeUTFBytes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">params</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">boundaryPostData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeUTFBytes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">CONTENT_DISPOSITION_BASIC</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"$name"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">imgFieldName</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">'; filename="'</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">filename</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">'"'</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeUTFBytes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">CONTENT_TYPE_JPEG</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeBytes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">imgData</span><span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">imgData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">boundaryPostData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addDoubleDash</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">postData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">position</span><span class="ActionScriptOperator">=</span>0;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">postData</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param data
+         * @param boundary
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">boundaryPostData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">boundary</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">len</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span><span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+            <span class="ActionScriptDefault_Text">addDoubleDash</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>0; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">len</span>; <span class="ActionScriptOperator">++</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeByte</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">charCodeAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param data
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addDoubleDash</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeShort</span><span class="ActionScriptBracket/Brace">(</span>0x2d2d<span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @param data
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addLineBreak</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">writeShort</span><span class="ActionScriptBracket/Brace">(</span>0x0d0a<span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private 
+         * @return 
+         * 
+         */</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">makeBoundary</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">boundary</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">""</span>;
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>0; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> 13; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptOperator">+=</span><span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">fromCharCode</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">(</span>97 <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">random</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> 25<span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">boundary</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"---------------------------"</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">boundary</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">boundary</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

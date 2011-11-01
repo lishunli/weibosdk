@@ -1,0 +1,188 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>MicroBlogUser.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span>
+<span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptASDoc">/**
+     * MicroBlogUser是一个数据封装类(Value Object)，该类代表一个微博用户
+     */</span> 
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">MicroBlogUser</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * 用户ID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">id</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 微博昵称
+         */</span>  
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">screenName</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 友好显示名称
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">name</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 省份ID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">province</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        <span class="ActionScriptASDoc">/**
+         * 城市ID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">city</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户所在地
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">location</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 用户描述
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">description</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户博客地址
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">url</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 头像图片地址
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">profileImageUrl</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户个性化域名 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">domain</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 性别
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">gender</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 粉丝数量
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">followersCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 关注（好友）数量
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">friendsCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        <span class="ActionScriptASDoc">/**
+         * 已发表微博数量
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">statusesCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        <span class="ActionScriptASDoc">/**
+         * 已收藏微博数量
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">favouritesCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        <span class="ActionScriptASDoc">/**
+         * 用户注册日期
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">createdAt</span>:<span class="ActionScriptDefault_Text">Date</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 该用户是否follow当前用户
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">following</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 是否允许任何人给我发私信
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">allowAllActMsg</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 是否允许带有地理信息
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">geoEnabled</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 是否为认证用户
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">verified</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        
+        <span class="ActionScriptASDoc">/**
+         * 是否允许所有人对我的微博进行评论
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">allowAllComment</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户大头像地址
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">avatarLarge</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 认证原因
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">verifiedReason</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 该用户是否关注当前登录用户
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">followMe</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户的在线状态，0：不在线、1：在线
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onlineStatus</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户的互粉数
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">biFollowersCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 用户当前的状态 （最近一条微博）
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">status</span>:<span class="ActionScriptDefault_Text">MicroBlogStatus</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">MicroBlogUser</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">id</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"id"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">screenName</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"screen_name"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"name"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">province</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"province"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">city</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"city"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">location</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"location"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">description</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"description"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"url"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">profileImageUrl</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"profile_image_url"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">domain</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"domain"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">gender</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"gender"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">followersCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"followers_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">friendsCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"friends_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">statusesCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"statuses_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">favouritesCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"favourites_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">createdAt</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">MicroBlogDataUtil</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">resolveDate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"created_at"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">following</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"following"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">allowAllActMsg</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"allow_all_act_msg"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">geoEnabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"geo_enabled"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">verified</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"verified"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">allowAllComment</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"allow_all_comment"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">avatarLarge</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"avatar_large"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">verifiedReason</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"verified_reason"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">followMe</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"follow_me"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">onlineStatus</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"online_status"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">biFollowersCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"bi_followers_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;            
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">user</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"status"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"text"</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">status</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogStatus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">user</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

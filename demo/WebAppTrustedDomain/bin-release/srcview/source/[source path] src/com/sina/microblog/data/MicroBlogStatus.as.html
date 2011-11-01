@@ -1,0 +1,141 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>MicroBlogStatus.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sina</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">microblog</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptASDoc">/**
+     * MicroBlogStatus是一个数据封装类(Value Object)，该类代表一条微博
+     */</span> 
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">MicroBlogStatus</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * 当该条微博作为对其他微博的转发时，该属性指向其转发的微博对象
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">repost</span>:<span class="ActionScriptDefault_Text">MicroBlogStatus</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 字符串型的微博ID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">idstr</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 微博的创建时间
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">createdAt</span>:<span class="ActionScriptDefault_Text">Date</span>;
+        <span class="ActionScriptASDoc">/**
+         * 微博的ID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">id</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 微博的内容
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">text</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 微博的来源
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">source</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 标识该条微博是否被收藏
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">isFavorited</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        <span class="ActionScriptASDoc">/**
+         * 标识该条微博是否被截断
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">isTruncated</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 回复ID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">inReplyToStatusID</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 回复人UID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">inReplyToUserID</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 回复人昵称
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">inReplyToScreenName</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 微博MID
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">mid</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 微博附带图片的缩略版本的URL
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">thumbPicUrl</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 微博附带图片的中等尺寸版本的URL
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">bmiddlePicUrl</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * 微博附带图片的原始尺寸版本的URL
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">originalPicUrl</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 转发数
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">repostsCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 评论数
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">commentsCount</span>:<span class="ActionScriptDefault_Text">uint</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 微博附加注释信息
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">annotations</span>:<span class="ActionScriptDefault_Text">Array</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * 地理信息字段
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">geo</span>:<span class="ActionScriptDefault_Text">Object</span>;
+        
+        
+        <span class="ActionScriptASDoc">/**
+         * 发出该条微博的用户对象
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">user</span>:<span class="ActionScriptDefault_Text">MicroBlogUser</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * @private
+         */</span> 
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">MicroBlogStatus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">idstr</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"idstr"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">createdAt</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">MicroBlogDataUtil</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">resolveDate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"created_at"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">id</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"id"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"text"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"source"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">isFavorited</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"favorited"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">isTruncated</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"truncated"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inReplyToStatusID</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"in_reply_to_status_id"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inReplyToUserID</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"in_reply_to_user_id"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inReplyToScreenName</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"in_reply_to_screen_name"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">mid</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"mid"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">bmiddlePicUrl</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"bmiddle_pic"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">originalPicUrl</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"original_pic"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">thumbPicUrl</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"thumbnail_pic"</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">repostsCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"reposts_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">commentsCount</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"comments_count"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">annotations</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"annotations"</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">Array</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">geo</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"geo"</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">Object</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">user</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogUser</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"user"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"retweeted_status"</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">repost</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MicroBlogStatus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">status</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptString">"retweeted_status"</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

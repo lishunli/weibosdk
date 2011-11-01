@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of WebAppTrustedDomain</title>
+	<nodes>
+		<node icon="classpathIcon" label="[source path] src" expanded="true">
+			<node icon="packageIcon" label="com.adobe.serialization.json" expanded="true">
+				<node icon="actionScriptIcon" label="JSON.as" url="source/[source path] src/com/adobe/serialization/json/JSON.as.html"/>
+				<node icon="actionScriptIcon" label="JSONDecoder.as" url="source/[source path] src/com/adobe/serialization/json/JSONDecoder.as.html"/>
+				<node icon="actionScriptIcon" label="JSONEncoder.as" url="source/[source path] src/com/adobe/serialization/json/JSONEncoder.as.html"/>
+				<node icon="actionScriptIcon" label="JSONParseError.as" url="source/[source path] src/com/adobe/serialization/json/JSONParseError.as.html"/>
+				<node icon="actionScriptIcon" label="JSONToken.as" url="source/[source path] src/com/adobe/serialization/json/JSONToken.as.html"/>
+				<node icon="actionScriptIcon" label="JSONTokenizer.as" url="source/[source path] src/com/adobe/serialization/json/JSONTokenizer.as.html"/>
+				<node icon="actionScriptIcon" label="JSONTokenType.as" url="source/[source path] src/com/adobe/serialization/json/JSONTokenType.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.sina.microblog" expanded="true">
+				<node icon="actionScriptIcon" label="API.as" url="source/[source path] src/com/sina/microblog/API.as.html"/>
+				<node icon="actionScriptIcon" label="MicroBlog.as" url="source/[source path] src/com/sina/microblog/MicroBlog.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.sina.microblog.data" expanded="true">
+				<node icon="actionScriptIcon" label="MicroBlogDataUtil.as" url="source/[source path] src/com/sina/microblog/data/MicroBlogDataUtil.as.html"/>
+				<node icon="actionScriptIcon" label="MicroBlogStatus.as" url="source/[source path] src/com/sina/microblog/data/MicroBlogStatus.as.html"/>
+				<node icon="actionScriptIcon" label="MicroBlogUser.as" url="source/[source path] src/com/sina/microblog/data/MicroBlogUser.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.sina.microblog.events" expanded="true">
+				<node icon="actionScriptIcon" label="MicroBlogErrorEvent.as" url="source/[source path] src/com/sina/microblog/events/MicroBlogErrorEvent.as.html"/>
+				<node icon="actionScriptIcon" label="MicroBlogEvent.as" url="source/[source path] src/com/sina/microblog/events/MicroBlogEvent.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.sina.microblog.utils" expanded="true">
+				<node icon="actionScriptIcon" label="StringEncoders.as" url="source/[source path] src/com/sina/microblog/utils/StringEncoders.as.html"/>
+			</node>
+		</node>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node icon="mxmlAppIcon" selected="true" label="WebAppTrustedDomain.mxml" url="source/WebAppTrustedDomain.mxml.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 20K)" url="WebAppTrustedDomain.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>
