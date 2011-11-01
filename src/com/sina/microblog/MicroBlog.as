@@ -1,6 +1,7 @@
 package com.sina.microblog
 {
 	import com.adobe.serialization.json.JSON;
+	import com.sina.microblog.data.MicroBlogStatus;
 	import com.sina.microblog.events.MicroBlogErrorEvent;
 	import com.sina.microblog.events.MicroBlogEvent;
 	import com.sina.microblog.utils.StringEncoders;
@@ -335,9 +336,9 @@ package com.sina.microblog
 			return value;
 		}
 		
-		protected function processStatus(value:Object):Object
+		protected function processStatus(value:Object):MicroBlogStatus
 		{
-			return value;
+			return new MicroBlogStatus(value);;
 		}
 		
 		///////////////////////////////////

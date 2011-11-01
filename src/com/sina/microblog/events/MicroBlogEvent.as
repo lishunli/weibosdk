@@ -12,8 +12,16 @@ package com.sina.microblog.events
 	 */ 
 	public class MicroBlogEvent extends Event
 	{
+		/**
+		 * 登陆成功后发出的事件,并将OAuth认证相关的几个数据抛出。对应result对象内容:
+		 * {"access_token":String, "expires_in":String, "refresh_token":String} 
+		 */	
 		public static const LOGIN_RESULT:String = "loginResult";
 		
+		/**
+		 * 发布微博成功，成功掉要updateStatu接口。
+		 * result类型为MicroBlogStatus类型 
+		 */		
 		public static const UPDATE_STATUS_RESULT:String = "updateStatusResult";
 		
 		/**
