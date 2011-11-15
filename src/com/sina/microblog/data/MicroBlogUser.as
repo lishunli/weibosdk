@@ -168,9 +168,9 @@ package com.sina.microblog.data
 			this.onlineStatus = uint(user["online_status"]);
 			this.biFollowersCount = uint(user["bi_followers_count"]);			
 			
-			if ( user["status"]["text"] != "")
+			if(user["status"] != null)
 			{
-				status = new MicroBlogStatus(user.status[0]);
+				if ( user["status"]["text"] != "")status = new MicroBlogStatus(user.status[0]);
 			}
 		}
 		

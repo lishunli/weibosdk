@@ -373,7 +373,7 @@ package com.sina.microblog
 		
 		protected function processStatus(value:Object):MicroBlogStatus
 		{
-			return new MicroBlogStatus(value);;
+			return new MicroBlogStatus(value);
 		}
 		
 		///////////////////////////////////
