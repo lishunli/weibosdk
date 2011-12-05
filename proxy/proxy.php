@@ -17,7 +17,7 @@ class SDKProxy {
             if(!empty($_FILES)){
                 $param=$_POST;
                 $ext=end(explode(".",$_FILES['pic']['name'] ));
-                $file = dirname(__FILE__).'/'.date('YmdHis').rand(1,1000).'.'.$ext;
+                $file=$_FILES['pic']['tmp_name'].'.'.$ext;
                 move_uploaded_file($_FILES['pic']['tmp_name'],$file);
                 $param['pic']='@'.$file;
             }
