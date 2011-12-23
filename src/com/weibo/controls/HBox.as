@@ -25,7 +25,7 @@ package com.weibo.controls
 		{
 			
 		}
-		
+				
 		override protected function layout():void
 		{
 			_width = 0;
@@ -45,6 +45,9 @@ package com.weibo.controls
 			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
+		/**
+		 * 垂直排版
+		 */
 		protected function doAlignment():void
 		{
 			if(_alignment != NONE)
@@ -68,6 +71,11 @@ package com.weibo.controls
 			}
 		}		
 		
+		/**
+		 * 强制排版
+		 * @param	child
+		 * @return
+		 */
 		public override function addChild(child:DisplayObject):DisplayObject
 		{
 			super.addChild(child);	
@@ -77,6 +85,12 @@ package com.weibo.controls
 			return child;
 		}
 		
+		/**
+		 * 强制排版
+		 * @param	child
+		 * @param	index
+		 * @return
+		 */
         override public function addChildAt(child:DisplayObject, index:int) : DisplayObject
         {
 			super.addChild(child);
@@ -86,9 +100,11 @@ package com.weibo.controls
 			return child;
 		}
 		
-        /**
-         * Override of removeChild to force layout;
-         */
+		/**
+		 * 强制排版
+		 * @param	child
+		 * @return
+		 */
         override public function removeChild(child:DisplayObject):DisplayObject
         {
             super.removeChild(child);
@@ -98,9 +114,11 @@ package com.weibo.controls
             return child;
         }
 
-        /**
-         * Override of removeChild to force layout;
-         */
+		/**
+		 * 强制排版
+		 * @param	index
+		 * @return
+		 */
         override public function removeChildAt(index:int):DisplayObject
         {
             var child:DisplayObject = super.removeChildAt(index);
@@ -110,12 +128,19 @@ package com.weibo.controls
             return child;
         }		
 		
+		/**
+		 * 所有的子显示对象发出Event.RESIZE的时候重新排版
+		 * @param	event
+		 */
 		protected function onResize(event:Event):void
 		{
 			this._validateTypeObject["size"] = true;
 			RepaintManager.getInstance().addToRepaintQueue(this);		
 		}
 		
+		/**
+		 * 水平间隔
+		 */
 		public function get spacing():Number { return _spacing; }
 		public function set spacing(value:Number):void 
 		{
@@ -124,6 +149,9 @@ package com.weibo.controls
 			RepaintManager.getInstance().addToRepaintQueue(this);					
 		}
 		
+		/**
+		 * 垂直方向的对齐方式
+		 */
 		public function get alignment():String { return _alignment; }
 		public function set alignment(value:String):void 
 		{
