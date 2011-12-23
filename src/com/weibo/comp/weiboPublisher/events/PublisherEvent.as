@@ -13,7 +13,16 @@ package com.weibo.comp.weiboPublisher.events
 		 */
 		public var result:Object;
 		
-		public static const PUBLISH:String = "publish"
+		/**
+		 * 点击发布按钮时调度
+		 */
+		public static const PUBLISH:String = "publish";
+		
+		/**
+		 * 文本框的文本更新时调度
+		 */
+		public static const TEXT_UPDATE:String = "textUpdate";
+		
 		
 		public function PublisherEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 

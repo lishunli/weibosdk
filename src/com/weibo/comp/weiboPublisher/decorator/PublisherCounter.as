@@ -14,7 +14,18 @@ package com.weibo.comp.weiboPublisher.decorator
 		public function PublisherCounter(target:Publisher) 
 		{
 			_target = target;
+			addChild(_target);
 		}
+		
+		override protected function layout():void
+		{
+			
+		}
+		
+		override protected function create():void
+		{
+						
+		}		
 		
 		/**
 		 * 添加功能按钮，到显示列表中

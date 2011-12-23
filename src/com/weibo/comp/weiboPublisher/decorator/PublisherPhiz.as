@@ -14,6 +14,7 @@ package com.weibo.comp.weiboPublisher.decorator
 		public function PublisherPhiz(target:Publisher) 
 		{
 			_target = target;
+			addChild(_target);
 		}
 		
 		/**
@@ -22,12 +23,22 @@ package com.weibo.comp.weiboPublisher.decorator
 		override public function addFunButton(btn:DisplayObject):void
 		{
 			_target.addFunButton(btn);
-		}		
+		}			
 		
 		override protected function addEvents():void
 		{
 			if (_target != null) _target.addEventListener(PublisherEvent.PUBLISH, onPublish);			
 		}
+		
+		override protected function layout():void
+		{
+			
+		}
+
+		override protected function create():void
+		{
+						
+		}		
 		
 		private function onPublish(e:PublisherEvent):void 
 		{

@@ -15,6 +15,12 @@ package com.weibo.comp.weiboPublisher.decorator
 		public function PublisherImg(target:Publisher) 
 		{
 			_target = target;
+			addChild(_target);
+		}
+		
+		override protected function layout():void
+		{
+			
 		}
 		
 		/**
@@ -27,7 +33,7 @@ package com.weibo.comp.weiboPublisher.decorator
 		
 		override protected function create():void
 		{
-			if (_target != null) _target.addFunButton(new SimpleButton());
+			
 		}
 		
 		
