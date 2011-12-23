@@ -5,3 +5,6 @@
 bin：flash sdk的swc文件
 src：flash sdk源代码
 v1_oauth1：OAuth1版本的flash sdk全部文件。
+
+Log:
+2011年12月23日 添加发布器
