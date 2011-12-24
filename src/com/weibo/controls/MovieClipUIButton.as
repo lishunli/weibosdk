@@ -35,6 +35,21 @@ package com.weibo.controls
 			addChild(_ui);
 		}
 		
+		override protected function updateState():void
+		{
+			if (_ui != null)
+			{
+				if (_selected)
+				{
+					if (_ui.totalFrames >= 5) _ui.gotoAndStop(5);
+					else _ui.gotoAndStop(3);
+				}
+				else {
+					backToNormalState();
+				}
+			}
+		}		
+		
 		private function overUI():void
 		{
 			_ui.gotoAndStop(2);

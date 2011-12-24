@@ -27,8 +27,19 @@ package
 			addChild(btn);
 			
 			var btn2:MovieClipUIButton = new MovieClipUIButton(new MyButtonSkin2());
-			btn2.move(20, 100);
+			btn2.move(20, 70);
 			addChild(btn2);
+			
+			var btn3:MovieClipUIButton = new MovieClipUIButton(new MyButtonSkin());
+			btn3.move(20, 120);
+			addChild(btn3);		
+			btn3.toggle = true;
+			
+			var btn4:MovieClipUIButton = new MovieClipUIButton(new MyButtonSkin3());
+			btn4.move(20, 170);
+			addChild(btn4);		
+			btn4.toggle = true;			
+			//btn4.selected = true;
 		}
 		
 	}
