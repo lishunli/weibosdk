@@ -12,7 +12,6 @@ package com.weibo.managers
 	/**
 	 * 全局触发器，自发且可控的执行函数
 	 * <p>可实现<code>Event.ENTER_FRAME</code>、<code>Event.TIMER</code>、<code>Event.RENDER</code>三种方式的触发并执行函数队列</p>
-	 * @author Aaron Wei
 	 * @langversion 3.0
 	 * @playerversion Flash 9+
 	 */

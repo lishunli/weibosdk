@@ -13,7 +13,6 @@ package com.weibo.managers
 	/**
 	 * 管理组件的渲染/重绘
 	 * <p>如果需要重绘组件, 调用重绘方法, 自动注册到RenderManager</p>
-	 * @author Aaron Wei
 	 * @langversion 3.0
 	 * @playerversion Flash 9
 	 */

@@ -27,7 +27,7 @@ package com.weibo.controls
 		
 		override protected function initialize():void 
 		{
-			if(_states == null) _states = new Dictionary();
+			if (_states == null) _states = new Dictionary();
 		}
 		
 		override protected function addEvents():void
@@ -146,7 +146,6 @@ package com.weibo.controls
 			
 			_validateTypeObject["state"] = true;
 			RepaintManager.getInstance().addToRepaintQueue(this);
-			trace(_selected);
 		}
 	}
 }

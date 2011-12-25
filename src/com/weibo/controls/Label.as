@@ -37,7 +37,7 @@ package com.weibo.controls
 		///////////////////////////////////
 		// 重写父类函数
 		///////////////////////////////////
-		override public function create():void
+		override protected function create():void
 		{
 			_tf = new TextField();
 			_tf.selectable = false;
@@ -47,7 +47,7 @@ package com.weibo.controls
 			if (_format != null) setTextFormat(_format);
 		}
 		
-		override public function layout():void
+		override protected function layout():void
 		{
 			addChild(_tf);
 		}
