@@ -23,13 +23,13 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			var lb:LinkButton = new LinkButton("按钮", new TextFormat(null, null, 0x000000), 
-														new TextFormat(null, null, 0xff0000), 
+			var lb:LinkButton = new LinkButton("按钮", new TextFormat(null, null, 0x000000, null, null, false), 
+														new TextFormat(null, null, 0xff0000, null, null, true), 
 														null, null, new TextFormat(null, null, 0x00ff00));
 			addChild(lb);
 			//lb.paddingLeft = lb.paddingRight = 30;
 			lb.move(100, 100);			
-			lb.toggle = true;
+			//lb.toggle = true;
 		}
 		
 	}

@@ -39,7 +39,7 @@ package
 			btn4.move(20, 170);
 			addChild(btn4);		
 			btn4.toggle = true;			
-			//btn4.selected = true;
+			btn4.selected = true;
 		}
 		
 	}
