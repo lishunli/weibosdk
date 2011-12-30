@@ -1,6 +1,6 @@
 package com.weibo.charts 
 {
-	import com.weibo.charts.data.BasicCoordinateLogic;
+	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.data.ICoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.LineChartExpandableStyle;
@@ -109,7 +109,7 @@ package com.weibo.charts
 		{
 			if (!axisLogic)
 			{
-				this.axisLogic = new BasicCoordinateLogic(this);
+				this.axisLogic = new CoordinateLogic(this);
 				coordinateLogic.integer = _style.integer;
 			}
 			area = new Rectangle(0, 0, chartWidht, chartHeight);

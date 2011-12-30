@@ -14,7 +14,10 @@ package com.weibo.charts.events
 		 */		
 		public static const CHART_DATA_CHANGED:String = "chartDataChanged";
 //		public static const CHART_RESIZE:String = "chartResize";
-		//自适应轴文字宽度
+		
+		/**
+		 * 自适应轴文字宽度
+		 */		
 		public static const CHART_AXIS_RESIZE:String = "chartAxisResize";
 		
 		/**
@@ -22,6 +25,12 @@ package com.weibo.charts.events
 		 * data为Boolean
 		 */		
 		public static const CHART_LABELAXIS_SHOW:String = "chartLabelAxisShow";
+		
+		/**
+		 * 通知显示TIP
+		 * data为图形对象或图形对象Array
+		 */		
+		public static const CHART_TIPS_SHOW:String = "chartShowTips";
 		
 		/**
 		 * 获取数据

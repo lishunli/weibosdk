@@ -2,10 +2,6 @@ package com.weibo.charts
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
-	import com.weibo.charts.data.BasicCoordinateLogic;
-	import com.weibo.charts.data.ICoordinateLogic;
-	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.charts.managers.RepaintManager;
 	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
@@ -18,7 +14,7 @@ package com.weibo.charts
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 
-	public class LineChart extends ChartBase
+	public class LineChart extends CoordinateChart
 	{
 		private var _style:LineChartStyle;
 		
@@ -63,25 +59,13 @@ package com.weibo.charts
 			{
 				_container.graphics.clear();
 				while(_container.numChildren > 0) _container.removeChildAt(0);
-			}		
+			}
 			if(_tipContainer != null) while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);		
 		}
 		
-		override public function set dataProvider(value:Array):void
-		{
-			if (!axisLogic)
-			{
-				this.axisLogic = new BasicCoordinateLogic(this);
-				coordinateLogic.integer = _style.integer;
-			}
-			area = new Rectangle(0, 0, chartWidht, chartHeight);
-			this.axisLogic.dataProvider = value;
-			super.dataProvider = value;
-			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));
-		}
 		
 		override protected function updateState():void
-		{			
+		{
 			if (dataProvider == null) return;
 			
 			var total:int = dataProvider.length;
@@ -141,15 +125,9 @@ package com.weibo.charts
 						_tweens = null;
 					}
 					
-					_validateTypeObject["all"] = true;
-					RepaintManager.getInstance().addToRepaintQueue(this);
+					this.invalidate("all");
 				}
 			}
-		}
-		
-		private function get coordinateLogic():ICoordinateLogic
-		{
-			return this.axisLogic as ICoordinateLogic;
 		}
 		
 		protected function outDot(event:Event):void
@@ -172,6 +150,7 @@ package com.weibo.charts
 		{
 			addEventListener(Event.ENTER_FRAME, tweenning);
 		}
+		
 		private function tweenning(e:Event):void
 		{
 			removeEventListener(Event.ENTER_FRAME, tweenning);

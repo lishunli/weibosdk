@@ -2,10 +2,6 @@ package com.weibo.charts
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
-	import com.weibo.charts.data.BasicCoordinateLogic;
-	import com.weibo.charts.data.ICoordinateLogic;
-	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.managers.RepaintManager;
 	import com.weibo.charts.style.ColumnChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IBarUI;
@@ -16,7 +12,7 @@ package com.weibo.charts
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 
-	public class ColumnChart extends ChartBase
+	public class ColumnChart extends CoordinateChart
 	{
 		private var _style:ColumnChartStyle;
 		
@@ -57,20 +53,6 @@ package com.weibo.charts
 			_arrTips = [];
 		}
 		
-		override public function set dataProvider(value:Array):void
-		{
-			if (!axisLogic)
-			{
-				axisLogic = new BasicCoordinateLogic(this);
-				coordinateLogic.integer = _style.integer;
-				coordinateLogic.alwaysShow0 = true;
-			}
-			
-			area = new Rectangle(0, 0, chartWidht, chartHeight);
-			axisLogic.dataProvider = value;
-			super.dataProvider = value;
-			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));
-		}
 		
 		override protected function updateState():void
 		{
@@ -121,17 +103,12 @@ package com.weibo.charts
 						}
 					}else{
 						//全部重置、下一次渲染
-						_validateTypeObject["all"] = true;
-						RepaintManager.getInstance().addToRepaintQueue(this);
+						this.invalidate("all");
 					}
 				}
 			}
 		}
 		
-		private function get coordinateLogic():ICoordinateLogic
-		{
-			return this.axisLogic as ICoordinateLogic;
-		}
 		
 	}
 }

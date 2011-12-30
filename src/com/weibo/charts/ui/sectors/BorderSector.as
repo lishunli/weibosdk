@@ -1,18 +1,12 @@
 package com.weibo.charts.ui.sectors
 {
-	import com.greensock.TweenMax;
-	import com.greensock.easing.Cubic;
-	import com.weibo.charts.managers.RepaintManager;
 	import com.weibo.charts.ui.ChartUIBase;
-	import com.weibo.charts.ui.IBarUI;
 	import com.weibo.charts.ui.ISectorUI;
 	
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
-	import ghostcat.util.MathUtil;
 	import ghostcat.util.display.ColorUtil;
 	
 	/**
@@ -44,32 +38,28 @@ package com.weibo.charts.ui.sectors
 		public function set radiusIn(value:Number):void
 		{
 			_radiusIn = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("size");
 		}
 
 		public function get endAngle():Number { return _endAngle; }
 		public function set endAngle(value:Number):void
 		{
 			_endAngle = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("size");
 		}
 
 		public function get startAngle():Number { return _startAngle; }
 		public function set startAngle(value:Number):void
 		{
 			_startAngle = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("size");
 		}
 
 		public function get radius():Number{ return _radius; }
 		public function set radius(value:Number):void
 		{
 			_radius = value;
-			this._validateTypeObject["styles"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("styles");
 		}
 		
 		override protected function create():void

@@ -1,7 +1,6 @@
 package com.weibo.charts.ui
 {
 	import com.weibo.core.UIComponent;
-	import com.weibo.managers.RepaintManager;
 	
 	import flash.display.DisplayObjectContainer;
 	
@@ -39,48 +38,42 @@ package com.weibo.charts.ui
 		public function set uiWidth(value:Number):void
 		{
 			_uiWidth = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);		
+			this.invalidate("size");
 		}
 
 		public function get uiHeight():Number{return _uiHeight;}
 		public function set uiHeight(value:Number):void
 		{
 			_uiHeight = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("size");
 		}
 
 		public function get uiColor():Number{return _uiColor;}
 		public function set uiColor(value:Number):void
 		{
 			_uiColor = value;
-			this._validateTypeObject["styles"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("styles");
 		}	
 
 		public function get outlineColor():Number{return _outlineColor;}
 		public function set outlineColor(value:Number):void
 		{
 			_outlineColor = value;
-			this._validateTypeObject["styles"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("styles");
 		}
 
 		public function get outlineThicknesss():Number{return _outlineThicknesss;}
 		public function set outlineThicknesss(value:Number):void
 		{
 			_outlineThicknesss = value;
-			this._validateTypeObject["styles"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("styles");
 		}
 
 		public function get uiAlpha():Number{return _uiAlpha;}
 		public function set uiAlpha(value:Number):void
 		{
 			_uiAlpha = value;
-			this._validateTypeObject["styles"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			this.invalidate("styles");
 		}
 	}
 }

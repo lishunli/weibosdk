@@ -2,7 +2,7 @@ package com.weibo.charts.data
 {
 	import com.weibo.charts.ChartBase;
 
-	public class RadiateCoordinateLogic implements IRadiateLogic
+	public class RadiateLogic implements IRadiateLogic
 	{
 		private var _dataProvider:Array;
 		private var _chart:ChartBase;
@@ -13,7 +13,7 @@ package com.weibo.charts.data
 		private var _labelKey:String = "label";
 		private var _valueKey:String = "value";
 		
-		public function RadiateCoordinateLogic(chart:ChartBase)
+		public function RadiateLogic(chart:ChartBase)
 		{
 			this._chart = chart;
 		}

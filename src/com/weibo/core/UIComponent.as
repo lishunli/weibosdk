@@ -1,66 +1,97 @@
 package com.weibo.core
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	
-	import com.weibo.managers.RepaintManager;
+	import flash.events.Event;
 	
 	public class UIComponent extends Sprite
 	{
-		protected var _validateTypeObject:Object = { };
-		protected var _tag:int = -1;
+		private var _validateTypeObject:Object = {};
+//		protected var _tag:int = -1;
 		protected var _width:Number = 0;
-		protected var _height:Number = 0;		
+		protected var _height:Number = 0;
+		
+	//==========================================
+	// 构造函数
+	//------------------------------------------
 		
 		public function UIComponent()
 		{
-			this.initialize();
+			super();
+			
+			//初始化
+//			validate();
+			create();
+			addEvents();
 		}
 		
-		protected function initialize():void
-		{
-			_validateTypeObject["all"]=true;
-			validate();
-		}
 		
-		public function validate():void
+	//==========================================
+	// 私有方法
+	//------------------------------------------
+		
+		private function validate():void
 		{
-			var type:String=getValidateType();
-			switch (type)
+			switch (true)
 			{
-				default:
-				case ValidateType.ALL:
-					invalidate(); //清空之前的所有
+//				default:
+				case _validateTypeObject[ValidateType.ALL]:
+					//清空之前的所有
+					removeEvents();
+					destroy();
 					create(); //创建对象
 					layout(); //布局对象
 					updateState(); //更新对象状态
 					addEvents(); //给对象添加事件
 					break;
-				case ValidateType.STYLES:
-					invalidate(); //清空之前的所有
+				case _validateTypeObject[ValidateType.STYLES]:
+					//清空之前的所有
+					removeEvents();
+					destroy();
 					create(); //创建对象
 					layout(); //布局对象
 					addEvents(); //给对象添加事件
 					break;
-				case ValidateType.SIZE:
+				case _validateTypeObject[ValidateType.SIZE]:
 					layout(); //布局对象
 					break;
-				case ValidateType.STATE:
+				case _validateTypeObject[ValidateType.STATE]:
 					updateState(); //更新对象状态
 					break;
 			}
 		}
 		
-		protected function invalidate():void
+		/**
+		 * 
+		 * @param type
+		 */		
+		protected function invalidate(type:String = "state"):void
 		{
-			removeEvents();
-			destroy();
+			_validateTypeObject[type] = true;
+			addEventListener(Event.ENTER_FRAME, invalidateOnFrame);
 		}
+		
+		private function invalidateOnFrame(event:Event):void
+		{
+			removeEventListener(Event.ENTER_FRAME, invalidateOnFrame);
+			validate();
+		}
+		
+	//==========================================
+	// 钩子
+	//------------------------------------------
 		
 		/**
 		 * 需要被子类重写，完成创建元素的目的
 		 */
 		protected function create():void
+		{
+			
+		}
+
+		/**
+		 * 需要被子类重写，完成销毁引用的目的
+		 */		
+		protected function destroy():void
 		{
 			
 		}
@@ -79,15 +110,7 @@ package com.weibo.core
 		protected function removeEvents():void
 		{
 			
-		}
-
-		/**
-		 * 需要被子类重写，完成销毁引用的目的
-		 */		
-		protected function destroy():void
-		{
-			
-		}		
+		}	
 		
 		/**
 		 * 需要被子类重写，完成内容排版的目的
@@ -105,6 +128,11 @@ package com.weibo.core
 			
 		}
 		
+		
+	//==========================================
+	// 公开方法
+	//------------------------------------------
+		
 		/**
 		 * 将组件移到指定的位置
 		 * @param xpos x坐标
@@ -114,60 +142,6 @@ package com.weibo.core
 		{
 			this.x=Math.round(xpos);
 			this.y=Math.round(ypos);
-		}
-		
-		protected function getValidateType():String
-		{
-			if (_validateTypeObject["all"])
-			{
-				_validateTypeObject={};
-				return ValidateType.ALL;
-			}
-			else if (_validateTypeObject["styles"])
-			{
-				_validateTypeObject={};
-				return ValidateType.STYLES;
-			}
-			else if (_validateTypeObject["size"])
-			{
-				_validateTypeObject={};
-				return ValidateType.SIZE;
-			}
-			else if (_validateTypeObject["state"])
-			{
-				_validateTypeObject={};
-				return ValidateType.STATE;
-			}
-			return null;
-		}		
-		
-		/**
-		 * 组件标识
-		 */
-		public function get tag():int { return _tag; }
-		public function set tag(value:int):void
-		{
-			_tag = value;
-		}	
-		
-		/**
-		 * 设置宽度，进入重新渲染流程
-		 */
-		override public function set width(w:Number):void
-		{
-			_width = w;
-			_validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
-		}		
-		
-		/**
-		 * 设置高度，进入重新渲染流程
-		 */
-		override public function set height(h:Number):void
-		{
-			_height = h;
-			_validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
 		}
 		
 		/**
@@ -184,6 +158,50 @@ package com.weibo.core
 		override public function set y(value:Number):void
 		{
 			super.y = Math.round(value);
-		}		
+		}
+		
+		/**
+		 * 组件标识
+		 */
+		/*public function get tag():int { return _tag; }
+		public function set tag(value:int):void
+		{
+			_tag = value;
+		}*/
+		
+		/**
+		 * 设置宽度，进入重新渲染流程
+		 */
+		override public function set width(w:Number):void
+		{
+			if (w == width) return;
+			_width = w;
+			invalidate("size");
+		}
+		
+		/**
+		 * 设置高度，进入重新渲染流程
+		 */
+		override public function set height(h:Number):void
+		{
+			if (h == height) return;
+			_height = h;
+			invalidate("size");
+		}
+		
+		/**
+		 * 设置宽度和高度，进入重新渲染流程
+		 * @param w
+		 * @param h
+		 * 
+		 */		
+		public function setSize(w:Number, h:Number):void
+		{
+			if (w == width && h == height) return;
+			_width = w;
+			_height = h;
+			invalidate("size");
+		}
+		
 	}
 }

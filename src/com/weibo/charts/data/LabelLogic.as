@@ -3,12 +3,14 @@ package com.weibo.charts.data
 	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.events.ChartEvent;
 
+	/**
+	 * 标签轴处理逻辑
+	 * @author yaofei
+	 */	
 	public class LabelLogic
 	{
 		public var axisLength:Number = 450;
 		public var labelLength:Number = 30;
-		
-		private var _dataProvider:Array;
 		
 		private var _labelKey:String;
 		private var _axisData:Array;
@@ -16,7 +18,7 @@ package com.weibo.charts.data
 		
 		private var chart:ChartBase;
 		
-// ------------------------------------------
+// ==========================================
 // 构造函数
 // ------------------------------------------
 		
@@ -26,7 +28,7 @@ package com.weibo.charts.data
 			super();
 		}
 		
-// ------------------------------------------
+// ==========================================
 // 公开方法
 // ------------------------------------------
 		public function set labelKey(value:String):void { this._labelKey = value; }
@@ -34,40 +36,18 @@ package com.weibo.charts.data
 		public function get axisData():Array { return this._axisData; }
 		public function get gridData():Array { return this._gridData; }
 
-		public function set dataProvider(value:Object):void
-		{
-			this._dataProvider = value as Array;
-			this.parseDataProvider();
-		}
-		public function get dataProvider():Object
-		{
-			return this._dataProvider;
-		}
-		
 		/**
+		 * 计算标签轴数据
 		 * @param data
-		 * @return 
-		 * 根据数值获取坐标值
 		 */		
-		/*public function getPosition(data:Object):Number
+		public function set dataProvider(data:Array):void
 		{
-			return NaN;
-		}*/
-		
-// ------------------------------------------
-// 私有方法
-// ------------------------------------------
-		
-		/** 分析数据
-		 */		
-		private function parseDataProvider():void
-		{
-			var count:int = this.dataProvider.length;
+			var count:int = data.length;
 			var unit:Number = axisLength / count;
 			_axisData = [];
 			_gridData = [];
 			
-			var quotient:int = 1;//间隔数量
+			var quotient:int = 1;//为避免文字重叠设置的标签出现的间隔。默认为1，即：每个标签都显示。
 			if (labelLength > unit)
 			{
 				quotient = Math.ceil(labelLength / unit);
@@ -78,7 +58,8 @@ package com.weibo.charts.data
 			var startI:int = (quotient + count % quotient - 1) / 2;
 			for (i = 0; i < count; i++)
 			{
-				var label:String = dataProvider[i][labelKey];
+				//获取Label文字
+				var label:String = (data[i] is String) ? data[i] :data[i][labelKey];
 				if (chart.labelFun != null) label = chart.labelFun(label);
 				
 				if ((i - startI) % quotient == 0){
@@ -96,15 +77,7 @@ package com.weibo.charts.data
 				});
 			}
 			
-			//labelLength
 		}
 		
-		/** 计算轴数据
-		 */		
-		private function calculateAxisData():Array
-		{
-			
-			return null;
-		}
 	}
 }

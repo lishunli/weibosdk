@@ -2,21 +2,16 @@ package com.weibo.charts
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
-	import com.weibo.charts.data.RadiateCoordinateLogic;
+	import com.weibo.charts.data.RadiateLogic;
 	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.charts.managers.RepaintManager;
 	import com.weibo.charts.style.PieChartStyle;
 	import com.weibo.charts.ui.ISectorUI;
-	import com.weibo.charts.ui.ITipUI;
 	
 	import flash.display.DisplayObject;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
 
 	public class PieChart extends ChartBase
 	{
@@ -24,17 +19,18 @@ package com.weibo.charts
 		
 		private var _arrBars:Array = [];
 		
-		private var _arrTips:Array = [];
-		
 		private var _tweenMaxes:Array = [];
 		
 		private var _container:Sprite;
 		
-		private var _tipContainer:Sprite;
 		
 		private var totalNum:Number;
 		
 		private var errorSector:DisplayObject;
+		
+	//==========================================
+	// 构造函数
+	//------------------------------------------
 		
 		public function PieChart(style:PieChartStyle)
 		{
@@ -42,51 +38,16 @@ package com.weibo.charts
 			_style = style;
 			this.area = new Rectangle(0, 0, style.baseStyle.width, style.baseStyle.height);
 			this.chartWidht = style.baseStyle.width;
-			this.chartHeight = _style.baseStyle.height;
+			this.chartHeight = style.baseStyle.height;
 		}
 		
-		override protected function create():void
-		{
-			if(_container == null){
-				_container =  new Sprite(); 
-				addChild(_container);
-			}
-			if(_tipContainer == null){
-				_tipContainer = new Sprite();
-				_tipContainer.mouseEnabled = false;
-				_tipContainer.mouseChildren = false;
-				addChild(_tipContainer);
-			}
-		}
+	//==========================================
+	// 接口
+	//------------------------------------------
 		
-		override protected function destroy():void
+		public function get style():PieChartStyle
 		{
-			if(_container != null) while(_container.numChildren > 0) _container.removeChildAt(0);
-			if(_tipContainer != null) while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
-			_arrBars = [];
-			_arrTips = [];
-			
-			while (_tweenMaxes.length > 0)
-			{
-				var tweenMax:TweenMax = _tweenMaxes.pop();
-				tweenMax.complete(false, true);
-			}
-		}
-		
-		override protected function addEvents():void
-		{
-			super.addEvents();
-//			addEventListener(Event.RENDER, drawTips);
-			if (_container) _container.addEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
-			if (_container) _container.addEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
-		}
-		
-		override protected function removeEvents():void
-		{
-			super.removeEvents();
-//			removeEventListener(Event.RENDER, drawTips);
-			if (_container) _container.removeEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
-			if (_container) _container.removeEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
+			return _style;
 		}
 		
 		override public function set dataProvider(value:Array):void
@@ -100,18 +61,58 @@ package com.weibo.charts
 			
 			if (!axisLogic)
 			{
-				axisLogic = new RadiateCoordinateLogic(this);
+				axisLogic = new RadiateLogic(this);
 			}
 			axisLogic.dataProvider = value;
 			super.dataProvider = value;
 			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));
 		}
 		
+	//==========================================
+	// 私有方法
+	//------------------------------------------
+		
+		override protected function create():void
+		{
+			if(_container == null){
+				_container =  new Sprite(); 
+				addChild(_container);
+			}
+		}
+		
+		override protected function destroy():void
+		{
+			if(_container != null) while(_container.numChildren > 0) _container.removeChildAt(0);
+			_arrBars = [];
+			
+			while (_tweenMaxes.length > 0)
+			{
+				var tweenMax:TweenMax = _tweenMaxes.pop();
+				tweenMax.complete(false, true);
+			}
+		}
+		
+		override protected function addEvents():void
+		{
+			super.addEvents();
+			addEventListener(Event.RENDER, drawTips);
+			if (_container) _container.addEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
+			if (_container) _container.addEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
+		}
+		
+		override protected function removeEvents():void
+		{
+			super.removeEvents();
+			removeEventListener(Event.RENDER, drawTips);
+			if (_container) _container.removeEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
+			if (_container) _container.removeEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
+		}
+		
 		override protected function updateState():void
 		{
 			if(dataProvider != null)
 			{
-				_tipContainer.visible = false;
+//				_tipContainer.visible = false;
 				var sector:ISectorUI;
 				var startAngle:Number;
 				var tweenMax:TweenMax;
@@ -188,28 +189,31 @@ package com.weibo.charts
 							startAngle = endAngle;
 						}
 					}else{
-						_validateTypeObject["all"] = true;
-						RepaintManager.getInstance().addToRepaintQueue(this);
+						this.invalidate("all");
 						return;
 					}
 				}
 				
-				while (_tipContainer.numChildren > 0)	_tipContainer.removeChildAt(0);
-//				if (dataProvider.length != 0 && totalNum != 0) drawTips();
 			}
 		}
 		
 		private function refreshTip():void
 		{
-//			if (stage) stage.invalidate();
-			_tipContainer.visible = true;
+//			_tipContainer.visible = true;
+			if (stage) stage.invalidate();
+		}
+		
+	//==========================================
+	// 事件侦听器
+	//------------------------------------------
+		
+		private function drawTips(event:Event):void
+		{
+			dispatchEvent(new ChartEvent(ChartEvent.CHART_TIPS_SHOW, _arrBars, true, true));
 		}
 		
 		private function mouseShowTip(event:MouseEvent):void
 		{
-			_tipContainer.graphics.clear();
-			_tipContainer.graphics.lineStyle(1, this._style.lineColor, this._style.lineAlpha);
-			
 			var sector:ISectorUI = event.target as ISectorUI;
 			
 			var angle:Number = (sector.endAngle + sector.startAngle) / 2;
@@ -223,8 +227,6 @@ package com.weibo.charts
 				TweenMax.to(sector, 1, {x:xpos, ease:Cubic.easeOut});
 				TweenMax.to(sector, 1, {y:ypos, ease:Cubic.easeOut});
 			}
-			
-			if (sector) drawOneTip(sector);
 		}
 		
 		private function mouseHideTip(event:MouseEvent):void
@@ -239,142 +241,8 @@ package com.weibo.charts
 				TweenMax.to(sector, 1, {x:xpos, ease:Cubic.easeOut});
 				TweenMax.to(sector, 1, {y:ypos, ease:Cubic.easeOut});
 			}
-			
-			_tipContainer.graphics.clear();
-			while (_tipContainer.numChildren > 0)	_tipContainer.removeChildAt(0);
 		}
 		
-		/**
-		 * 鼠标滑过时显示单一注释
-		 * @param sector
-		 */		
-		private function drawOneTip(sector:ISectorUI):void
-		{
-			if (sector == null) return;
-			
-			var middleAngle:Number = (sector.startAngle + sector.endAngle) / 2;
-			var dotIn:Number = Math.min((sector.radius - sector.radiusIn) / 2, 10);
-			var x1:Number = area.x + area.width / 2 + Math.cos(middleAngle) * (sector.radius - dotIn);
-			var y1:Number = area.y + area.height / 2 + Math.sin(middleAngle) * (sector.radius - dotIn);
-			var margin:Number = 30;
-//			var x2:Number = area.x + area.width / 2 + Math.cos(middleAngle) * (sector.radius + dotIn);
-//			var y2:Number = area.y + area.height / 2 + Math.sin(middleAngle) * (sector.radius + dotIn);
-			
-			var dot:Shape = new Shape();
-			_tipContainer.addChild(dot);
-			dot.graphics.clear();
-			dot.graphics.beginFill(this._style.lineColor, this._style.lineAlpha);
-			dot.graphics.drawCircle(x1, y1, 3);
-			
-			_tipContainer.graphics.moveTo(x1, y1);
-//			_tipContainer.graphics.lineTo(x2, y2);
-			
-			
-			var tip:ITipUI = new _style.tipUI();
-			var tf:TextFormat = new TextFormat("Arial", null, _style.tipColor);
-			tip.setLabel(this.tipFun(dataProvider[sector.index]), tf);
-			_tipContainer.addChild(tip as DisplayObject);
-			_arrTips[_arrTips.length] = tip;
-			
-			var leftTop:Point = globalToLocal(new Point(0, 0));
-			var rect:Rectangle = new Rectangle(leftTop.x, leftTop.y, stage.stageWidth, stage.stageHeight);
-			rect.inflate(-5, -5);
-//			_tipContainer.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
-			//拐角方向:右
-			if (Math.cos(middleAngle) > 0)
-			{
-				//拐角方向:右上
-				if (Math.sin(middleAngle) < 0)
-				{
-					tip.x = rect.right - tip.uiWidth;
-					tip.y = rect.y;
-					_tipContainer.graphics.lineTo(rect.right - tip.uiWidth, rect.y + tip.uiHeight / 2);
-					_tipContainer.graphics.lineTo(rect.right, 				rect.y + tip.uiHeight / 2);
-				}
-				//拐角方向:右下
-				else
-				{
-					tip.x = rect.right - tip.uiWidth;
-					tip.y = rect.bottom - tip.uiHeight;
-					_tipContainer.graphics.lineTo(rect.right - tip.uiWidth, rect.bottom - tip.uiHeight / 2);
-					_tipContainer.graphics.lineTo(rect.right, 				rect.bottom - tip.uiHeight / 2);
-				}
-				
-			}
-			//拐角方向:左
-			else
-			{
-				//拐角方向:左上
-				if (Math.sin(middleAngle) < 0)
-				{
-					tip.x = rect.x;
-					tip.y = rect.y;
-					_tipContainer.graphics.lineTo(rect.x + tip.uiWidth, rect.y + tip.uiHeight / 2);
-					_tipContainer.graphics.lineTo(rect.x, 				rect.y + tip.uiHeight / 2);
-				}
-				//拐角方向:左下
-				else
-				{
-					tip.x = rect.x;
-					tip.y = rect.bottom - tip.uiHeight;
-					_tipContainer.graphics.lineTo(rect.x + tip.uiWidth, rect.bottom - tip.uiHeight / 2);
-					_tipContainer.graphics.lineTo(rect.x, 				rect.bottom - tip.uiHeight / 2);
-				}
-			}
-		}
 		
-		private function drawTips(event:Event=null):void
-		{
-			_tipContainer.graphics.clear();
-			_tipContainer.graphics.lineStyle(1, this._style.lineColor, this._style.lineAlpha);
-			var i:int;
-			if (_dataProvider.length != _arrBars.length) trace("PieChart:length", _dataProvider.length);
-			for(i = 0; i < _arrBars.length; i ++)
-			{
-				var sector:ISectorUI = _arrBars[i];
-				
-				var middleAngle:Number = (sector.startAngle + sector.endAngle) / 2;
-				var dotIn:Number = Math.min((sector.radius - sector.radiusIn) / 2, 10);
-				var x1:Number = area.x + area.width / 2 + Math.cos(middleAngle) * (sector.radius - dotIn);
-				var y1:Number = area.y + area.height / 2 + Math.sin(middleAngle) * (sector.radius - dotIn);
-				var margin:Number = 30;
-				var x2:Number = area.x + area.width / 2 + Math.cos(middleAngle) * (sector.radius + dotIn);
-				var y2:Number = area.y + area.height / 2 + Math.sin(middleAngle) * (sector.radius + dotIn);
-				
-				var dot:Shape = new Shape();
-				_tipContainer.addChild(dot);
-				dot.graphics.clear();
-				dot.graphics.beginFill(this._style.lineColor, this._style.lineAlpha);
-				dot.graphics.drawCircle(x1, y1, 3);
-				
-				_tipContainer.graphics.moveTo(x1, y1);
-				_tipContainer.graphics.lineTo(x2, y2);
-				
-				
-				var tip:ITipUI = new _style.tipUI();
-				var tf:TextFormat = new TextFormat("Arial", null, _style.tipColor);
-				tip.setLabel(this.tipFun(dataProvider[i]), tf);
-				_tipContainer.addChild(tip as DisplayObject);
-				_arrTips[_arrTips.length] = tip;
-				
-				
-				//拐角方向:右
-				if (Math.cos(middleAngle) > 0)
-				{
-					_tipContainer.graphics.lineTo(x2, y2);
-					_tipContainer.graphics.lineTo(x2 + DisplayObject(tip).width, y2);
-					DisplayObject(tip).x = x2;
-					DisplayObject(tip).y = y2 - DisplayObject(tip).height;
-				}
-				//拐角方向:左
-				else
-				{
-					_tipContainer.graphics.lineTo(x2, y2);
-					_tipContainer.graphics.lineTo(x2 - DisplayObject(tip).width, y2);
-					DisplayObject(tip).x = x2 - DisplayObject(tip).width;
-					DisplayObject(tip).y = y2 - DisplayObject(tip).height;
-				}
-			}
-		}
 	}
 }

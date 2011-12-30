@@ -3,11 +3,9 @@ package com.weibo.charts
 	import com.weibo.charts.data.IAxisLogic;
 	import com.weibo.charts.effects.IEffect;
 	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.managers.RepaintManager;
 	import com.weibo.charts.service.IWeiboChartService;
 	import com.weibo.core.UIComponent;
 	
-	import flash.external.ExternalInterface;
 	import flash.geom.Rectangle;
 	
 	/**
@@ -22,7 +20,7 @@ package com.weibo.charts
 		
 		private var _axisLogic:IAxisLogic;
 		
-		protected var _dataProvider:Array;
+		protected var _dataProvider:Object;
 		
 		private var _chartWidht:Number;
 		
@@ -53,8 +51,7 @@ package com.weibo.charts
 		
 		protected function onChartChange(event:ChartEvent):void
 		{
-			_validateTypeObject["state"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			invalidate();
 		}
 		
 		override protected function addEvents():void
@@ -79,8 +76,8 @@ package com.weibo.charts
 			_dataService = value;
 		}
 
-		public function get dataProvider():Array { return _dataProvider; }
-		public function set dataProvider(value:Array):void
+		public function get dataProvider():Object { return _dataProvider; }
+		public function set dataProvider(value:Object):void
 		{
 			_dataProvider = value;
 //			_validateTypeObject["state"] = true;

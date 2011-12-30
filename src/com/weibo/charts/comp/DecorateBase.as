@@ -3,36 +3,38 @@ package com.weibo.charts.comp
 	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.data.IAxisLogic;
 	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.managers.RepaintManager;
 	
 	import flash.geom.Rectangle;
 	
 	/**
-	 * 图表装饰的基类
+	 * 图表装饰的基类。所有的装饰对象都需要继承此类使用，如：坐标轴线，网格
 	 * @author YaoFei
 	 */	
 	public class DecorateBase extends ChartBase
 	{
-		private var _target:ChartBase;
+		protected var _target:ChartBase;
+		
+	//========================================
+	// 构造函数
+	//----------------------------------------
 		
 		public function DecorateBase(target:ChartBase)
 		{
 			this._target = target;
 			super();
 		}
+		
+	//========================================
+	// 公开方法
+	//----------------------------------------
+		
 //		final public function get target():ChartBase { return this._target; }
+		/**
+		 * 找到核心图表组件类，如：LineChart
+		 * @return ChartBase
+		 */		
 		final public function get target():ChartBase { return getRoot(this); }
 		
-		override protected function addEvents():void
-		{
-			super.addEvents();
-			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
-		}
-		override protected function removeEvents():void
-		{
-			super.removeEvents();
-			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
-		}
 		
 		override public function get area():Rectangle{return target.area;}
 		override public function set area(value:Rectangle):void
@@ -40,8 +42,8 @@ package com.weibo.charts.comp
 			target.area = value;
 		}
 		
-		override public function get dataProvider():Array{return target.dataProvider;}
-		override public function set dataProvider(value:Array):void
+		override public function get dataProvider():Object {return target.dataProvider;}
+		override public function set dataProvider(value:Object):void
 		{
 			target.dataProvider = value;
 		}
@@ -79,20 +81,43 @@ package com.weibo.charts.comp
 			target.chartHeight = value;
 		}
 		
-		protected function onDataChange(e:ChartEvent):void
-		{
-			_validateTypeObject["state"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
-		}
+		
+	//========================================
+	// 内部方法
+	//----------------------------------------
+		
 		internal function get parentTarget():ChartBase
 		{
 			return this._target;
 		}
+		
 		private function getRoot(chart:ChartBase):ChartBase
 		{
 			if (chart is DecorateBase)	return getRoot((chart as DecorateBase).parentTarget);
 			return chart;
 		}
+		
+		override protected function addEvents():void
+		{
+			super.addEvents();
+			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
+		}
+		
+		override protected function removeEvents():void
+		{
+			super.removeEvents();
+			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
+		}
+		
+	//========================================
+	// 事件侦听器
+	//----------------------------------------
+		
+		protected function onDataChange(e:ChartEvent):void
+		{
+			this.invalidate();
+		}
+		
 	}
 	
 }

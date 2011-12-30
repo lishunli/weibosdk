@@ -1,22 +1,15 @@
 package com.weibo.charts
 {
-	import com.greensock.TweenMax;
-	import com.greensock.easing.Cubic;
-	
-	import com.weibo.charts.data.BasicCoordinateLogic;
-	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.charts.managers.RepaintManager;
+	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.style.ColumnChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IBarUI;
-	import com.weibo.charts.ui.ITipUI;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
 	
-	public class BarChart extends ChartBase
+	public class BarChart extends CoordinateChart
 	{
 		private var _style:ColumnChartStyle;
 		
@@ -38,7 +31,7 @@ package com.weibo.charts
 			_style = style;
 			if (!axisLogic)
 			{
-				axisLogic = new BasicCoordinateLogic(this);
+				axisLogic = new CoordinateLogic(this);
 			}
 			axisLogic.axisType = "vertical";
 			this.area = new Rectangle(0,0,style.baseStyle.width, style.baseStyle.height);
@@ -64,19 +57,6 @@ package com.weibo.charts
 			if(_tipContainer != null) while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
 			_arrBars = [];
 			_arrTips = [];
-		}
-		
-		override public function set dataProvider(value:Array):void
-		{
-			if (!axisLogic)
-			{
-				axisLogic = new BasicCoordinateLogic(this);
-			}
-			
-			area = new Rectangle(0, 0, chartWidht, chartHeight);
-			axisLogic.dataProvider = value;
-			super.dataProvider = value;
-			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));
 		}
 		
 		override public function updateState():void

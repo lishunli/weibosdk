@@ -1,9 +1,7 @@
 package com.weibo.charts.data
 {
-	
-	
 	/**
-	 * ...
+	 * 坐标轴逻辑基础接口
 	 * @author yaofei@staff.sina.com.cn
 	 */
 	public interface IAxisLogic 

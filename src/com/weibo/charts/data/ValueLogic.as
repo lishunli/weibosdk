@@ -1,7 +1,13 @@
 package com.weibo.charts.data
 {
 	import com.weibo.charts.ChartBase;
-
+	
+	/**
+	 * 笛卡尔坐标系数值轴算法
+	 * 取出最大值最小值
+	 * 返回数值坐标的数据
+	 * @author yaofei
+	 */
 	public class ValueLogic
 	{
 		public var axisLength:Number = 320;
@@ -9,18 +15,25 @@ package com.weibo.charts.data
 		
 		private var _dataProvider:Array;
 		
+		//数据层的最大最小值
 		private var dataMininum:Number;
 		private var dataMaxinum:Number;
+		//坐标轴的最大最小值
 		private var minimum:Number;
 		private var maximum:Number;
+		//单元格的单位数值
 		private var majorUnit:Number;
+		//是否总显示0
 		public var alwaysShowZero:Boolean;
-		
+		//是否在坐标轴上总显示整数
 		public var integer:Boolean = false;
 		
+		//数据中表示Label的Key值文字，用于匹配数据
 		private var _labelKey:String;
+		//数值坐标的数据，用于绘制图形
 		private var _axisData:Array;
 		
+		//引用核心图表对象
 		private var chart:ChartBase;
 		
 // ------------------------------------------
@@ -36,27 +49,46 @@ package com.weibo.charts.data
 // ------------------------------------------
 // 公开方法
 // ------------------------------------------
+		
+		/**
+		 * 数据中表示Label的Key值文字，用于匹配数据
+		 * @param value
+		 */		
 		public function set labelKey(value:String):void { this._labelKey = value; }
+		
+		/**
+		 * 数据中表示Label的Key值文字，用于匹配数据
+		 * @return 
+		 */		
 		public function get labelKey():String { return this._labelKey; }
+		
+		/**
+		 * 数值坐标的数据，用于绘制图形
+		 * @return 
+		 */		
 		public function get axisData():Array { return this._axisData; }
-
-		public function set dataProvider(value:Object):void
+		
+		/**
+		 * 传入原始数据
+		 * @param value
+		 */		
+		public function setData(min:Number, max:Number):void
 		{
-			this._dataProvider = value as Array;
-			this.parseDataProvider();
+//			this._dataProvider = value as Array;
+//			this.parseDataProvider();
 			
-			this.minimum = this.dataMininum;
-			this.maximum = this.dataMaxinum;
+			this.minimum = this.dataMininum = min;
+			this.maximum = this.dataMaxinum = max;
 			this.checkMinAndMax();
 			
 			this.calculateUnit();
 			this.adjustMinAndMax();
 			this._axisData = this.calculateAxisData();
 		}
-		public function get dataProvider():Object
+		/*public function get dataProvider():Object
 		{
 			return this._dataProvider;
-		}
+		}*/
 		
 		/**
 		 * @param data
@@ -114,61 +146,10 @@ package com.weibo.charts.data
 				tempMajorUnit = roundedMajorUnit;
 			}
 			
-			//没什么关系(!this.integer && order > 0) && 
-			/*if ((roundedMajorUnit / 2 >= tempMajorUnit))
-			{
-				var roundedDiff:Number = Math.floor((roundedMajorUnit / 2 - tempMajorUnit) / (Math.pow(10,order-1) / 2));
-				if (!this.integer || order > 0)
-				{
-					tempMajorUnit = roundedMajorUnit/2 - roundedDiff * Math.pow(10,order-1) / 2;
-				}
-				else
-				{
-					tempMajorUnit = roundedMajorUnit/2;
-				}
-			}
-			else
-			{
-				tempMajorUnit = roundedMajorUnit;
-			}*/
-			
-//			if (order > 0) tempMajorUnit = niceNumber(tempMajorUnit);
-//			else tempMajorUnit = roundedMajorUnit;
 			
 			this.majorUnit = roundToPrecision(tempMajorUnit, 10);
 		}
 		
-		
-		/** 分析数据
-		 */		
-		private function parseDataProvider():void
-		{
-			var count:int = this.dataProvider.length;
-			var tempMininum:Number;
-			var tempMaxinum:Number;
-			var value:Number;
-			for (var i:int = 0; i < count; i++)
-			{
-				value = dataProvider[i].value;
-				if (isNaN(value))
-				{
-					continue;
-				}
-				
-				tempMininum = isNaN(tempMininum) ? value : Math.min(value, tempMininum);
-				tempMaxinum = isNaN(tempMaxinum) ? value : Math.max(value, tempMaxinum);
-			}
-			if (isNaN(tempMininum) || isNaN(tempMaxinum))
-			{
-				this.dataMininum = 0;
-				this.dataMaxinum = 1;
-			}
-			else
-			{
-				this.dataMininum = tempMininum;
-				this.dataMaxinum = tempMaxinum;
-			}
-		}
 		private function checkMinAndMax():void
 		{
 			if (this.minimum > this.maximum)
@@ -231,6 +212,7 @@ package com.weibo.charts.data
 			}
 			return data;
 		}
+		
 		private function getAxisData(value:Number):Object
 		{
 //			value = roundToPrecision(value, 10);
