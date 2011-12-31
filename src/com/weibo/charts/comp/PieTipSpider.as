@@ -10,6 +10,7 @@ package com.weibo.charts.comp
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
+	import com.weibo.charts.DecorateBase;
 	
 	/**
 	 * 蜘蛛腿方式引线

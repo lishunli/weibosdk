@@ -22,20 +22,18 @@ package com.weibo.charts
 		
 		protected var _dataProvider:Object;
 		
-		private var _chartWidht:Number;
-		
-		private var _chartHeight:Number;
-		
 		private var _area:Rectangle;
 		
-		private var _labelFun:Function;
+//		private var _labelFun:Function;
+//		
+//		private var _valueFun:Function;
 		
-		private var _valueFun:Function;
-		
-		private var _tipFun:Function;
+//		private var _tipFun:Function;
 		
 		public function ChartBase()
 		{
+			_width = 450;
+			_height = 260;
 			super();
 		}
 		
@@ -96,7 +94,7 @@ package com.weibo.charts
 		{
 			_area = value;
 		}
-
+/*
 		public function get labelFun():Function{return _labelFun;}
 		public function set labelFun(value:Function):void
 		{
@@ -109,22 +107,22 @@ package com.weibo.charts
 			_valueFun = value;
 		}
 
-		public function get tipFun():Function{return _tipFun;}
+//		public function get tipFun():Function{return _tipFun;}
 		public function set tipFun(value:Function):void
 		{
 			_tipFun = value;
 		}
-
-		public function get chartWidht():Number{return _chartWidht;}
-		public function set chartWidht(value:Number):void
+*/
+		public function get chartWidth():Number{return width;}
+		public function set chartWidth(value:Number):void
 		{
-			_chartWidht = value;
+			width = value;
 		}
 
-		public function get chartHeight():Number{return _chartHeight;}
+		public function get chartHeight():Number{return height;}
 		public function set chartHeight(value:Number):void
 		{
-			_chartHeight = value;
+			height = value;
 		}
 	}
 }

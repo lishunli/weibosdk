@@ -39,13 +39,13 @@ package com.weibo.charts.data
 		 * 指定数据中表示标签的KEY值，默认为：“label”
 		 * @param value String
 		 */		
-		function set labelKey(value:String):void;
+//		function set labelKey(value:String):void;
 		
 		/**
 		 * 指定数据中表示数值的KEY值，默认为：“value”
 		 * @param value String
 		 */		
-		function set valueKey(value:String):void;
+//		function set valueKey(value:String):void;
 		
 		/**
 		 * 数值轴是否显示整数
@@ -82,7 +82,7 @@ package com.weibo.charts.data
 		 * @param data
 		 * @return Number
 		 */		
-		function getPosition(data:Object):Number;
+		function getPosition(value:Number):Number;
 	}
 	
 }

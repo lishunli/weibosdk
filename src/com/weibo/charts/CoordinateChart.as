@@ -27,7 +27,7 @@ package com.weibo.charts
 //				coordinateLogic.alwaysShow0 = true;
 			}
 			
-			area = new Rectangle(0, 0, chartWidht, chartHeight);
+			area = new Rectangle(0, 0, chartWidth, chartHeight);
 			axisLogic.dataProvider = value;
 			super.dataProvider = value;
 			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));

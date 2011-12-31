@@ -12,6 +12,7 @@ package com.weibo.charts.comp
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
+	import com.weibo.charts.DecorateBase;
 	
 	/**
 	 * 十字分割。分别扇形所在的四个角显示TIP

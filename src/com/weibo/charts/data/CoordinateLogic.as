@@ -23,8 +23,8 @@ package com.weibo.charts.data
 	// 构造函数
 	//-------------------------------------------
 		
-		private var _labelKey:String = "label";
-		private var _valueKey:String = "value";
+//		private var _labelKey:String = "label";
+//		private var _valueKey:String = "value";
 		
 		public function CoordinateLogic(chart:ChartBase)
 		{
@@ -43,8 +43,8 @@ package com.weibo.charts.data
 		public function get axisType():String { return this._axisType; }
 		public function set valueLength(value:Number):void { this.valueLogic.labelLength = value; }
 		public function set labelLength(value:Number):void { this.labelLogic.labelLength = value; }
-		public function set valueKey(value:String):void { this._valueKey = value; }
-		public function set labelKey(value:String):void { this._labelKey = value; }
+//		public function set valueKey(value:String):void { this._valueKey = value; }
+//		public function set labelKey(value:String):void { this._labelKey = value; }
 		
 		public function get horizontalData():Array
 		{
@@ -67,7 +67,7 @@ package com.weibo.charts.data
 //			this.valueLogic.dataProvider = dataProvider;
 			parseValueData();
 			
-			this.labelLogic.labelKey = _labelKey;
+//			this.labelLogic.labelKey = _labelKey;
 			this.labelLogic.axisLength = (axisType == "vertical") ? _chart.area.height : _chart.area.width;
 			this.labelLogic.dataProvider = value.axis;
 		}
@@ -78,18 +78,17 @@ package com.weibo.charts.data
 		}
 		
 		/**
+		 * 根据数值获取坐标值
 		 * @param data
 		 * @return 
-		 * 根据数值获取坐标值
 		 */		
-		public function getPosition(data:Object):Number
+		public function getPosition(value:Number):Number
 		{
-			if (!dataProvider || !data)
+			if (!dataProvider)// || !data
 			{
 				return NaN;
 			}
-			var value:Number = valueLogic.getPosition(data[_valueKey]);
-			return value;
+			return valueLogic.getPosition(value);
 		}
 		
 	//===========================================

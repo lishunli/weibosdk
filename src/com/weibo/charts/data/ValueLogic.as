@@ -36,7 +36,7 @@ package com.weibo.charts.data
 		//引用核心图表对象
 		private var chart:ChartBase;
 		
-// ------------------------------------------
+// ==========================================
 // 构造函数
 // ------------------------------------------
 		
@@ -46,7 +46,7 @@ package com.weibo.charts.data
 			super();
 		}
 		
-// ------------------------------------------
+// ==========================================
 // 公开方法
 // ------------------------------------------
 		
@@ -54,13 +54,13 @@ package com.weibo.charts.data
 		 * 数据中表示Label的Key值文字，用于匹配数据
 		 * @param value
 		 */		
-		public function set labelKey(value:String):void { this._labelKey = value; }
+//		public function set labelKey(value:String):void { this._labelKey = value; }
 		
 		/**
 		 * 数据中表示Label的Key值文字，用于匹配数据
 		 * @return 
 		 */		
-		public function get labelKey():String { return this._labelKey; }
+//		public function get labelKey():String { return this._labelKey; }
 		
 		/**
 		 * 数值坐标的数据，用于绘制图形
@@ -95,7 +95,7 @@ package com.weibo.charts.data
 		 * @return 
 		 * 根据数值获取坐标值
 		 */		
-		public function getPosition(data:Object,a:String=null):Number
+		public function getPosition(value:Number):Number
 		{
 //			if (!data) return NaN;
 			
@@ -108,17 +108,17 @@ package com.weibo.charts.data
 			var position:Number;
 			if (coordinateLogic.axisType == "vertical")
 			{
-				position = (Number(data) - this.minimum) / range * this.axisLength;
+				position = (value - this.minimum) / range * this.axisLength;
 			}
 			else
 			{
-				position = (this.maximum - Number(data)) / range * this.axisLength;
+				position = (this.maximum - value) / range * this.axisLength;
 			}
 			
 			return position;
 		}
 		
-// ------------------------------------------
+// ==========================================
 // 私有方法
 // ------------------------------------------
 		
@@ -217,7 +217,7 @@ package com.weibo.charts.data
 		{
 //			value = roundToPrecision(value, 10);
 			var label:String = value.toString();
-			if (chart.valueFun != null) label = chart.valueFun(value);
+//			if (chart.valueFun != null) label = chart.valueFun(value);
 			var data:Object = {
 				label:		label,
 				value:		value,
@@ -226,7 +226,7 @@ package com.weibo.charts.data
 			return data;
 		}
 		
-		public function roundToPrecision(number:Number, precision:int = 0):Number
+		private function roundToPrecision(number:Number, precision:int = 0):Number
 		{
 			var decimalPlaces:Number = Math.pow(10, precision);
 			return Math.round(decimalPlaces * number) / decimalPlaces;

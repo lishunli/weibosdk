@@ -11,7 +11,7 @@ package com.weibo.charts.style
 		/**
 		 * 基础样式
 		 */		
-		public var baseStyle:CharBaseStyle = new CharBaseStyle();
+		public var baseStyle:ChartBaseStyle = new ChartBaseStyle();
 		
 		public var sectorUI:Class = BorderSector;
 		

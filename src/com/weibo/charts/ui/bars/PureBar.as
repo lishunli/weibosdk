@@ -1,23 +1,36 @@
 package com.weibo.charts.ui.bars
 {
-	import com.weibo.charts.ui.ChartUIBase;
-	import com.weibo.charts.ui.IBarUI;
+	import com.weibo.core.UIComponent;
 	
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
 	import flash.events.Event;
 
 	/**
 	 * 
-	 * YaoFei
-	 */
-	public class PureBar extends ChartUIBase implements IBarUI
+	 * @author yaofei
+	 */	
+	public class PureBar extends UIComponent
 	{
-		
 		public function PureBar()
 		{
-			sprite.addEventListener(Event.RENDER, renderHandler);
-			renderHandler();
+			super();
+			_style =
+			{
+				color:	0xffcc00,
+				alpha:	1,
+				border: true
+			}
+			_width = 20;
+			_height = 50;
+		}
+		
+		override protected function layout():void
+		{
+			var alpha:Number = getStyle("alpha") as Number;
+			var color:uint = getStyle("color") as uint;
+			
+			graphics.clear();
+			graphics.beginFill(color);
+			graphics.drawRect(0, 0, width, -height);
 		}
 	}
 }

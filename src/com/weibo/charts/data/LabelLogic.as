@@ -59,12 +59,12 @@ package com.weibo.charts.data
 			for (i = 0; i < count; i++)
 			{
 				//获取Label文字
-				var label:String = (data[i] is String) ? data[i] :data[i][labelKey];
-				if (chart.labelFun != null) label = chart.labelFun(label);
+//				var label:String = (data[i] is String) ? data[i] :data[i][labelKey];
+//				if (chart.labelFun != null) label = chart.labelFun(label);
 				
 				if ((i - startI) % quotient == 0){
 					_axisData.push({
-					label:		label,
+					label:		data[i],
 					position:	(i / count) * axisLength + unit / 2
 					});
 				}

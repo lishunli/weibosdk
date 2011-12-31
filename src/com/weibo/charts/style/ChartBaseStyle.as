@@ -2,14 +2,8 @@ package com.weibo.charts.style
 {
 	import flash.display.DisplayObject;
 
-	public class CharBaseStyle
+	public class ChartBaseStyle
 	{
-		public var width:Number = 400;
-		
-		public var height:Number = 300;
-		
-//		public var 
-		
 		public var showBorder:Boolean = false;
 		
 		public var borderThickness:int = 1;
@@ -37,8 +31,5 @@ package com.weibo.charts.style
 		 */		
 		public var tipType:int = 0;
 		
-		public function CharBaseStyle()
-		{
-		}
 	}
 }

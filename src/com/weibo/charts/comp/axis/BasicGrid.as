@@ -1,19 +1,19 @@
 package com.weibo.charts.comp.axis
 {
 	import com.weibo.charts.ChartBase;
-	import com.weibo.charts.comp.DecorateBase;
+	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.data.ICoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.GridStyle;
 	
 	public class BasicGrid extends DecorateBase
 	{
-		private var _style:GridStyle;
+		private var _gridStyle:GridStyle;
 		
 		public function BasicGrid(target:ChartBase, style:GridStyle = null)
 		{
-			this._style = style;
-			if(this._style == null) this._style = new GridStyle();
+			this._gridStyle = style;
+			if(this._gridStyle == null) this._gridStyle = new GridStyle();
 			addChild(target);
 			super(target);
 		}
@@ -23,7 +23,7 @@ package com.weibo.charts.comp.axis
 			if (!target.dataProvider) return;
 			
 			graphics.clear();
-			graphics.lineStyle(this._style.thicknetss, this._style.color);
+			graphics.lineStyle(this._gridStyle.thicknetss, this._gridStyle.color);
 			graphics.drawRect(area.x, area.y, area.width, area.height);
 			
 			var axisData:Array;

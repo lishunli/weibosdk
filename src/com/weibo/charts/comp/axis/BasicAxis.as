@@ -1,7 +1,7 @@
 package com.weibo.charts.comp.axis
 {
 	import com.weibo.charts.ChartBase;
-	import com.weibo.charts.comp.DecorateBase;
+	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.data.ICoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.AxisStyle;
@@ -17,7 +17,7 @@ package com.weibo.charts.comp.axis
 	
 	public class BasicAxis extends DecorateBase
 	{
-		private var _style:AxisStyle;
+		private var _axisStyle:AxisStyle;
 		
 		private var labelContainer:Sprite;
 		
@@ -25,9 +25,9 @@ package com.weibo.charts.comp.axis
 		
 		public function BasicAxis(target:ChartBase, style:AxisStyle = null)
 		{
-			super(target);		
-			_style = style;
-			if(_style == null) _style = new AxisStyle();
+			super(target);
+			_axisStyle = style;
+			if(_axisStyle == null) _axisStyle = new AxisStyle();
 			addChild(target);
 		}
 		
@@ -64,7 +64,7 @@ package com.weibo.charts.comp.axis
 		}
 		private function get axisData():Array
 		{
-			switch (_style.type)
+			switch (_axisStyle.type)
 			{
 				case AxisStyle.HORIZONTAL_AXIS:
 					return coordinateLogic.horizontalData;
@@ -90,7 +90,7 @@ package com.weibo.charts.comp.axis
 				var dataObject:Object = axisData[i];
 				var label:DisplayObject;
 				label = newLabel(null, dataObject.label);
-				switch(_style.type)
+				switch(_axisStyle.type)
 				{
 					case AxisStyle.HORIZONTAL_AXIS:
 						leftBottom.y = Math.min(chartHeight - label.height, leftBottom.y);
@@ -104,7 +104,7 @@ package com.weibo.charts.comp.axis
 				}
 				//横坐标为标题类型的
 				//只要有轴就会重新计算，所以这里不需要再重复触发计算
-				if (_style.type == AxisStyle.HORIZONTAL_AXIS)
+				if (_axisStyle.type == AxisStyle.HORIZONTAL_AXIS)
 				{
 					maxLength = Math.max(label.width, maxLength);
 					coordinateLogic.labelLength = maxLength;
@@ -133,7 +133,7 @@ package com.weibo.charts.comp.axis
 			if (!dataProvider) return;
 			
 			graphics.clear();
-			graphics.lineStyle(_style.thicknetss, _style.color);
+			graphics.lineStyle(_axisStyle.thicknetss, _axisStyle.color);
 			clearLabels();
 			
 			var count:int = axisData.length;
@@ -143,7 +143,7 @@ package com.weibo.charts.comp.axis
 				var dataObject:Object = axisData[i];
 				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
 				label.visible = true;
-				switch(_style.type)
+				switch(_axisStyle.type)
 				{
 					case AxisStyle.HORIZONTAL_AXIS:
 					{

@@ -6,9 +6,14 @@ package com.weibo.core
 	public class UIComponent extends Sprite
 	{
 		private var _validateTypeObject:Object = {};
+		
 //		protected var _tag:int = -1;
+		
 		protected var _width:Number = 0;
 		protected var _height:Number = 0;
+		
+		//样式
+		protected var _style:Object = {};
 		
 	//==========================================
 	// 构造函数
@@ -22,6 +27,8 @@ package com.weibo.core
 //			validate();
 			create();
 			addEvents();
+			invalidate(ValidateType.SIZE);
+			invalidate(ValidateType.STATE);
 		}
 		
 		
@@ -31,7 +38,7 @@ package com.weibo.core
 		
 		private function validate():void
 		{
-			switch (true)
+			/*switch (true)
 			{
 //				default:
 				case _validateTypeObject[ValidateType.ALL]:
@@ -57,6 +64,39 @@ package com.weibo.core
 				case _validateTypeObject[ValidateType.STATE]:
 					updateState(); //更新对象状态
 					break;
+			}*/
+			
+			//重置全部内容
+			if (_validateTypeObject[ValidateType.ALL])
+			{
+				removeEvents();
+				destroy();
+				create(); //创建对象
+				layout(); //布局对象
+				updateState(); //更新对象状态
+				addEvents(); //给对象添加事件
+			}
+			//样式
+			else if (_validateTypeObject[ValidateType.STYLES])
+			{
+				removeEvents();
+				destroy();
+				create(); //创建对象
+				layout(); //布局对象
+				addEvents(); //给对象添加事件
+			}
+			else
+			{
+				//布局对象
+				if (_validateTypeObject[ValidateType.SIZE])
+				{
+					layout();
+				}
+				//更新对象状态
+				if (_validateTypeObject[ValidateType.STATE])
+				{
+					updateState();
+				}
 			}
 		}
 		
@@ -133,6 +173,25 @@ package com.weibo.core
 	// 公开方法
 	//------------------------------------------
 		
+		public function setStyle(style:String, value:Object):void
+		{
+			_style[style] = value;
+			invalidate(ValidateType.STYLES);
+		}
+		
+		protected function get style():Object { return _style; }
+		
+		public function getStyle(style:String):Object
+		{
+			return _style[style];
+		}
+		
+		public function clearStyle(style:String):void
+		{
+			delete _style[style];
+			invalidate(ValidateType.STYLES);
+		}
+		
 		/**
 		 * 将组件移到指定的位置
 		 * @param xpos x坐标
@@ -169,9 +228,11 @@ package com.weibo.core
 			_tag = value;
 		}*/
 		
+		
 		/**
 		 * 设置宽度，进入重新渲染流程
 		 */
+		override public function get width():Number { return _width; }
 		override public function set width(w:Number):void
 		{
 			if (w == width) return;
@@ -182,6 +243,7 @@ package com.weibo.core
 		/**
 		 * 设置高度，进入重新渲染流程
 		 */
+		override public function get height():Number { return _height; }
 		override public function set height(h:Number):void
 		{
 			if (h == height) return;
@@ -194,7 +256,7 @@ package com.weibo.core
 		 * @param w
 		 * @param h
 		 * 
-		 */		
+		 */
 		public function setSize(w:Number, h:Number):void
 		{
 			if (w == width && h == height) return;

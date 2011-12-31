@@ -1,6 +1,5 @@
-package com.weibo.charts.comp
+package com.weibo.charts
 {
-	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.data.IAxisLogic;
 	import com.weibo.charts.events.ChartEvent;
 	
@@ -22,6 +21,7 @@ package com.weibo.charts.comp
 		{
 			this._target = target;
 			super();
+			this.area = new Rectangle(0, 0, width, height);
 		}
 		
 	//========================================
@@ -53,7 +53,7 @@ package com.weibo.charts.comp
 		{
 			target.axisLogic = value;
 		}
-		
+		/*
 		override public function get labelFun():Function {return target.labelFun}
 		override public function set labelFun(value:Function):void{
 			target.labelFun = value;
@@ -64,15 +64,15 @@ package com.weibo.charts.comp
 			target.valueFun = value;
 		}
 		
-		override public function get tipFun():Function {return target.tipFun}
+//		override public function get tipFun():Function {return target.tipFun}
 		override public function set tipFun(value:Function):void{
 			target.tipFun = value;
 		}
-		
-		override public function get chartWidht():Number{return target.chartWidht;}
-		override public function set chartWidht(value:Number):void
+		*/
+		override public function get chartWidth():Number{return target.chartWidth;}
+		override public function set chartWidth(value:Number):void
 		{
-			target.chartWidht = value;
+			target.chartWidth = value;
 		}
 		
 		override public function get chartHeight():Number{return target.chartHeight;}
