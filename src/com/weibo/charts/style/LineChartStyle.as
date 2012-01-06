@@ -16,7 +16,7 @@ package com.weibo.charts.style
 		
 		public var arrColors:Array = [0x519ae5];
 		
-		public var lineColor:int = 0x519ae5;
+		public var lineColors:Array = [0x519ae5];
 		
 		public var lineThickness:int = 2;
 		
