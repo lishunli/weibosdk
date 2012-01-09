@@ -95,8 +95,8 @@ package com.weibo.charts.comp
 				}
 			}
 			
-			container.x = (chartWidth - container.width) / 2;
-			container.y = chartHeight + space;
+			container.x = int((chartWidth - container.width) / 2);
+			container.y = int(chartHeight + space);
 		}
 		
 		
