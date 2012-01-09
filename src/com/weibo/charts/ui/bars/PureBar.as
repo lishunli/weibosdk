@@ -1,19 +1,19 @@
 package com.weibo.charts.ui.bars
 {
-	import com.greensock.TweenMax;
-	import com.greensock.easing.Cubic;
-	import com.weibo.controls.Label;
+	import com.weibo.charts.comp.Label;
+	import com.weibo.charts.ui.IBarUI;
 	import com.weibo.core.UIComponent;
 	
-	import flash.events.Event;
+	import flash.display.Shape;
 
 	/**
 	 * 
 	 * @author yaofei
 	 */	
-	public class PureBar extends UIComponent
+	public class PureBar extends UIComponent implements IBarUI
 	{
-		private var label:Label;
+		private var _labelTip:Label;
+		private var _highLight:Shape;
 		
 		public function PureBar()
 		{
@@ -28,9 +28,22 @@ package com.weibo.charts.ui.bars
 			_height = 50;
 		}
 		
+		public function set label(value:String):void
+		{
+			_labelTip.text = value;
+		}
+		
 		override protected function create():void
 		{
-			
+			if (_labelTip == null)
+			{
+				_labelTip = new Label();addChild(_labelTip);
+				_labelTip.textColor = 0x515151;
+			}
+			if (_highLight == null)
+			{
+				_highLight = new Shape();addChild(_highLight);
+			}
 		}
 		
 		override protected function layout():void
@@ -40,13 +53,19 @@ package com.weibo.charts.ui.bars
 			var color:uint = getStyle("color") as uint;
 			
 			graphics.clear();
-			graphics.beginFill(color);
+			graphics.lineStyle(1, color, 1);
+			graphics.beginFill(color, alpha);
 			graphics.drawRect(0, 0, width, -height);
+			
+			_highLight.graphics.clear();
+			if (height > 2 && width > 2)
+			{
+				_highLight.graphics.beginFill(0xffffff, .7);
+				_highLight.graphics.drawRect(1, -height+1, width-1, 1);
+			}
+			_labelTip.y = -height - _labelTip.height;
+			_labelTip.x = (width - _labelTip.width) / 2;
 		}
 		
-		override protected function updateState():void
-		{
-			
-		}
 	}
 }

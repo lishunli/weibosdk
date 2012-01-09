@@ -1,5 +1,6 @@
 package com.weibo.charts.style
 {
+	import com.weibo.charts.ui.bars.PureBar;
 	import com.weibo.charts.ui.tips.LabelTip;
 
 	public class ColumnChartStyle extends ChartBaseStyle
@@ -12,7 +13,7 @@ package com.weibo.charts.style
 		 */		
 //		public var baseStyle:CharBaseStyle = new CharBaseStyle();
 		
-		public var barUI:Class = BasicBar;
+		public var barUI:Class = PureBar;
 		
 		public var tipUI:Class = LabelTip;
 		

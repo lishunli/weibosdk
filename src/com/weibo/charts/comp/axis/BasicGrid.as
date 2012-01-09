@@ -38,6 +38,18 @@ package com.weibo.charts.comp.axis
 // 内部方法
 // ------------------------------------------
 		
+		override protected function addEvents():void
+		{
+			super.addEvents();
+			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
+		}
+		
+		override protected function removeEvents():void
+		{
+			super.removeEvents();
+			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
+		}
+		
 		override protected function updateState():void
 		{
 			if (!target.dataProvider) return;
@@ -74,6 +86,16 @@ package com.weibo.charts.comp.axis
 		private function get coordinateLogic():ICoordinateLogic
 		{
 			return this.axisLogic as ICoordinateLogic;
+		}
+		
+		
+//========================================
+// 事件侦听器
+//----------------------------------------
+		
+		private function onDataChange(e:ChartEvent):void
+		{
+			this.invalidate();
 		}
 	}
 }

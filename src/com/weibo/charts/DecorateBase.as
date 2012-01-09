@@ -97,26 +97,11 @@ package com.weibo.charts
 			return chart;
 		}
 		
-		override protected function addEvents():void
-		{
-			super.addEvents();
-			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
-		}
-		
-		override protected function removeEvents():void
-		{
-			super.removeEvents();
-			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
-		}
 		
 	//========================================
 	// 事件侦听器
 	//----------------------------------------
 		
-		protected function onDataChange(e:ChartEvent):void
-		{
-			this.invalidate();
-		}
 		
 	}
 	

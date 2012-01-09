@@ -66,23 +66,74 @@ package com.weibo.charts.comp.axis
 				labelContainer = null;
 			}
 		}
+		
+		
 		override protected function addEvents():void
 		{
-			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onChartChanged);
+			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
+//			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onChartChanged);
 			target.addEventListener(ChartEvent.CHART_AXIS_RESIZE, onChartAxisResize);
 			super.addEvents();
 		}
+		
 		override protected function removeEvents():void
 		{
-			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onChartChanged);
+			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onDataChange);
+//			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onChartChanged);
 			target.removeEventListener(ChartEvent.CHART_AXIS_RESIZE, onChartAxisResize);
 			super.removeEvents();
 		}
 		
-		private function onChartChanged(event:ChartEvent):void
+		
+		override protected function updateState():void
 		{
-			onChartAxisResize();
+			if (!dataProvider) return;
+			
+			graphics.clear();
+			graphics.lineStyle(_axisStyle.thicknetss, _axisStyle.color);
+			clearLabels();
+			
+			var count:int = axisData.length;
+			var stageHSide:Point = labelContainer.globalToLocal(new Point(0, stage.stageWidth));
+			for (var i:int = 0; i < count; i++)
+			{
+				var dataObject:Object = axisData[i];
+				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
+				label.visible = true;
+				switch(_type)
+				{
+					case AxisType.LABEL_AXIS:
+					{
+//						graphics.moveTo(dataObject.position + area.x, area.y);
+//						graphics.lineTo(dataObject.position + area.x, area.bottom);
+						label.x = dataObject.position + area.x - label.width/2;
+						label.y = area.bottom + 5;
+						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
+						break;
+					}
+					case AxisType.VALUE_AXIS:
+					{
+//						graphics.moveTo(area.x, dataObject.position + area.y);
+//						graphics.lineTo(area.right, dataObject.position + area.y);
+						label.x = area.x - label.width;
+						label.y = dataObject.position + area.y - label.height/2;
+						break;
+					}
+					case AxisType.SUB_VALUE_AXIS:
+					{
+						label.x = area.right + 0;
+						label.y = dataObject.position + area.y - label.height/2;
+						break;
+					}
+				}
+			}
 		}
+		
+		private function get coordinateLogic():ICoordinateLogic
+		{
+			return this.axisLogic as ICoordinateLogic;
+		}
+		
 		private function get axisData():Array
 		{
 			switch (_type)
@@ -99,7 +150,46 @@ package com.weibo.charts.comp.axis
 			}
 			return null;
 		}
-//		private var axisData:Array;
+		
+		private function newLabel(parent:DisplayObjectContainer, text:String = ""):DisplayObject
+		{
+			var label:TextField = new TextField();
+			if (parent)	parent.addChild(label);
+			label.selectable = false;
+			label.autoSize = "left";
+			label.defaultTextFormat = new TextFormat("Arial", 12, 0x999999, false);
+			label.text = text;
+			
+			return label;
+		}
+		
+		private function clearLabels():void
+		{
+			while (labelContainer.numChildren > 0)
+			{
+				labelContainer.removeChildAt(0);
+			}
+		}
+		
+//========================================
+// 事件侦听器
+//----------------------------------------
+		
+		private function onDataChange(e:ChartEvent):void
+		{
+			onChartAxisResize();
+			this.invalidate();
+		}
+		/*
+		private function onChartChanged(event:ChartEvent):void
+		{
+			
+		}*/
+		
+		/**
+		 * 根据轴的文字调整图表尺寸
+		 * @param event
+		 */		
 		private function onChartAxisResize(event:ChartEvent = null):void
 		{
 			if (!dataProvider) return;
@@ -159,73 +249,5 @@ package com.weibo.charts.comp.axis
 //			}
 		}
 		
-		override protected function updateState():void
-		{
-			if (!dataProvider) return;
-			
-			graphics.clear();
-			graphics.lineStyle(_axisStyle.thicknetss, _axisStyle.color);
-			clearLabels();
-			
-			var count:int = axisData.length;
-			var stageHSide:Point = labelContainer.globalToLocal(new Point(0, stage.stageWidth));
-			for (var i:int = 0; i < count; i++)
-			{
-				var dataObject:Object = axisData[i];
-				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
-				label.visible = true;
-				switch(_type)
-				{
-					case AxisType.LABEL_AXIS:
-					{
-//						graphics.moveTo(dataObject.position + area.x, area.y);
-//						graphics.lineTo(dataObject.position + area.x, area.bottom);
-						label.x = dataObject.position + area.x - label.width/2;
-						label.y = area.bottom + 5;
-						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
-						break;
-					}
-					case AxisType.VALUE_AXIS:
-					{
-//						graphics.moveTo(area.x, dataObject.position + area.y);
-//						graphics.lineTo(area.right, dataObject.position + area.y);
-						label.x = area.x - label.width;
-						label.y = dataObject.position + area.y - label.height/2;
-						break;
-					}
-					case AxisType.SUB_VALUE_AXIS:
-					{
-						label.x = area.right + 0;
-						label.y = dataObject.position + area.y - label.height/2;
-						break;
-					}
-				}
-			}
-		}
-		
-		private function get coordinateLogic():ICoordinateLogic
-		{
-			return this.axisLogic as ICoordinateLogic;
-		}
-		
-		private function newLabel(parent:DisplayObjectContainer, text:String = ""):DisplayObject
-		{
-			var label:TextField = new TextField();
-			if (parent)	parent.addChild(label);
-			label.selectable = false;
-			label.autoSize = "left";
-			label.defaultTextFormat = new TextFormat("Arial", 12, 0x999999, false);
-			label.text = text;
-			
-			return label;
-		}
-		
-		private function clearLabels():void
-		{
-			while (labelContainer.numChildren > 0)
-			{
-				labelContainer.removeChildAt(0);
-			}
-		}
 	}
 }

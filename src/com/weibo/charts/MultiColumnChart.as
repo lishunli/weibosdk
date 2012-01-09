@@ -3,6 +3,8 @@ package com.weibo.charts
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
 	import com.weibo.charts.style.ColumnChartStyle;
+	import com.weibo.charts.ui.IBarUI;
+	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.charts.ui.bars.PureBar;
 	import com.weibo.core.UIComponent;
 	
@@ -75,18 +77,22 @@ package com.weibo.charts
 			}else{
 				for(var i:int = 0; i < axislength ; i ++)
 				{
-					for (var j:int = 0; j < dataProvider.data.length; j++)
+					for (var j:int = 0; j < shapenum; j++)
 					{
 						var localXp:Number = margin + j * (tempColumnWidth + space);
 						var type:int = dataProvider.data[j].useSubAxis ? 1 : 0;
 						var h:Number = this.coordinateLogic.getPosition(dataProvider.data[j].value[i], type);
+						h = area.height - h;
 						var bar:UIComponent = new PureBar();
+						(bar as IBarUI).label = dataProvider.data[j].value[i];
 						bar.y = area.bottom;
 //						bar.setSize(tempColumnWidth - space, h);
 						bar.width = tempColumnWidth - space;
 						bar.height = 0;
 						bar.setStyle("color", _chartStyle.arrColors[j %  _chartStyle.arrColors.length]);
 						bar.setStyle("borderColor", _chartStyle.outlineColor);
+						bar.setStyle("labelColor", _chartStyle);
+						bar.setStyle("alpha", .6);
 						bar.x = area.x + (i / axislength) * area.width + localXp;
 						_container.addChild(bar);
 						TweenMax.to(bar, 1, {height:h, ease:Cubic.easeOut});
