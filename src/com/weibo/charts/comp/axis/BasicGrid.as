@@ -10,6 +10,10 @@ package com.weibo.charts.comp.axis
 	{
 		private var _gridStyle:GridStyle;
 		
+// ==========================================
+// 构造函数
+// ------------------------------------------
+		
 		public function BasicGrid(target:ChartBase, style:GridStyle = null)
 		{
 			this._gridStyle = style;
@@ -17,6 +21,22 @@ package com.weibo.charts.comp.axis
 			addChild(target);
 			super(target);
 		}
+		
+		
+// ==========================================
+// 公开方法
+// ------------------------------------------
+		
+		override public function setSize(w:Number, h:Number):void
+		{
+			super.setSize(w, h);
+			target.setSize(w, h);
+		}
+		
+		
+// ==========================================
+// 内部方法
+// ------------------------------------------
 		
 		override protected function updateState():void
 		{
@@ -30,7 +50,7 @@ package com.weibo.charts.comp.axis
 			var count:int;
 			var dataObject:Object;
 			//纵轴
-			axisData = (coordinateLogic.axisType == "vertical") ? coordinateLogic.labelGridData : coordinateLogic.verticalData;
+			axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelGridData : coordinateLogic.valueData;
 			count= axisData.length;
 			var i:int;
 			for (i = 0; i < count; i++)
@@ -41,7 +61,7 @@ package com.weibo.charts.comp.axis
 			}
 			//横轴
 //			trace((coordinateLogic.axisType))
-			axisData = (coordinateLogic.axisType == "vertical") ? coordinateLogic.horizontalData : coordinateLogic.labelGridData;
+			axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelData: coordinateLogic.labelGridData;
 			count = axisData.length;
 			for (i = 0; i < count; i++)
 			{

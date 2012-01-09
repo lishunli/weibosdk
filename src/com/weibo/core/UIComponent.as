@@ -1,5 +1,7 @@
 package com.weibo.core
 {
+	import com.weibo.charts.MultiColumnChart;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -27,8 +29,10 @@ package com.weibo.core
 //			validate();
 			create();
 			addEvents();
+			
 			invalidate(ValidateType.SIZE);
 			invalidate(ValidateType.STATE);
+//			invalidate("all");
 		}
 		
 		
@@ -38,37 +42,27 @@ package com.weibo.core
 		
 		private function validate():void
 		{
-			/*switch (true)
+			for (var type:Object in _validateTypeObject)
 			{
-//				default:
-				case _validateTypeObject[ValidateType.ALL]:
-					//清空之前的所有
-					removeEvents();
-					destroy();
-					create(); //创建对象
-					layout(); //布局对象
-					updateState(); //更新对象状态
-					addEvents(); //给对象添加事件
-					break;
-				case _validateTypeObject[ValidateType.STYLES]:
-					//清空之前的所有
-					removeEvents();
-					destroy();
-					create(); //创建对象
-					layout(); //布局对象
-					addEvents(); //给对象添加事件
-					break;
-				case _validateTypeObject[ValidateType.SIZE]:
-					layout(); //布局对象
-					break;
-				case _validateTypeObject[ValidateType.STATE]:
-					updateState(); //更新对象状态
-					break;
-			}*/
-			
+				switch (type)
+				{
+					case ValidateType.ALL:
+						break;
+					case ValidateType.STYLES:
+						break;
+					case ValidateType.SIZE:
+						break;
+					case ValidateType.STATE:
+						break;
+					default:
+						delete _validateTypeObject[type];
+						break;
+				}
+			}
 			//重置全部内容
 			if (_validateTypeObject[ValidateType.ALL])
 			{
+				_validateTypeObject = {};
 				removeEvents();
 				destroy();
 				create(); //创建对象
@@ -79,6 +73,7 @@ package com.weibo.core
 			//样式
 			else if (_validateTypeObject[ValidateType.STYLES])
 			{
+				_validateTypeObject = {};
 				removeEvents();
 				destroy();
 				create(); //创建对象
@@ -90,11 +85,13 @@ package com.weibo.core
 				//布局对象
 				if (_validateTypeObject[ValidateType.SIZE])
 				{
+					delete _validateTypeObject[ValidateType.SIZE];
 					layout();
 				}
 				//更新对象状态
 				if (_validateTypeObject[ValidateType.STATE])
 				{
+					delete _validateTypeObject[ValidateType.STATE];
 					updateState();
 				}
 			}

@@ -17,19 +17,40 @@ package com.weibo.charts.comp.axis
 	
 	public class BasicAxis extends DecorateBase
 	{
+		private var _type:String;
+		
 		private var _axisStyle:AxisStyle;
 		
 		private var labelContainer:Sprite;
 		
 		private var realArea:Rectangle;
 		
-		public function BasicAxis(target:ChartBase, style:AxisStyle = null)
+// ==========================================
+// 构造函数
+// ------------------------------------------
+		
+		public function BasicAxis(target:ChartBase, type:String, style:AxisStyle = null)
 		{
 			super(target);
+			_type = type;
 			_axisStyle = style;
 			if(_axisStyle == null) _axisStyle = new AxisStyle();
 			addChild(target);
 		}
+		
+// ==========================================
+// 公开方法
+// ------------------------------------------
+		
+		override public function setSize(w:Number, h:Number):void
+		{
+			super.setSize(w, h);
+			target.setSize(w, h);
+		}
+		
+// ==========================================
+// 内部方法
+// ------------------------------------------
 		
 		override protected function create():void
 		{
@@ -64,13 +85,16 @@ package com.weibo.charts.comp.axis
 		}
 		private function get axisData():Array
 		{
-			switch (_axisStyle.type)
+			switch (_type)
 			{
-				case AxisStyle.HORIZONTAL_AXIS:
-					return coordinateLogic.horizontalData;
+				case AxisType.LABEL_AXIS:
+					return coordinateLogic.labelData;
 					break;
-				case AxisStyle.VERTICAL_AXIS:
-					return coordinateLogic.verticalData;
+				case AxisType.VALUE_AXIS:
+					return coordinateLogic.valueData;
+					break;
+				case AxisType.SUB_VALUE_AXIS:
+					return coordinateLogic.valueSubData;
 					break;
 			}
 			return null;
@@ -85,26 +109,32 @@ package com.weibo.charts.comp.axis
 			//var lastArea:Rectangle = area.clone();//realArea.clone();
 			var maxLength:Number = 20;
 			var leftBottom:Point = new Point(area.left, area.bottom);
+			var tempRect:Rectangle = area.clone(); 
 			for (var i:int = 0; i < count; i++)
 			{
 				var dataObject:Object = axisData[i];
 				var label:DisplayObject;
 				label = newLabel(null, dataObject.label);
-				switch(_axisStyle.type)
+				switch(_type)
 				{
-					case AxisStyle.HORIZONTAL_AXIS:
+					case AxisType.LABEL_AXIS:
 						leftBottom.y = Math.min(chartHeight - label.height, leftBottom.y);
 //						realArea.bottom = Math.min(chartHeight - label.height, realArea.bottom);
 						break;
-					case AxisStyle.VERTICAL_AXIS:
+					case AxisType.VALUE_AXIS:
 //						trace(dataObject.label)
 						leftBottom.x = Math.max(label.width, leftBottom.x);
+//						realArea.left = Math.max(label.width, realArea.left);
+						break;
+					case AxisType.SUB_VALUE_AXIS:
+//						trace(dataObject.label)
+						tempRect.right = Math.min(chartWidth - label.width, tempRect.right);
 //						realArea.left = Math.max(label.width, realArea.left);
 						break;
 				}
 				//横坐标为标题类型的
 				//只要有轴就会重新计算，所以这里不需要再重复触发计算
-				if (_axisStyle.type == AxisStyle.HORIZONTAL_AXIS)
+				if (_type == AxisType.LABEL_AXIS)
 				{
 					maxLength = Math.max(label.width, maxLength);
 					coordinateLogic.labelLength = maxLength;
@@ -112,6 +142,7 @@ package com.weibo.charts.comp.axis
 			}
 			realArea.left = leftBottom.x;
 			realArea.bottom = leftBottom.y;
+			realArea.right = tempRect.right;
 			
 			//area.containsRect(realArea) && 
 			if (!area.equals(realArea) && area.width > 0 && area.height > 0)
@@ -143,9 +174,9 @@ package com.weibo.charts.comp.axis
 				var dataObject:Object = axisData[i];
 				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
 				label.visible = true;
-				switch(_axisStyle.type)
+				switch(_type)
 				{
-					case AxisStyle.HORIZONTAL_AXIS:
+					case AxisType.LABEL_AXIS:
 					{
 //						graphics.moveTo(dataObject.position + area.x, area.y);
 //						graphics.lineTo(dataObject.position + area.x, area.bottom);
@@ -154,11 +185,17 @@ package com.weibo.charts.comp.axis
 						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
 						break;
 					}
-					case AxisStyle.VERTICAL_AXIS:
+					case AxisType.VALUE_AXIS:
 					{
 //						graphics.moveTo(area.x, dataObject.position + area.y);
 //						graphics.lineTo(area.right, dataObject.position + area.y);
 						label.x = area.x - label.width;
+						label.y = dataObject.position + area.y - label.height/2;
+						break;
+					}
+					case AxisType.SUB_VALUE_AXIS:
+					{
+						label.x = area.right + 0;
 						label.y = dataObject.position + area.y - label.height/2;
 						break;
 					}
@@ -182,6 +219,7 @@ package com.weibo.charts.comp.axis
 			
 			return label;
 		}
+		
 		private function clearLabels():void
 		{
 			while (labelContainer.numChildren > 0)

@@ -12,16 +12,17 @@ package com.weibo.charts.data
 	public interface ICoordinateLogic extends IAxisLogic
 	{
 		/**
-		 * 方向类型，用于区分BarChart和ColumnChart
-		 * @param value String
+		 * 是否反转XY轴，如：BarChart会反转X和Y轴
+		 * @param value Boolean
 		 */		
-		function set axisType(value:String):void;
+		function set reverseAxis(value:Boolean):void;
 		
 		/**
-		 * 方向类型，用于区分BarChart和ColumnChart
-		 * @return String
+		 * 是否反转XY轴，如：BarChart会反转X和Y轴
+		 * @return Boolean
 		 */		
-		function get axisType():String;
+		function get reverseAxis():Boolean;
+		
 		
 		/**
 		 * 标签轴文字的宽（高）度，单位：像素
@@ -35,17 +36,20 @@ package com.weibo.charts.data
 		 */		
 		function set valueLength(value:Number):void;
 		
-		/**
+		
+		/*
 		 * 指定数据中表示标签的KEY值，默认为：“label”
 		 * @param value String
 		 */		
 //		function set labelKey(value:String):void;
 		
-		/**
+		/*
 		 * 指定数据中表示数值的KEY值，默认为：“value”
 		 * @param value String
 		 */		
 //		function set valueKey(value:String):void;
+		
+		
 		
 		/**
 		 * 数值轴是否显示整数
@@ -60,16 +64,10 @@ package com.weibo.charts.data
 		function set alwaysShow0(value:Boolean):void;
 		
 		/**
-		 * 获取横轴数据
+		 * 获取标签轴数据
 		 * @return Array
 		 */		
-		function get horizontalData():Array;
-		
-		/**
-		 * 获取纵轴数据
-		 * @return Array
-		 */		
-		function get verticalData():Array;
+		function get labelData():Array;
 		
 		/**
 		 * 获取标签轴的网格数据
@@ -78,11 +76,23 @@ package com.weibo.charts.data
 		function get labelGridData():Array;
 		
 		/**
+		 * 获取数值轴数据
+		 * @return Array
+		 */		
+		function get valueData():Array;
+		
+		/**
+		 * 获取数值轴数据
+		 * @return Array
+		 */		
+		function get valueSubData():Array;
+		
+		/**
 		 * 根据数据获取坐标值
 		 * @param data
 		 * @return Number
 		 */		
-		function getPosition(value:Number):Number;
+		function getPosition(value:Number, axis:int = 0):Number;
 	}
 	
 }

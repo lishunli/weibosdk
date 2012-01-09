@@ -62,31 +62,38 @@ package com.weibo.charts
 			var margin:Number = unit * .2;
 			//原始柱子的宽度
 			var tempColumnWidth:Number = (unit - margin * 2) / shapenum;
-			var space:Number = tempColumnWidth * .1;
+			var space:Number = (shapenum == 1) ? 0 : tempColumnWidth * .1;
 			
 //			if(axislength == 0 && shapenum == 0)
 //			{
-			destroy();
+//			destroy();
+			
+			if (_arrBars.length > 0)
+			{
+				invalidate("all");
+				_arrBars = [];
+			}else{
 				for(var i:int = 0; i < axislength ; i ++)
 				{
 					for (var j:int = 0; j < dataProvider.data.length; j++)
 					{
 						var localXp:Number = margin + j * (tempColumnWidth + space);
-						var h:Number = this.coordinateLogic.getPosition(dataProvider.data[j].value[i]);
+						var type:int = dataProvider.data[j].useSubAxis ? 1 : 0;
+						var h:Number = this.coordinateLogic.getPosition(dataProvider.data[j].value[i], type);
 						var bar:UIComponent = new PureBar();
 						bar.y = area.bottom;
 //						bar.setSize(tempColumnWidth - space, h);
 						bar.width = tempColumnWidth - space;
 						bar.height = 0;
-						bar.setStyle("color", _chartStyle.arrColors[i %  _chartStyle.arrColors.length]);
+						bar.setStyle("color", _chartStyle.arrColors[j %  _chartStyle.arrColors.length]);
 						bar.setStyle("borderColor", _chartStyle.outlineColor);
 						bar.x = area.x + (i / axislength) * area.width + localXp;
 						_container.addChild(bar);
 						TweenMax.to(bar, 1, {height:h, ease:Cubic.easeOut});
-//						_arrBars.push(bar);
+						_arrBars.push(bar);
 					}
 					
-//				}
+				}
 			}
 		}
 	}

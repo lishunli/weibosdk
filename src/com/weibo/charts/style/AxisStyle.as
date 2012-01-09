@@ -12,17 +12,17 @@ package com.weibo.charts.style
 		/**
 		 * 水平 轴类型
 		 */		
-		public static const HORIZONTAL_AXIS:String = "horizontalAxis";
+//		public static const HORIZONTAL_AXIS:String = "horizontalAxis";
 		
 		/**
 		 * 垂直轴类型 
 		 */		
-		public static const VERTICAL_AXIS:String = "verticalAxis";
+//		public static const VERTICAL_AXIS:String = "verticalAxis";
 		
 		/**
 		 * 轴类型，水平或者垂直 
 		 */		
-		public var type:String = "horizontalAxis";
+//		public var type:String = "horizontalAxis";
 		
 //		public static const VALUE_AXIS:String = "valueAxis";
 //		public static const LABEL_AXIS:String = "labelAxis";
@@ -34,7 +34,7 @@ package com.weibo.charts.style
 		
 		public function AxisStyle(type:String = "horizontalAxis") 
 		{
-			this.type = type;
+//			this.type = type;
 //			this.axisType = axisType;
 		}
 		

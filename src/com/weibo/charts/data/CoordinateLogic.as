@@ -12,9 +12,10 @@ package com.weibo.charts.data
 		private var _dataProvider:Object;
 		private var _chart:ChartBase;
 		
-		private var _axisType:String = "horizontal";
+		private var _axisType:Boolean = false;
 		
 		private var valueLogic:ValueLogic;
+		private var valueSubLogic:ValueLogic;
 		private var labelLogic:LabelLogic;
 		
 		private var alwaysShowZero:Boolean;
@@ -29,7 +30,8 @@ package com.weibo.charts.data
 		public function CoordinateLogic(chart:ChartBase)
 		{
 			this._chart = chart;
-			this.valueLogic = new ValueLogic(chart);
+			this.valueLogic = new ValueLogic();
+			this.valueSubLogic = new ValueLogic();
 			this.labelLogic = new LabelLogic(chart);
 		}
 		
@@ -37,23 +39,50 @@ package com.weibo.charts.data
 	// 公开方法
 	//-------------------------------------------
 		
-		public function set integer(value:Boolean):void { this.valueLogic.integer = value; }
-		public function set alwaysShow0(value:Boolean):void { this.alwaysShowZero = value; }
-		public function set axisType(value:String):void { this._axisType = value; }
-		public function get axisType():String { return this._axisType; }
-		public function set valueLength(value:Number):void { this.valueLogic.labelLength = value; }
-		public function set labelLength(value:Number):void { this.labelLogic.labelLength = value; }
+		public function set integer(value:Boolean):void
+		{
+			this.valueLogic.integer = value;
+		}
+		
+		public function set alwaysShow0(value:Boolean):void
+		{
+			this.alwaysShowZero = value;
+		}
+		
+		public function get reverseAxis():Boolean { return this._axisType; }
+		public function set reverseAxis(value:Boolean):void
+		{
+			this._axisType = value;
+		}
+		
+		public function set valueLength(value:Number):void
+		{
+			this.valueLogic.labelLength = value;
+		}
+		
+		public function set labelLength(value:Number):void
+		{
+			this.labelLogic.labelLength = value;
+		}
+		
 //		public function set valueKey(value:String):void { this._valueKey = value; }
 //		public function set labelKey(value:String):void { this._labelKey = value; }
 		
-		public function get horizontalData():Array
+		public function get labelData():Array
 		{
-			return (axisType == "vertical") ? this.valueLogic.axisData : this.labelLogic.axisData;
+			return this.labelLogic.axisData;
+//			return reverseAxis ? this.valueLogic.axisData : this.labelLogic.axisData;
 		}
 		
-		public function get verticalData():Array
+		public function get valueData():Array
 		{
-			return (axisType == "vertical") ? this.labelLogic.axisData : this.valueLogic.axisData;
+			return this.valueLogic.axisData;
+//			return reverseAxis ? this.labelLogic.axisData : this.valueLogic.axisData;
+		}
+		
+		public function get valueSubData():Array
+		{
+			return valueSubLogic.axisData;
 		}
 		
 		public function get labelGridData():Array { return this.labelLogic.gridData; }
@@ -62,13 +91,19 @@ package com.weibo.charts.data
 		{
 			this._dataProvider = value;
 			
+			//!!!!!!!!!!!!!处理多次，待优化
+			//处理主轴数据
 			this.valueLogic.alwaysShowZero = this.alwaysShowZero;
-			this.valueLogic.axisLength = (axisType == "vertical") ? _chart.area.width : _chart.area.height;
-//			this.valueLogic.dataProvider = dataProvider;
+			this.valueLogic.axisLength = reverseAxis ? _chart.area.width : _chart.area.height;
 			parseValueData();
 			
+			//处理副轴数据
+			this.valueSubLogic.axisLength = this.valueLogic.axisLength;
+			parseSubValueData();
+			
+			//处理标签轴数据
 //			this.labelLogic.labelKey = _labelKey;
-			this.labelLogic.axisLength = (axisType == "vertical") ? _chart.area.height : _chart.area.width;
+			this.labelLogic.axisLength = reverseAxis ? _chart.area.height : _chart.area.width;
 			this.labelLogic.dataProvider = value.axis;
 		}
 		
@@ -82,13 +117,20 @@ package com.weibo.charts.data
 		 * @param data
 		 * @return 
 		 */		
-		public function getPosition(value:Number):Number
+		public function getPosition(value:Number, axis:int = 0):Number
 		{
 			if (!dataProvider)// || !data
 			{
 				return NaN;
 			}
-			return valueLogic.getPosition(value);
+			if (axis == 0)
+			{
+				return valueLogic.getPosition(value);
+			}
+			else
+			{
+				return valueSubLogic.getPosition(value);
+			}
 		}
 		
 	//===========================================
@@ -106,6 +148,7 @@ package com.weibo.charts.data
 			
 			for each (var data:Object in dataProvider.data)
 			{
+				if (data.useSubAxis) continue;
 				for each(var value:Number in data.value)
 				{
 //					value = dataProvider[i].value;
@@ -122,14 +165,45 @@ package com.weibo.charts.data
 			if (isNaN(tempMininum) || isNaN(tempMaxinum))
 			{
 				this.valueLogic.setData(0, 1);
-//				this.dataMininum = 0;
-//				this.dataMaxinum = 1;
+				this.valueLogic.setSolidData(0, 1, 5);
 			}
 			else
 			{
 				this.valueLogic.setData(tempMininum, tempMaxinum);
-//				this.dataMininum = tempMininum;
-//				this.dataMaxinum = tempMaxinum;
+				this.valueLogic.setSolidData(tempMininum, tempMaxinum, 5);
+			}
+		}
+		
+		private function parseSubValueData():void
+		{
+			var count:int = this.dataProvider.length;
+			var tempMininum:Number;
+			var tempMaxinum:Number;
+			
+			for each (var data:Object in dataProvider.data)
+			{
+				if (!data.useSubAxis) continue;
+				for each(var value:Number in data.value)
+				{
+					if (isNaN(value))
+					{
+						continue;
+					}
+					
+					tempMininum = isNaN(tempMininum) ? value : Math.min(value, tempMininum);
+					tempMaxinum = isNaN(tempMaxinum) ? value : Math.max(value, tempMaxinum);
+				}
+				
+			}
+			//
+//			trace(tempMininum, tempMaxinum)
+			if (isNaN(tempMininum) || isNaN(tempMaxinum))
+			{
+				this.valueSubLogic.setSolidData(NaN, NaN, valueLogic.axisData.length);
+			}
+			else
+			{
+				this.valueSubLogic.setSolidData(tempMininum, tempMaxinum, valueLogic.axisData.length);
 			}
 		}
 	}
