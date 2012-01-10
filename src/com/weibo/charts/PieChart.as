@@ -49,7 +49,7 @@ package com.weibo.charts
 		
 		override public function set dataProvider(value:Object):void
 		{
-			area = new Rectangle(0, 0, chartWidth, chartHeight);
+//			area = new Rectangle(0, 0, chartWidth, chartHeight);
 			totalNum = 0;
 			for (var i:int = 0; i < value.length; i++)
 			{
@@ -109,6 +109,7 @@ package com.weibo.charts
 		{
 			if(dataProvider != null)
 			{
+			area = new Rectangle(0, 0, chartWidth, chartHeight);
 //				_tipContainer.visible = false;
 				var sector:ISectorUI;
 				var startAngle:Number;

@@ -130,7 +130,6 @@ package com.weibo.charts.data
 			}
 			
 			var position:Number;
-			
 			//？？？统一坐标
 			/*if (coordinateLogic.reverseAxis)
 			{
@@ -140,7 +139,7 @@ package com.weibo.charts.data
 			{*/
 				position = (this.maximum - value) / range * this.axisLength;
 //			}
-			
+//			if (minimum != 0)trace(this.minimum, this.maximum, value,position)
 			return position;
 		}
 		
@@ -159,11 +158,14 @@ package com.weibo.charts.data
 			
 			calculateUnit(tempMajorUnit);
 			
-			adjustMin();
-			this.maximum = roundToPrecision(majorUnit * (length - 1));
+			adjustMin();adjustMax2(length);
+//			trace(this.minimum, this.maximum, majorUnit);
+//			this.maximum = roundToPrecision(minimum + majorUnit * (length - 1));
 //			trace(this.maximum, this.minimum, "========>", tempMajorUnit, majorUnit)
+//			if (minimum != 0) trace("=========>",majorUnit, length, "::", max, maximum, majorUnit)
 			
-			if (majorUnit == 0)
+			this._axisData = this.calculateAxisData();
+			/*if (majorUnit == 0)
 			{
 				_axisData = [];
 			}
@@ -176,7 +178,7 @@ package com.weibo.charts.data
 					value = roundToPrecision(value + majorUnit, 10);
 					_axisData.push(getAxisData(value));
 				}
-			}
+			}*/
 		}
 		
 		
@@ -262,6 +264,17 @@ package com.weibo.charts.data
 					this.maximum += majorUnit;
 				}
 			}
+			this.maximum = roundToPrecision(maximum, 10);
+		}
+		
+		protected function adjustMax2(length:int):void
+		{
+			var oldMaximum:Number = this.dataMaxinum;
+			this.maximum = roundToPrecision(minimum + majorUnit * (length - 1), 10);
+			/*if (oldMaximum == this.maximum)
+			{
+				this.maximum += majorUnit;
+			}*/
 			this.maximum = roundToPrecision(maximum, 10);
 		}
 		

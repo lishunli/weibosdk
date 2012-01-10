@@ -196,7 +196,7 @@ package com.weibo.charts.data
 				
 			}
 			//
-//			trace(tempMininum, tempMaxinum)
+//			trace(tempMininum, tempMaxinum, valueLogic.axisData.length)
 			if (isNaN(tempMininum) || isNaN(tempMaxinum))
 			{
 				this.valueSubLogic.setSolidData(NaN, NaN, valueLogic.axisData.length);

@@ -19,13 +19,13 @@ package com.weibo.charts.ui
 //		function get uiHeight():Number;
 //		function set uiHeight(value:Number):void;
 		
-		function get uiColor():Number;
-		function set uiColor(value:Number):void;
+//		function get uiColor():Number;
+//		function set uiColor(value:Number):void;
 //		
-		function get outlineColor():Number;
-		function set outlineColor(value:Number):void;
+//		function get outlineColor():Number;
+//		function set outlineColor(value:Number):void;
 //		
-		function get outlineThicknesss():Number;
-		function set outlineThicknesss(value:Number):void;
+//		function get outlineThicknesss():Number;
+//		function set outlineThicknesss(value:Number):void;
 	}
 }

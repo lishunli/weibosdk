@@ -44,6 +44,12 @@ package com.weibo.charts.comp
 			return (target as PieChart).style;
 		}
 		
+		override public function setSize(w:Number, h:Number):void
+		{
+			super.setSize(w, h);
+			target.setSize(w, h);
+		}
+		
 	//==========================================
 	// 私有方法
 	//------------------------------------------
@@ -115,9 +121,9 @@ package com.weibo.charts.comp
 				
 				var tip:ITipUI = new style.tipUI();
 				var tf:TextFormat = new TextFormat("Arial", null, style.tipColor);
-				
+				trace(tip)
 //				getStyle("tipFun").call(null, dataProvider[i]);
-				tip.setLabel(getStyle("tipFun")(dataProvider[i]), tf, true);
+				tip.setLabel(getStyle("tipFun").call(null, dataProvider[i]), tf, true);
 				_tipContainer.addChild(tip as DisplayObject);
 				_arrTips[_arrTips.length] = tip;
 				
