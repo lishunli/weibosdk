@@ -96,10 +96,13 @@ package com.weibo.charts
 				for (j = 0; j < lineLen; j++)
 				{
 					var dotAryT:Array = [];
+					var type:int;
 					_container.graphics.endFill();
 					for(var i:int = 0; i < lineDots ; i ++)
 					{
-						pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i]));
+						type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
+						//pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i]));
+						pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
 						tx = Math.round(area.x +  _space * 0.5  + i * _space);
 						dot = new _chartStyle.dotUI();
 						ChartUIBase(dot).uiColor = _chartStyle.lineColors[j];
@@ -129,7 +132,8 @@ package com.weibo.charts
 						for (i = 0; i < lineDots; i++)
 						{
 							dot = _dotArr[j][i] as IDotUI;
-							pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i]));
+							type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
+							pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
 							tx = Math.round(area.x +  _space * 0.5  + i * _space);
 							_container.graphics.clear();
 							TweenMax.to(dot, 0.5, { y: pheight, ease:Cubic.easeOut, onUpdate:dotNextFrame } );
