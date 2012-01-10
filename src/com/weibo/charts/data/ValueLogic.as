@@ -293,7 +293,7 @@ package com.weibo.charts.data
 		protected function getAxisData(value:Number):Object
 		{
 //			value = roundToPrecision(value, 10);
-			var label:String = value.toString();
+			var label:String = isNaN(value) ? "" : value.toString();
 //			if (chart.valueFun != null) label = chart.valueFun(value);
 			var data:Object = {
 				label:		label,

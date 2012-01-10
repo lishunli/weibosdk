@@ -1,5 +1,6 @@
 package com.weibo.charts.comp
 {
+	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.PieChart;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.PieChartStyle;
@@ -10,7 +11,6 @@ package com.weibo.charts.comp
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
-	import com.weibo.charts.DecorateBase;
 	
 	/**
 	 * 蜘蛛腿方式引线
@@ -115,7 +115,9 @@ package com.weibo.charts.comp
 				
 				var tip:ITipUI = new style.tipUI();
 				var tf:TextFormat = new TextFormat("Arial", null, style.tipColor);
-				tip.setLabel(this.tipFun(dataProvider[i]), tf, true);
+				
+//				getStyle("tipFun").call(null, dataProvider[i]);
+				tip.setLabel(getStyle("tipFun")(dataProvider[i]), tf, true);
 				_tipContainer.addChild(tip as DisplayObject);
 				_arrTips[_arrTips.length] = tip;
 				
@@ -172,7 +174,7 @@ package com.weibo.charts.comp
 				var margin:Number = sector.radius/2 * Math.abs(Math.sin(middleAngle));
 				var lineLength:Number = sector.radius/4 * Math.abs(Math.sin(middleAngle));
 				var x2:Number = area.x + area.width / 2 + Math.cos(middleAngle) * (sector.radius + margin);
-				var y2:Number = tip.y + tip.uiHeight / 2;
+				var y2:Number = tip.y + DisplayObject(tip).height / 2;
 				
 				/*
 				var dot:Shape = new Shape();

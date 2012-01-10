@@ -176,7 +176,7 @@ package com.weibo.core
 			invalidate(ValidateType.STYLES);
 		}
 		
-		protected function get style():Object { return _style; }
+//		protected function get style():Object { return _style; }
 		
 		public function getStyle(style:String):Object
 		{

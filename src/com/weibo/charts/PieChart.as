@@ -15,7 +15,7 @@ package com.weibo.charts
 
 	public class PieChart extends ChartBase
 	{
-		private var _style:PieChartStyle;
+		private var _chartStyle:PieChartStyle;
 		
 		private var _arrBars:Array = [];
 		
@@ -35,10 +35,7 @@ package com.weibo.charts
 		public function PieChart(style:PieChartStyle)
 		{
 			super();
-			_style = style;
-			this.area = new Rectangle(0, 0, style.baseStyle.width, style.baseStyle.height);
-			this.chartWidht = style.baseStyle.width;
-			this.chartHeight = style.baseStyle.height;
+			_chartStyle = style;
 		}
 		
 	//==========================================
@@ -47,12 +44,12 @@ package com.weibo.charts
 		
 		public function get style():PieChartStyle
 		{
-			return _style;
+			return _chartStyle;
 		}
 		
-		override public function set dataProvider(value:Array):void
+		override public function set dataProvider(value:Object):void
 		{
-			area = new Rectangle(0, 0, chartWidht, chartHeight);
+			area = new Rectangle(0, 0, chartWidth, chartHeight);
 			totalNum = 0;
 			for (var i:int = 0; i < value.length; i++)
 			{
@@ -120,15 +117,15 @@ package com.weibo.charts
 				if (dataProvider.length == 0 || totalNum == 0)
 				{
 					startAngle = -Math.PI / 2;
-					sector = new this._style.sectorUI();
+					sector = new this._chartStyle.sectorUI();
 					sector.radius = Math.min(area.width / 2, area.height / 2);
-					sector.radiusIn = _style.radiusIn;
+					sector.radiusIn = _chartStyle.radiusIn;
 					sector.startAngle = startAngle;
 					sector.endAngle = startAngle + Math.PI * 2;
 					sector.x = area.x + area.width / 2;
 					sector.y = area.y + area.height / 2;
-					sector.uiColor = _style.errorColor;
-					sector.outlineThicknesss = _style.borderThicknesss;
+					sector.uiColor = _chartStyle.errorColor;
+					sector.outlineThicknesss = _chartStyle.borderThicknesss;
 					destroy();
 					errorSector = sector as DisplayObject;
 					addChild(errorSector);
@@ -139,13 +136,13 @@ package com.weibo.charts
 					startAngle = -Math.PI / 2;
 					for(var i:int = 0; i < total ; i ++)
 					{
-						sector = new this._style.sectorUI();
+						sector = new this._chartStyle.sectorUI();
 						sector.index = i;
 						sector.radius = Math.min(area.width / 2, area.height / 2);
-						sector.radiusIn = _style.radiusIn;
-						sector.uiColor = _style.arrColors[i %  _style.arrColors.length];
-						sector.outlineColor = _style.arrOutlineColors[i %  _style.arrOutlineColors.length];
-						sector.outlineThicknesss = _style.borderThicknesss;
+						sector.radiusIn = _chartStyle.radiusIn;
+						sector.uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
+						sector.outlineColor = _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length];
+						sector.outlineThicknesss = _chartStyle.borderThicknesss;
 						var sectorAngle:Number = Math.PI * 2 * (dataProvider[i].value / totalNum);
 						var endAngle:Number = startAngle + sectorAngle;
 						sector.startAngle = startAngle;
