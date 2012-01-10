@@ -125,11 +125,12 @@ package com.weibo.charts.data
 			this.minimum = this.dataMininum = min;
 			this.maximum = this.dataMaxinum = max;
 			
-			var tempMajorUnit:Number = (this.maximum - this.minimum) / (length - 1);
+			var tempMajorUnit:Number = (this.maximum - this.minimum) / (length - 2);
 			
 			calculateUnit(tempMajorUnit);
 			
-			adjustMin();adjustMax2(length);
+			adjustMin();
+			adjustMax2(length);
 //			trace(this.minimum, this.maximum, majorUnit);
 //			this.maximum = roundToPrecision(minimum + majorUnit * (length - 1));
 //			trace(this.maximum, this.minimum, "========>", tempMajorUnit, majorUnit)
@@ -269,13 +270,13 @@ package com.weibo.charts.data
 		
 		protected function adjustMax2(length:int):void
 		{
-			var oldMaximum:Number = this.dataMaxinum;
+			var oldMaximum:Number = this.dataMaxinum;trace()
 			this.maximum = roundToPrecision(minimum + majorUnit * (length - 1), 10);
 			/*if (oldMaximum == this.maximum)
 			{
 				this.maximum += majorUnit;
 			}*/
-			this.maximum = roundToPrecision(maximum, 10);
+//			this.maximum = roundToPrecision(maximum, 10);
 		}
 		
 		/** 计算轴数据
