@@ -105,7 +105,7 @@ package com.weibo.charts.data
 			
 			
 			var range:Number = this.maximum - this.minimum;
-			var maxNumLabels:Number = axisLength / (labelLength * 2.0);//暂定
+			var maxNumLabels:Number = axisLength / (labelLength * 3);//暂定
 			var tempMajorUnit:Number = range / maxNumLabels;
 			this.calculateUnit(tempMajorUnit);
 			
@@ -114,38 +114,9 @@ package com.weibo.charts.data
 			this._axisData = this.calculateAxisData();
 		}
 		
-		/**
-		 * 根据数值获取坐标值
-		 * @param data
-		 * @return 
-		 */		
-		public function getPosition(value:Number):Number
-		{
-//			if (!data) return NaN;
-			
-			var range:Number = this.maximum - this.minimum;
-			if(range == 0)
-			{
-				return 0;
-			}
-			
-			var position:Number;
-			//？？？统一坐标
-			/*if (coordinateLogic.reverseAxis)
-			{
-				position = (value - this.minimum) / range * this.axisLength;
-			}
-			else
-			{*/
-				position = (this.maximum - value) / range * this.axisLength;
-//			}
-//			if (minimum != 0)trace(this.minimum, this.maximum, value,position)
-			return position;
-		}
-		
 		
 		/**
-		 * 计算副轴数据，副轴数据唯一入口
+		 * 计算副轴数据，只能用于副轴
 		 * @param min
 		 * @param max
 		 */		
@@ -179,6 +150,35 @@ package com.weibo.charts.data
 					_axisData.push(getAxisData(value));
 				}
 			}*/
+		}
+		
+		/**
+		 * 根据数值获取坐标值
+		 * @param data
+		 * @return 
+		 */		
+		public function getPosition(value:Number):Number
+		{
+//			if (!data) return NaN;
+			
+			var range:Number = this.maximum - this.minimum;
+			if(range == 0)
+			{
+				return 0;
+			}
+			
+			var position:Number;
+			//？？？统一坐标
+			/*if (coordinateLogic.reverseAxis)
+			{
+				position = (value - this.minimum) / range * this.axisLength;
+			}
+			else
+			{*/
+				position = (this.maximum - value) / range * this.axisLength;
+//			}
+//			trace(this.minimum, this.maximum, value,position)
+			return position;
 		}
 		
 		

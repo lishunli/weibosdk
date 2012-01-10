@@ -165,12 +165,14 @@ package com.weibo.charts.data
 			if (isNaN(tempMininum) || isNaN(tempMaxinum))
 			{
 				this.valueLogic.setData(0, 1);
-				this.valueLogic.setSolidData(0, 1, 5);
+				//尚未实现固定长度，这是副轴逻辑
+//				this.valueLogic.setSolidData(0, 1, 5);
 			}
 			else
 			{
 				this.valueLogic.setData(tempMininum, tempMaxinum);
-				this.valueLogic.setSolidData(tempMininum, tempMaxinum, 5);
+				//尚未实现固定长度，这是副轴逻辑
+//				this.valueLogic.setSolidData(tempMininum, tempMaxinum, 5);
 			}
 		}
 		
