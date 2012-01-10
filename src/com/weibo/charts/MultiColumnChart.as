@@ -60,6 +60,7 @@ package com.weibo.charts
 			
 			//标签单元格大小（像素）
 			var unit:Number = this.area.width / axislength;
+//			var 
 			//与边框间隙，参照最左边柱
 			var margin:Number = unit * .2;
 			//原始柱子的宽度
@@ -74,7 +75,7 @@ package com.weibo.charts
 			{
 				invalidate("all");
 				_arrBars = [];
-			}else{
+			} else {
 				for(var i:int = 0; i < axislength ; i ++)
 				{
 					for (var j:int = 0; j < shapenum; j++)

@@ -21,7 +21,8 @@ package com.weibo.charts.comp
 			_style = 
 				{
 					colors:	[0xff0000, 0x59c9d8, 0x89c82d],
-					space:	10
+					space:	10,
+					margin:	30
 				}
 		}
 		
@@ -72,6 +73,7 @@ package com.weibo.charts.comp
 			
 			var colors:Array = getStyle("colors") as Array;
 			var space:Number = getStyle("space") as Number;
+			var margin:Number = getStyle("margin") as Number;
 			var shapenum:int = dataProvider.data.length;
 			var currentX:Number = 0;
 			var currentY:Number = 0;
@@ -85,14 +87,16 @@ package com.weibo.charts.comp
 				iconText.x = currentX;
 				iconText.y = currentY;
 				
-				if (iconText.x + iconText.width > width / 2)
+				
+				currentX += iconText.width + margin;
+				/*if (iconText.x + iconText.width > width / 2)
 				{
 					currentX = 0;
 					currentY += iconText.height + 5;
 				}else
 				{
 					currentX = width / 2;
-				}
+				}*/
 			}
 			
 			container.x = int((chartWidth - container.width) / 2);
