@@ -98,6 +98,7 @@ package com.weibo.charts.comp.axis
 			for (var i:int = 0; i < count; i++)
 			{
 				var dataObject:Object = axisData[i];
+				
 				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
 				label.visible = true;
 				switch(_type)
@@ -153,6 +154,11 @@ package com.weibo.charts.comp.axis
 		
 		private function newLabel(parent:DisplayObjectContainer, text:String = ""):DisplayObject
 		{
+			var txt:String = getStyle("label") as String;
+			if (txt)
+			{
+				text = txt.replace(/{value}/g, text);
+			}
 			var label:TextField = new TextField();
 			if (parent)	parent.addChild(label);
 			label.selectable = false;

@@ -1,7 +1,6 @@
 package com.weibo.charts
 {
 	import com.weibo.charts.data.IAxisLogic;
-	import com.weibo.charts.events.ChartEvent;
 	
 	import flash.geom.Rectangle;
 	

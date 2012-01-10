@@ -4,7 +4,6 @@ package com.weibo.charts
 	import com.greensock.easing.Cubic;
 	import com.weibo.charts.style.ColumnChartStyle;
 	import com.weibo.charts.ui.IBarUI;
-	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.charts.ui.bars.PureBar;
 	import com.weibo.core.UIComponent;
 	
@@ -64,7 +63,7 @@ package com.weibo.charts
 			//与边框间隙，参照最左边柱
 			var margin:Number = unit * .2;
 			//原始柱子的宽度
-			var tempColumnWidth:Number = (unit - margin * 2) / shapenum;
+			var tempColumnWidth:Number = (unit * .6) / shapenum;
 			var space:Number = (shapenum == 1) ? 0 : tempColumnWidth * .1;
 			
 //			if(axislength == 0 && shapenum == 0)
