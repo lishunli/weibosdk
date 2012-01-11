@@ -196,8 +196,8 @@ package com.weibo.core
 		 */
 		public function move(xpos:Number, ypos:Number):void
 		{
-			this.x=Math.round(xpos);
-			this.y=Math.round(ypos);
+			this.x = xpos;
+			this.y = ypos;
 		}
 		
 		/**
@@ -205,7 +205,7 @@ package com.weibo.core
 		 */
 		override public function set x(value:Number):void
 		{
-			super.x = Math.round(value);
+			super.x = value;
 		}
 		
 		/**
@@ -213,7 +213,7 @@ package com.weibo.core
 		 */
 		override public function set y(value:Number):void
 		{
-			super.y = Math.round(value);
+			super.y = value;
 		}
 		
 		/**

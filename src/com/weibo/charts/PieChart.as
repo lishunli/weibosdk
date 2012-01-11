@@ -12,6 +12,7 @@ package com.weibo.charts
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import com.weibo.core.UIComponent;
 
 	public class PieChart extends ChartBase
 	{
@@ -109,7 +110,7 @@ package com.weibo.charts
 		{
 			if(dataProvider != null)
 			{
-			area = new Rectangle(0, 0, chartWidth, chartHeight);
+				area = new Rectangle(0, 0, chartWidth, chartHeight);
 //				_tipContainer.visible = false;
 				var sector:ISectorUI;
 				var startAngle:Number;
@@ -125,8 +126,8 @@ package com.weibo.charts
 					sector.endAngle = startAngle + Math.PI * 2;
 					sector.x = area.x + area.width / 2;
 					sector.y = area.y + area.height / 2;
-					sector.uiColor = _chartStyle.errorColor;
-					sector.outlineThicknesss = _chartStyle.borderThicknesss;
+					(sector as UIComponent).setStyle("color", _chartStyle.errorColor);
+					(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
 					destroy();
 					errorSector = sector as DisplayObject;
 					addChild(errorSector);
@@ -141,9 +142,9 @@ package com.weibo.charts
 						sector.index = i;
 						sector.radius = Math.min(area.width / 2, area.height / 2);
 						sector.radiusIn = _chartStyle.radiusIn;
-						sector.uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
-						sector.outlineColor = _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length];
-						sector.outlineThicknesss = _chartStyle.borderThicknesss;
+						(sector as UIComponent).setStyle("color", _chartStyle.arrColors[i %  _chartStyle.arrColors.length]);
+						(sector as UIComponent).setStyle("outlineColor", _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length]);
+						(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
 						var sectorAngle:Number = Math.PI * 2 * (dataProvider[i].value / totalNum);
 						var endAngle:Number = startAngle + sectorAngle;
 						sector.startAngle = startAngle;

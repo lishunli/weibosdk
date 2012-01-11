@@ -10,7 +10,7 @@ package com.weibo.charts.data
 	 */
 	public class ValueLogic
 	{
-		private var _axisLength:Number = 320;
+		private var _axisLength:Number = 0;
 		private var _labelLength:Number = 20;
 		
 		protected var _dataProvider:Array;
@@ -36,7 +36,7 @@ package com.weibo.charts.data
 		//引用核心图表对象,-----目前只用到了：coordinateLogic.axisType == "vertical"
 //		private var chart:ChartBase;
 		
-		private var secLogic:ValueLogic;
+//		private var secLogic:ValueLogic;
 		
 // ==========================================
 // 构造函数
@@ -84,11 +84,11 @@ package com.weibo.charts.data
 		 */		
 		public function get axisData():Array { return this._axisData; }
 		
-		public function get subAxisData():Array
+		/*public function get subAxisData():Array
 		{
 			if (secLogic == null) return [];
 			return secLogic._axisData;
-		}
+		}*/
 		
 		/**
 		 * 传入原始数据，计算主轴数据
@@ -105,7 +105,7 @@ package com.weibo.charts.data
 			
 			
 			var range:Number = this.maximum - this.minimum;
-			var maxNumLabels:Number = axisLength / (labelLength * 3);//暂定
+			var maxNumLabels:Number = axisLength / (labelLength * 2.5);//暂定
 			var tempMajorUnit:Number = range / maxNumLabels;
 			this.calculateUnit(tempMajorUnit);
 			
@@ -270,7 +270,7 @@ package com.weibo.charts.data
 		
 		protected function adjustMax2(length:int):void
 		{
-			var oldMaximum:Number = this.dataMaxinum;trace()
+			var oldMaximum:Number = this.dataMaxinum;
 			this.maximum = roundToPrecision(minimum + majorUnit * (length - 1), 10);
 			/*if (oldMaximum == this.maximum)
 			{

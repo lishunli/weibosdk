@@ -17,23 +17,24 @@ package com.weibo.charts.style
 		
 		public var tipUI:Class = LabelTip;
 		
-		public var tipFun:Function;
+//		public var tipFun:Function;
 		
 		public var arrColors:Array = [0xc6e17f, 0xf37f7f, 0x80b5d1, 0xefd87f, 0xd59feb];
-		public var outlineColor:Object;
-		public var arrOutlineColors:Array = [0x94cd4c, 0xde5d5d, 0x4999bf, 0xe4bf11, 0xbd80cc];
+//		public var outlineColor:Object;
+//		public var arrOutlineColors:Array = [0x94cd4c, 0xde5d5d, 0x4999bf, 0xe4bf11, 0xbd80cc];
 		
-		public var barAlpha:Number = 0.8;
+//		public var barAlpha:Number = 0.8;
 		
 		public var integer:Boolean = false;
+		public var alwaysShow0:Boolean = false;
 		
 		public function ColumnChartStyle()
 		{
-			tipFun = function tipFun(obj:Object):String
+			/*tipFun = function tipFun(obj:Object):String
 			{
 				var str:String = String(obj.value);
 				return str;
-			}
+			}*/
 		}
 	}
 }

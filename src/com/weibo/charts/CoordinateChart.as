@@ -15,17 +15,17 @@ package com.weibo.charts
 		public function CoordinateChart()
 		{
 			super();
+			axisLogic = new CoordinateLogic(this);
 		}
 		
 		
 		override public function set dataProvider(value:Object):void
 		{
-			if (!axisLogic)
+			/*if (!axisLogic)
 			{
-				axisLogic = new CoordinateLogic(this);
 //				coordinateLogic.integer = _style.integer;
 //				coordinateLogic.alwaysShow0 = true;
-			}
+			}*/
 			
 			area = new Rectangle(0, 0, chartWidth, chartHeight);
 			axisLogic.dataProvider = value;

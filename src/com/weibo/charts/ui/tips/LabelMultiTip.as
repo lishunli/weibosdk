@@ -32,6 +32,14 @@ package com.weibo.charts.ui.tips
 			_t.selectable = false;
 			addChild(_t);
 		}
+		override public function get width():Number
+		{
+			return _t.width;
+		}
+		override public function get height():Number
+		{
+			return _t.height;
+		}
 		override public function get uiWidth():Number { return _t.width; }
 		override public function set uiWidth(value:Number):void
 		{

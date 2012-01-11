@@ -65,7 +65,8 @@ package com.weibo.charts
 		{
 			super.removeEvents();
 //			removeEventListener(ChartEvent.CHART_RESIZE, onChartResize);
-			if(_dataService != null) _dataService.removeEventListener(ChartEvent.CHART_DATA_RESULT, onChartResult);
+			removeEventListener(ChartEvent.CHART_DATA_CHANGED, onChartChange);
+//			if(_dataService != null) _dataService.removeEventListener(ChartEvent.CHART_DATA_RESULT, onChartResult);
 		}
 		
 		public function get dataService():IWeiboChartService { return _dataService; }

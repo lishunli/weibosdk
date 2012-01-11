@@ -28,6 +28,8 @@ package com.weibo.charts
 		{
 			_chartStyle = style;
 			super();
+			this.coordinateLogic.integer = style.integer;
+			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
 		}
 		
 		override protected function create():void
@@ -60,12 +62,14 @@ package com.weibo.charts
 			//标签单元格大小（像素）
 			var unit:Number = this.area.width / axislength;
 //			var 
-			//与边框间隙，参照最左边柱
-			var margin:Number = unit * .2;
 			//原始柱子的宽度
 			var tempColumnWidth:Number = (unit * .6) / shapenum;
+			tempColumnWidth = Math.min(tempColumnWidth, 40);
+			//柱子之间的间隔
 			var space:Number = (shapenum == 1) ? 0 : tempColumnWidth * .1;
-			
+			//与边框间隙，参照最左边柱
+			var margin:Number = unit - (tempColumnWidth - space) * shapenum - space * (shapenum -1);
+			margin /= 2;
 //			if(axislength == 0 && shapenum == 0)
 //			{
 //			destroy();
@@ -90,7 +94,7 @@ package com.weibo.charts
 						bar.width = tempColumnWidth - space;
 						bar.height = 0;
 						bar.setStyle("color", _chartStyle.arrColors[j %  _chartStyle.arrColors.length]);
-						bar.setStyle("borderColor", _chartStyle.outlineColor);
+//						bar.setStyle("borderColor", _chartStyle.outlineColor);
 						bar.setStyle("labelColor", _chartStyle);
 						bar.setStyle("alpha", .6);
 						bar.x = area.x + (i / axislength) * area.width + localXp;

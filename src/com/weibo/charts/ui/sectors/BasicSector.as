@@ -73,22 +73,20 @@ package com.weibo.charts.ui.sectors
 			_basic = null;
 		}
 		
-		override protected function layout():void
-		{
-			draw();
-		}
 		override protected function updateState():void
 		{
 			
 		}
-		private function draw():void
+		
+		override protected function layout():void
 		{
 			_basic.graphics.clear();
 			
 			if (_startAngle >= _endAngle) return;
 			
+			var color:uint = getStyle("color") as uint;
 //			_basic.graphics.lineStyle(outlineThicknesss, outlineColor);
-			_basic.graphics.beginFill(uiColor);
+			_basic.graphics.beginFill(color);
 			
 			var angle:Number;
 			var xpos:Number;

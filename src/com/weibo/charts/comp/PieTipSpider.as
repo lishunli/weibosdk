@@ -66,7 +66,11 @@ package com.weibo.charts.comp
 		
 		override protected function destroy():void
 		{
-			if(_tipContainer != null) while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
+			if(_tipContainer != null)
+			{
+				_tipContainer.graphics.clear();
+				while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
+			}
 			_arrTips = [];
 		}
 		
@@ -76,6 +80,7 @@ package com.weibo.charts.comp
 //			if (target) target.addEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
 //			if (target) target.addEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
 			target.addEventListener(ChartEvent.CHART_TIPS_SHOW, drawTips);
+			target.addEventListener(ChartEvent.CHART_DATA_CHANGED, onChanged);
 		}
 		
 		override protected function removeEvents():void
@@ -83,6 +88,8 @@ package com.weibo.charts.comp
 			super.removeEvents();
 //			if (target) target.removeEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
 //			if (target) target.removeEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
+			target.removeEventListener(ChartEvent.CHART_TIPS_SHOW, drawTips);
+			target.removeEventListener(ChartEvent.CHART_DATA_CHANGED, onChanged);
 		}
 		
 		
@@ -121,7 +128,7 @@ package com.weibo.charts.comp
 				
 				var tip:ITipUI = new style.tipUI();
 				var tf:TextFormat = new TextFormat("Arial", null, style.tipColor);
-				trace(tip)
+				
 //				getStyle("tipFun").call(null, dataProvider[i]);
 				tip.setLabel(getStyle("tipFun").call(null, dataProvider[i]), tf, true);
 				_tipContainer.addChild(tip as DisplayObject);
@@ -234,6 +241,12 @@ package com.weibo.charts.comp
 	//========================================
 	// 事件侦听器
 	//----------------------------------------
+		
+		protected function onChanged(event:ChartEvent):void
+		{
+			destroy();
+//			invalidate("all");trace("---------")
+		}
 		
 		/*private function mouseShowTip(event:MouseEvent):void
 		{

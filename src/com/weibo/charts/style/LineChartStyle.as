@@ -22,8 +22,5 @@ package com.weibo.charts.style
 		
 		public var integer:Boolean = false;
 		
-		public function LineChartStyle()
-		{
-		}
 	}
 }

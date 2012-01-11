@@ -28,6 +28,8 @@ package com.weibo.charts
 		{
 			super();
 			_chartStyle = style;
+			this.coordinateLogic.integer = style.integer;
+			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
 		}
 		
 		override protected function create():void
