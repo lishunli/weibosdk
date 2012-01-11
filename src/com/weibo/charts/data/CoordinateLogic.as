@@ -42,6 +42,7 @@ package com.weibo.charts.data
 		public function set integer(value:Boolean):void
 		{
 			this.valueLogic.integer = value;
+			this.valueSubLogic.integer = value;
 		}
 		
 		public function set alwaysShow0(value:Boolean):void
@@ -98,6 +99,7 @@ package com.weibo.charts.data
 			parseValueData();
 			
 			//处理副轴数据
+			this.valueSubLogic.alwaysShowZero = this.alwaysShowZero;
 			this.valueSubLogic.axisLength = this.valueLogic.axisLength;
 			parseSubValueData();
 			

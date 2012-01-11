@@ -111,7 +111,7 @@ package com.weibo.charts.data
 			
 			
 			this.adjustMin();this.adjustMax();
-			this._axisData = this.calculateAxisData();
+			this._axisData = this.calculateAxisData(true);
 		}
 		
 		
@@ -124,6 +124,7 @@ package com.weibo.charts.data
 		{
 			this.minimum = this.dataMininum = min;
 			this.maximum = this.dataMaxinum = max;
+			checkMinAndMax();
 			
 			var tempMajorUnit:Number = (this.maximum - this.minimum) / (length - 2);
 			
@@ -281,7 +282,7 @@ package com.weibo.charts.data
 		
 		/** 计算轴数据
 		 */		
-		private function calculateAxisData():Array
+		private function calculateAxisData(minlen:Boolean = false):Array
 		{
 			var tempUnit:Number = this.majorUnit;
 			if (tempUnit == 0)
@@ -289,13 +290,27 @@ package com.weibo.charts.data
 				return [];
 			}
 			var value:Number = this.minimum;
+			if (minlen)
+			{
+				var i:int = 0;
+				while (value < this.maximum || i < 3)
+				{
+					i++;
+					value = roundToPrecision(value + tempUnit, 10);
+				}
+				//修正延长的最大值
+				this.maximum = value;
+			}
+			
+			//
+			value = this.minimum;
 			var data:Array = [getAxisData(value)];
 			while (value < this.maximum)
 			{
-//				value += tempUnit;
 				value = roundToPrecision(value + tempUnit, 10);
 				data.push(getAxisData(value));
 			}
+			
 			return data;
 		}
 		
