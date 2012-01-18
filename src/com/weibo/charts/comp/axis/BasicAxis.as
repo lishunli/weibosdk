@@ -4,7 +4,6 @@ package com.weibo.charts.comp.axis
 	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.data.ICoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.charts.style.AxisStyle;
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -19,8 +18,6 @@ package com.weibo.charts.comp.axis
 	{
 		private var _type:String;
 		
-		private var _axisStyle:AxisStyle;
-		
 		private var labelContainer:Sprite;
 		
 		private var realArea:Rectangle;
@@ -29,12 +26,16 @@ package com.weibo.charts.comp.axis
 // 构造函数
 // ------------------------------------------
 		
-		public function BasicAxis(target:ChartBase, type:String, style:AxisStyle = null)
+		public function BasicAxis(target:ChartBase, type:String)
 		{
 			super(target);
 			_type = type;
-			_axisStyle = style;
-			if(_axisStyle == null) _axisStyle = new AxisStyle();
+			_style = {
+				background:	false,
+				bgColor:	0xfbfbfb,
+				thickness:	1,
+				lineColor:		0x000000
+			}
 			addChild(target);
 		}
 		
@@ -89,8 +90,13 @@ package com.weibo.charts.comp.axis
 		{
 			if (!dataProvider) return;
 			
+			var background:Boolean = getStyle("background");
+			var bgColor:uint = getStyle("bgColor") as uint;
+			var color:uint = getStyle("lineColor") as uint;
+			var thickness:Number = getStyle("thickness") as Number;
+			
 			graphics.clear();
-			graphics.lineStyle(_axisStyle.thicknetss, _axisStyle.color);
+			graphics.lineStyle(thickness, color);
 			clearLabels();
 			
 			var count:int = axisData.length;

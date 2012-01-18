@@ -38,7 +38,7 @@ package com.weibo.charts.ui.bars
 			if (_labelTip == null)
 			{
 				_labelTip = new Label();addChild(_labelTip);
-				_labelTip.textColor = 0x515151;
+				_labelTip.color = 0x515151;
 			}
 			if (_highLight == null)
 			{

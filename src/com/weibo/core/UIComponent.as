@@ -70,7 +70,7 @@ package com.weibo.core
 				updateState(); //更新对象状态
 				addEvents(); //给对象添加事件
 			}
-			//样式
+			//样式,是否需要？
 			else if (_validateTypeObject[ValidateType.STYLES])
 			{
 				_validateTypeObject = {};
@@ -173,7 +173,8 @@ package com.weibo.core
 		public function setStyle(style:String, value:Object):void
 		{
 			_style[style] = value;
-			invalidate(ValidateType.STYLES);
+//			invalidate(ValidateType.STYLES);
+			invalidate();
 		}
 		
 //		protected function get style():Object { return _style; }
@@ -186,7 +187,8 @@ package com.weibo.core
 		public function clearStyle(style:String):void
 		{
 			delete _style[style];
-			invalidate(ValidateType.STYLES);
+//			invalidate(ValidateType.STYLES);
+			invalidate();
 		}
 		
 		/**

@@ -4,22 +4,22 @@ package com.weibo.charts.comp.axis
 	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.data.ICoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
-	import com.weibo.charts.style.GridStyle;
 	
 	public class BasicGrid extends DecorateBase
 	{
-		private var _gridStyle:GridStyle;
 		
 // ==========================================
 // 构造函数
 // ------------------------------------------
 		
-		public function BasicGrid(target:ChartBase, style:GridStyle = null)
+		public function BasicGrid(target:ChartBase)
 		{
-			this._gridStyle = style;
-			if(this._gridStyle == null) this._gridStyle = new GridStyle();
 			addChild(target);
 			super(target);
+			_style = {
+				thickness:	1,
+				color:		0xe7e7e7
+			}
 		}
 		
 		
@@ -54,33 +54,48 @@ package com.weibo.charts.comp.axis
 		{
 			if (!target.dataProvider) return;
 			
+			var color:uint = getStyle("color") as uint;
+			var thickness:Number = getStyle("thickness") as Number;
+			var showLabelGrid:Boolean = getStyle("labelGrid");
+			
 			graphics.clear();
-			graphics.lineStyle(this._gridStyle.thicknetss, this._gridStyle.color);
+			graphics.lineStyle(thickness, color);
+			if (getStyle("background"))
+			{
+				graphics.beginFill(getStyle("bgColor") as uint, 1);
+			}
 			graphics.drawRect(area.x, area.y, area.width, area.height);
 			
 			var axisData:Array;
 			var count:int;
 			var dataObject:Object;
-			//纵轴
-			axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelGridData : coordinateLogic.valueData;
-			count= axisData.length;
 			var i:int;
-			for (i = 0; i < count; i++)
+			//画横线
+			if (showLabelGrid || !coordinateLogic.reverseAxis)
 			{
-				dataObject = axisData[i];
-				graphics.moveTo(target.area.x, dataObject.position + target.area.y);
-				graphics.lineTo(target.area.right, dataObject.position + target.area.y);
+				axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelGridData : coordinateLogic.valueData;
+				count= axisData.length;
+				for (i = 0; i < count; i++)
+				{
+					dataObject = axisData[i];
+					graphics.moveTo(target.area.x, dataObject.position + target.area.y);
+					graphics.lineTo(target.area.right, dataObject.position + target.area.y);
+				}
 			}
-			//横轴
-//			trace((coordinateLogic.axisType))
-			axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelData: coordinateLogic.labelGridData;
-			count = axisData.length;
-			for (i = 0; i < count; i++)
+			
+			//画竖线
+			if (showLabelGrid || coordinateLogic.reverseAxis)
 			{
-				dataObject = axisData[i];
-				graphics.moveTo(dataObject.position + target.area.x, target.area.y);
-				graphics.lineTo(dataObject.position + target.area.x, target.area.bottom);
+				axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelData: coordinateLogic.labelGridData;
+				count = axisData.length;
+				for (i = 0; i < count; i++)
+				{
+					dataObject = axisData[i];
+					graphics.moveTo(dataObject.position + target.area.x, target.area.y);
+					graphics.lineTo(dataObject.position + target.area.x, target.area.bottom);
+				}
 			}
+			
 		}
 		
 		private function get coordinateLogic():ICoordinateLogic

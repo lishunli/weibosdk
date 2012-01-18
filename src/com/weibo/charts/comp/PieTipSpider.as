@@ -39,7 +39,7 @@ package com.weibo.charts.comp
 	// 公开方法
 	//------------------------------------------
 		
-		public function get style():PieChartStyle
+		private function get style():PieChartStyle
 		{
 			return (target as PieChart).style;
 		}

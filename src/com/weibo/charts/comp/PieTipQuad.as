@@ -20,7 +20,7 @@ package com.weibo.charts.comp
 	 */	
 	public class PieTipQuad extends DecorateBase
 	{
-		private var _style:PieChartStyle;
+		private var _chartStyle:PieChartStyle;
 		
 		private var _tipContainer:Sprite;
 		
@@ -28,7 +28,7 @@ package com.weibo.charts.comp
 		
 		public function PieTipQuad(target:PieChart)
 		{
-			_style = new PieChartStyle();
+			_chartStyle = new PieChartStyle();
 			addChild(target);
 			super(target);
 		}
@@ -105,15 +105,15 @@ package com.weibo.charts.comp
 			var dot:Shape = new Shape();
 			_tipContainer.addChild(dot);
 			dot.graphics.clear();
-			dot.graphics.beginFill(this._style.lineColor, this._style.lineAlpha);
+			dot.graphics.beginFill(this._chartStyle.lineColor, this._chartStyle.lineAlpha);
 			dot.graphics.drawCircle(x1, y1, 3);
 			
 			_tipContainer.graphics.moveTo(x1, y1);
 			//			_tipContainer.graphics.lineTo(x2, y2);
 			
 			
-			var tip:ITipUI = new _style.tipUI();
-			var tf:TextFormat = new TextFormat("Arial", null, _style.tipColor);
+			var tip:ITipUI = new _chartStyle.tipUI();
+			var tf:TextFormat = new TextFormat("Arial", null, _chartStyle.tipColor);
 			tip.setLabel(this.tipFun(dataProvider[sector.index]), tf);
 			_tipContainer.addChild(tip as DisplayObject);
 			_arrTips[_arrTips.length] = tip;
@@ -172,7 +172,7 @@ package com.weibo.charts.comp
 		private function mouseShowTip(event:MouseEvent):void
 		{
 			_tipContainer.graphics.clear();
-			_tipContainer.graphics.lineStyle(1, this._style.lineColor, this._style.lineAlpha);
+			_tipContainer.graphics.lineStyle(1, this._chartStyle.lineColor, this._chartStyle.lineAlpha);
 			
 			var sector:ISectorUI = event.target as ISectorUI;
 			if (sector) drawOneTip(sector);

@@ -4,11 +4,11 @@ package com.weibo.charts.style
 
 	public class ChartBaseStyle
 	{
-		public var showBorder:Boolean = false;
+//		public var showBorder:Boolean = false;
 		
-		public var borderThickness:int = 1;
+//		public var borderThickness:int = 1;
 		
-		public var borderColor:int = 0x000000;
+//		public var borderColor:int = 0x000000;
 		
 		public var showBg:Boolean = false;
 		

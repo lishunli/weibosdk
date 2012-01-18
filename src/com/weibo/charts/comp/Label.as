@@ -17,10 +17,27 @@ package com.weibo.charts.comp
 		private var _textfield:TextField;
 		private var _format:TextFormat = new TextFormat("Arial", 12, 0x333333);
 		
+//==========================================
+// 构造函数
+//------------------------------------------
+		
 		public function Label(text:String="")
 		{
 			super();
 			_textfield.text = text;
+		}
+		
+//==========================================
+// 公开方法
+//------------------------------------------
+		
+		public function setLabel(value:String, useHTML:Boolean = false):void
+		{
+			if(useHTML) _textfield.htmlText = value;
+			else _textfield.text = value;
+			
+//			invalidate();
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		public function set text(value:String):void
@@ -36,7 +53,8 @@ package com.weibo.charts.comp
 		
 		public function set format(format:TextFormat):void
 		{
-			if (format) _format = format;
+//			if (format == null)
+			_format = format;
 			invalidate();
 		}
 
@@ -54,7 +72,8 @@ package com.weibo.charts.comp
 		public function set font(value:String):void
 		{
 			format.font = value;
-			invalidate();
+//			invalidate();
+			_textfield.defaultTextFormat = format;
 		}
 		
 		public function set size(value:Object):void
@@ -78,29 +97,14 @@ package com.weibo.charts.comp
 		public function set underline(value:Object):void
 		{
 			format.underline = value;
-			invalidate();
+			updateState();
+//			invalidate();
 		}
 		
-		public function set textColor(value:uint):void
+		public function set color(value:uint):void
 		{
 			format.color = value;
 			invalidate();
-		}
-		
-		override protected function create():void
-		{
-			_textfield = new TextField();
-			_textfield.autoSize = TextFieldAutoSize.LEFT;
-			_textfield.selectable = false;
-//			_textfield.multiline = true;
-			
-			addChild(_textfield);
-		}
-		
-		override protected function updateState():void
-		{
-			_textfield.defaultTextFormat = format;
-			_textfield.setTextFormat(format);
 		}
 		
 		override public function setSize(w:Number, h:Number):void
@@ -124,6 +128,26 @@ package com.weibo.charts.comp
 		override public function set height(h:Number):void
 		{
 			
+		}
+		
+//==========================================
+// 内部方法
+//------------------------------------------
+		
+		override protected function create():void
+		{
+			_textfield = new TextField();
+			_textfield.autoSize = TextFieldAutoSize.LEFT;
+			_textfield.selectable = false;
+//			_textfield.multiline = true;
+			
+			addChild(_textfield);
+		}
+		
+		override protected function updateState():void
+		{
+//			_textfield.defaultTextFormat = format;
+			_textfield.setTextFormat(format);
 		}
 	}
 }
