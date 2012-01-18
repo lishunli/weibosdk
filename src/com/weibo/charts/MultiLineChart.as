@@ -34,6 +34,7 @@ package com.weibo.charts
 		{
 			super();
 			_chartStyle = style;
+			this.coordinateLogic.integer = style.integer;
 			this.area = new Rectangle(0,0,width,height);
 		}
 		
