@@ -19,10 +19,16 @@ package com.sina.microblog.events
 		public static const LOGIN_RESULT:String = "loginResult";
 		
 		/**
-		 * 发布微博成功，成功掉要updateStatu接口。
+		 * 发布微博成功，成功调用updateStatu接口。
 		 * result类型为MicroBlogStatus类型 
 		 */		
 		public static const UPDATE_STATUS_RESULT:String = "updateStatusResult";
+		
+		/**
+		 * 成功更新头像，即成功调用avatarUpload接口。
+		 * reslut类型为MicroBlogUser类型
+		 */
+		public static const AVATAR_UPDATE_RESULT:String = "avatarUpdateResult"
 		
 		/**
 		 * 请求所返回后的结果。

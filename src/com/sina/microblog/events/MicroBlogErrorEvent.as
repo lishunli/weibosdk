@@ -16,6 +16,11 @@ package com.sina.microblog.events
 		
 		public static const UPDATE_STATUS_ERROR:String = "updateStatusError";
 		
+		/**
+		 * 调用avatarUpload接口失败
+		 */
+		public static const AVATAR_UPDATE_ERROR:String = "avatarUpdateError";
+		
 		public static const NET_WORK_ERROR:String = "networkError";
 		
 		/**
@@ -26,7 +31,7 @@ package com.sina.microblog.events
 		/**
 		 * 状态值
 		 */
-		public var status:int;
+		public var code:int;
 		
 		public function MicroBlogErrorEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

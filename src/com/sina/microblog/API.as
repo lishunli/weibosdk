@@ -18,6 +18,7 @@ package com.sina.microblog
 		public static const STATUS_UPDATE:String = "2/statuses/update";
 		public static const STATUS_UPLOAD:String = "2/statuses/upload";
 		public static const STATUS_UPLOAD_URL_TEXT:String = "2/statuses/upload_url_text";
+		public static const ACCOUNT_AVATAR_UPLOAD:String = "2/account/avatar/upload";
 		
 		public function API()
 		{

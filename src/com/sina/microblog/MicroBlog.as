@@ -2,6 +2,7 @@ package com.sina.microblog
 {
 	import com.adobe.serialization.json.JSON;
 	import com.sina.microblog.data.MicroBlogStatus;
+	import com.sina.microblog.data.MicroBlogUser;
 	import com.sina.microblog.events.MicroBlogErrorEvent;
 	import com.sina.microblog.events.MicroBlogEvent;
 	import com.sina.microblog.utils.StringEncoders;
@@ -37,7 +38,6 @@ package com.sina.microblog
 		private var _source:String = "";
 		private var _pin:String="";
 		private var _verifier:String = "";
-		//		private var _isTrustDomain:Boolean = true;
 		private var _xauthUser:String = "";
 		private var _xauthPass:String = "";
 		
@@ -54,6 +54,10 @@ package com.sina.microblog
 		private var _proxyURI:String;
 		private var _isSecureDomain:Boolean = true;
 		
+		/**
+		 * 测试数据
+		 * @private
+		 */
 		public var _testData:String;
 		
 		public function MicroBlog()
@@ -107,7 +111,8 @@ package com.sina.microblog
 			if (result["error"]  != null)
 			{
 				var error:MicroBlogErrorEvent = new MicroBlogErrorEvent(processor.errorEvent);
-				error.message="Error " + result.error_code + " : " + result.error + ",description:" + result.error_description;
+				error.message = "Error " + result.error_code + " : " + result.error + ",description:" + result.error_description;
+				error.code = result.error_code;
 				dispatchEvent(error);
 			}else{
 				var e:MicroBlogEvent = new MicroBlogEvent(processor.resultEvent);
@@ -269,6 +274,35 @@ package com.sina.microblog
 			executeRequest(uri, req);
 		}
 		
+		/**
+		 * 更新当前登录用户的头像
+		 * 
+		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件<br/>
+		 * type为<b>MicroBlogEvent.AVATAR_UPDATE_RESULT</b><br/>
+		 * result为一个MicroBlogUser实例.</p>
+		 * 
+		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
+		 * type为<b>MicroBlogErrorEvent.AVATAR_UPDATE_ERROR</b></p>
+		 * 
+		 * @param	pic	头像图片，仅支持JPEG、GIF、PNG格式，图片大小小于5M。
+		 */
+		public function avatarUpload(pic:ByteArray):void
+		{
+			var req:URLRequest;
+			var params:Object = { };
+			var uri:String = API.ACCOUNT_AVATAR_UPLOAD;
+			addProcessor(uri, processUser, MicroBlogEvent.AVATAR_UPDATE_RESULT, MicroBlogErrorEvent.AVATAR_UPDATE_ERROR);
+			if(_isSecureDomain){
+				req = getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, URLRequestMethod.POST);
+			}else{
+				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + URLRequestMethod.POST, params, URLRequestMethod.POST);
+			}
+			var boundary:String=makeBoundary();
+			req.contentType = MULTIPART_FORMDATA + boundary;		
+			req.data = makeMultipartPostData(boundary, "image", picName, pic, req.data);
+			executeRequest(uri, req);
+		}
+		
 		public function callWeiboAPI(uri:String, params:Object = null, method:String = "GET", resultEventType:String = "callWeiboApiResult", errorEventType:String = "callWeiboApiError"):void
 		{
 			addProcessor(uri, processGeneralApi, resultEventType, errorEventType);
@@ -375,6 +409,12 @@ package com.sina.microblog
 		{
 			return new MicroBlogStatus(value);
 		}
+		
+		protected function processUser(value:Object):MicroBlogUser
+		{
+			return new MicroBlogUser(value);
+		}
+		
 		
 		///////////////////////////////////
 		// Util Function
