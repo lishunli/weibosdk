@@ -18,6 +18,8 @@ package com.weibo.charts.style
 		
 		public var lineColors:Array = [0x519ae5];
 		
+		public var lineColor:uint = 0x333333;
+		
 		public var lineThickness:int = 2;
 		
 		public var integer:Boolean = false;

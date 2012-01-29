@@ -13,11 +13,11 @@ package com.weibo.charts.ui
 		function get y():Number;
 		function set y(value:Number):void;
 		
-//		function get uiWidth():Number;
-//		function set uiWidth(value:Number):void;
+		function get uiWidth():Number;
+		function set uiWidth(value:Number):void;
 //		
-//		function get uiHeight():Number;
-//		function set uiHeight(value:Number):void;
+		function get uiHeight():Number;
+		function set uiHeight(value:Number):void;
 		
 //		function get uiColor():Number;
 //		function set uiColor(value:Number):void;

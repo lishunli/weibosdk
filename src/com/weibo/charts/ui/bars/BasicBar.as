@@ -14,7 +14,7 @@ package com.weibo.charts.ui.bars
 	 * 纯色的Bar
 	 * @author yaofei@staff.sina.com.cn
 	 */
-	public class BasicBar extends ChartUIBase implements IBarUI
+	public class BasicBar extends ChartUIBase
 	{
 		private var _tempUIHeight:Number = 2;
 		

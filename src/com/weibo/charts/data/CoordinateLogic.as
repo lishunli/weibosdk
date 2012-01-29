@@ -90,9 +90,25 @@ package com.weibo.charts.data
 
 		public function set dataProvider(value:Object):void
 		{
-			this._dataProvider = value;
+			//复制一份数据?
+			if (!value.axis)
+			{
+				this._dataProvider = {
+					axis:[],
+					data:[{name:"",value:[]}]
+				};
+				for each(var o:Object in value)
+				{
+					_dataProvider.axis.push(o.label);
+					_dataProvider.data[0].value.push(o.value);
+				}
+			}
+			else
+			{
+				this._dataProvider = value;
+			}
 			
-			//!!!!!!!!!!!!!处理多次，待优化
+			
 			//处理主轴数据
 			this.valueLogic.alwaysShowZero = this.alwaysShowZero;
 			this.valueLogic.axisLength = reverseAxis ? _chart.area.width : _chart.area.height;
@@ -106,7 +122,7 @@ package com.weibo.charts.data
 			//处理标签轴数据
 //			this.labelLogic.labelKey = _labelKey;
 			this.labelLogic.axisLength = reverseAxis ? _chart.area.height : _chart.area.width;
-			this.labelLogic.dataProvider = value.axis;
+			this.labelLogic.dataProvider = dataProvider.axis;
 		}
 		
 		public function get dataProvider():Object
@@ -144,7 +160,6 @@ package com.weibo.charts.data
 		 */		
 		private function parseValueData():void
 		{
-			var count:int = this.dataProvider.length;
 			var tempMininum:Number;
 			var tempMaxinum:Number;
 			
@@ -180,7 +195,6 @@ package com.weibo.charts.data
 		
 		private function parseSubValueData():void
 		{
-			var count:int = this.dataProvider.length;
 			var tempMininum:Number;
 			var tempMaxinum:Number;
 			

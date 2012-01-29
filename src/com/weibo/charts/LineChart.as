@@ -11,12 +11,11 @@ package com.weibo.charts
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 
 	public class LineChart extends CoordinateChart
 	{
-		private var _style:LineChartStyle;
+		private var _chartStyle:LineChartStyle;
 		
 		private var _arrDots:Array = [];
 		
@@ -31,10 +30,7 @@ package com.weibo.charts
 		public function LineChart(style:LineChartStyle)
 		{
 			super();
-			_style = style;
-			this.area = new Rectangle(0,0,style.baseStyle.width, style.baseStyle.height);
-			this.chartWidht = style.baseStyle.width;
-			this.chartHeight = _style.baseStyle.height;
+			_chartStyle = style;
 		}
 		
 		override protected function create():void
@@ -72,7 +68,7 @@ package com.weibo.charts
 			var space:Number = this.area.width / total;
 			if(_arrDots.length == 0)
 			{
-				_container.graphics.lineStyle(_style.lineThickness, _style.lineColor);		
+				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.arrColors[0]);		
 				
 				var pheight:Number;
 				var tx:Number;
@@ -81,10 +77,10 @@ package com.weibo.charts
 				
 				for(var i:int = 0; i < total ; i ++)
 				{
-					pheight = Math.round(this.coordinateLogic.getPosition(dataProvider[i]));
+					pheight = Math.round(this.coordinateLogic.getPosition(dataProvider[i].value));
 					tx = Math.round(area.x +  space * 0.5  + i * space);
-					dot = new _style.dotUI();
-					ChartUIBase(dot).uiColor = _style.arrColors[i %  _style.arrColors.length];
+					dot = new _chartStyle.dotUI();
+					ChartUIBase(dot).uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
 					DisplayObject(dot).x = tx;				
 					DisplayObject(dot).y = area.bottom;
 					TweenMax.to(dot, 0.5,{y: pheight, onUpdate:doitNextFrame});
@@ -94,11 +90,11 @@ package com.weibo.charts
 					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OVER, overDot);
 					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OUT, outDot);
 					
-					if(_style.baseStyle.tipType != 0)
+					if(_chartStyle.baseStyle.tipType != 0)
 					{			
-						tip = new _style.tipUI();
-						tip.setLabel(this.tipFun(dataProvider[i]), new TextFormat("Arial", null, 0xffffff));
-						ChartUIBase(tip).uiColor = _style.arrColors[i %  _style.arrColors.length];
+						tip = new _chartStyle.tipUI();
+						tip.setLabel(this.getStyle("tipFun")(dataProvider[i]), new TextFormat("Arial", null, 0xffffff));
+						ChartUIBase(tip).uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
 //						tip.show(_tipContainer, tx, pheight, this.area);							
 						_tipContainer.addChild(tip as DisplayObject);
 						_arrTips[_arrTips.length] = tip;
@@ -110,9 +106,9 @@ package com.weibo.charts
 					for(i = 0; i < _dataProvider.length; i ++)
 					{
 						dot = _arrDots[i];
-						pheight = this.coordinateLogic.getPosition(dataProvider[i]);
+						pheight = this.coordinateLogic.getPosition(dataProvider[i].value);
 						tip = _arrTips[i];
-						tip.setLabel(this.tipFun(dataProvider[i]));
+						tip.setLabel(this.getStyle("tipFun")(dataProvider[i]));
 						_container.graphics.clear();
 						tx = Math.round(area.x +  space * 0.5  + i * space);
 						if (i == 0) _tweens = TweenMax.to(dot, 1, { x: tx, ease:Cubic.easeOut} );
@@ -155,7 +151,7 @@ package com.weibo.charts
 		{
 			removeEventListener(Event.ENTER_FRAME, tweenning);
 			_container.graphics.clear();
-			_container.graphics.lineStyle(_style.lineThickness, _style.lineColor);		
+			_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColor);		
 			var dot:DisplayObject = _arrDots[0];
 			_container.graphics.moveTo(dot.x, dot.y);
 			for(var i:int = 1, len:int = _arrDots.length; i < len; i ++)

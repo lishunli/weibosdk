@@ -13,7 +13,7 @@ package com.weibo.charts.style
 		 */		
 //		public var baseStyle:CharBaseStyle = new CharBaseStyle();
 		
-		public var barUI:Class = PureBar;
+		public var barUI:Class = BasicBar;
 		
 		public var tipUI:Class = LabelTip;
 		

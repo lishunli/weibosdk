@@ -63,15 +63,15 @@ package com.weibo.charts
 				{
 					for(var i:int = 0; i < total ; i ++)
 					{
-						var bar:IBarUI = new _chartStyle.barUI();
+						var bar:ChartUIBase = new _chartStyle.barUI();
 						var uiWidth:Number = space * 0.5;
 						if (uiWidth < 4) uiWidth = 4;
 						ChartUIBase(bar).uiWidth = space * 0.6;
-						var pheight:Number = this.coordinateLogic.getPosition(dataProvider[i]);
+						var pheight:Number = this.coordinateLogic.getPosition(dataProvider[i].value);
 						ChartUIBase(bar).uiHeight = Math.round(area.bottom - pheight);
 						ChartUIBase(bar).uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
-						ChartUIBase(bar).uiAlpha = _chartStyle.barAlpha;
-						ChartUIBase(bar).outlineColor = _chartStyle.outlineColor ? uint(_chartStyle.outlineColor) : _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length];
+//						ChartUIBase(bar).uiAlpha = _chartStyle.barAlpha;
+//						ChartUIBase(bar).outlineColor = _chartStyle.outlineColor ? uint(_chartStyle.outlineColor) : _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length];
 						DisplayObject(bar).x = area.x +  space * 0.5  + i * space;
 						DisplayObject(bar).y = area.bottom;
 						_container.addChild(bar as DisplayObject);
@@ -79,8 +79,8 @@ package com.weibo.charts
 						if(_chartStyle.tipType != 0)
 						{
 							var tip:ITipUI = new _chartStyle.tipUI();
-							tip.setLabel(this._chartStyle.tipFun(dataProvider[i]), new TextFormat("Arial", null, ChartUIBase(bar).outlineColor));
-							tip.show(_tipContainer, DisplayObject(bar).x - tip.uiWidth * 0.5 - 2, area.bottom ,this.area);	
+							tip.setLabel(this.getStyle("tipFun")(dataProvider[i]), new TextFormat("Arial", null, ChartUIBase(bar).outlineColor));
+//							tip.show(_tipContainer, DisplayObject(bar).x - tip.width * 0.5 - 2, area.bottom ,this.area);	
 							TweenMax.to(tip, 1, {y: Math.round(pheight - DisplayObject(tip).height), ease:Cubic.easeOut});
 							_arrTips[_arrTips.length] = tip;
 						}
@@ -91,14 +91,18 @@ package com.weibo.charts
 						for(i = 0; i < _dataProvider.length; i ++)
 						{
 							bar = _arrBars[i];
-							pheight = this.coordinateLogic.getPosition(dataProvider[i]);
+							pheight = this.coordinateLogic.getPosition(dataProvider[i].value);
 							ChartUIBase(bar).uiHeight = Math.round(area.bottom - pheight);
-							tip = _arrTips[i];
-							tip.setLabel(this._chartStyle.tipFun(dataProvider[i]));
 							var xpos:Number = area.x + space * 0.5 + i * space;
 							TweenMax.to(bar, 1, {x: xpos, ease:Cubic.easeOut});
-							TweenMax.to(tip, 1, {x: xpos - tip.uiWidth * 0.5, ease:Cubic.easeOut});
-							TweenMax.to(tip, 1, {y: Math.round(pheight - DisplayObject(tip).height), ease:Cubic.easeOut});
+							
+							if(_chartStyle.tipType != 0)
+							{
+								tip = _arrTips[i];
+								tip.setLabel(this.getStyle("tipFun")(dataProvider[i]));
+	//							TweenMax.to(tip, 1, {x: xpos - tip.uiWidth * 0.5, ease:Cubic.easeOut});
+								TweenMax.to(tip, 1, {y: Math.round(pheight - DisplayObject(tip).height), ease:Cubic.easeOut});
+							}
 						}
 					}else{
 						//全部重置、下一次渲染
