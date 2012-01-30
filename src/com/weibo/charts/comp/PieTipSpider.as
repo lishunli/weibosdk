@@ -10,6 +10,7 @@ package com.weibo.charts.comp
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.text.TextFormat;
 	
 	/**
@@ -157,16 +158,30 @@ package com.weibo.charts.comp
 			repareTips(rightTips);
 		}
 		
+		/**
+		 * 通过分别对正序和倒序两次检查，确保文字彼此不遮挡
+		 * @param tips
+		 */		
 		private function repareTips(tips:Array):void
 		{
 			var i:int;
-			for (i = 0; i < tips.length - 2; i++)
+			//从上至下遍历
+			for (i = 0; i < tips.length - 1; i++)
 			{
 				if (tips[i+1].tip.y < tips[i].tip.y + tips[i].tip.height)
 				{
 					tips[i+1].tip.y = tips[i].tip.y + tips[i].tip.height;
 				}
 			}
+			
+			//保证最下面一个在面面里
+			var rightBottom:Point = _tipContainer.globalToLocal(new Point(stage.stageWidth, stage.stageHeight));
+			if (tips[i].tip.y > rightBottom.y - tips[i].tip.height)
+			{
+				tips[i].tip.y = rightBottom.y - tips[i].tip.height;
+			}
+			
+			//从下至上遍历
 			for (i = tips.length - 1; i > 1; i--)
 			{
 				if (tips[i-1].tip.y > tips[i].tip.y - tips[i-1].tip.height)

@@ -27,11 +27,11 @@ package com.weibo.charts.comp.axis
 // 公开方法
 // ------------------------------------------
 		
-		override public function setSize(w:Number, h:Number):void
+		/*override public function setSize(w:Number, h:Number):void
 		{
 			super.setSize(w, h);
 			target.setSize(w, h);
-		}
+		}*/
 		
 		
 // ==========================================

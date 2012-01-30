@@ -88,6 +88,7 @@ package com.weibo.charts
 						var h:Number = this.coordinateLogic.getPosition(dataProvider.data[j].value[i], type);
 						h = area.height - h;
 						var bar:UIComponent = new PureBar();
+						bar.setStyle("label", getStyle("label"));
 						(bar as IBarUI).label = dataProvider.data[j].value[i];
 						bar.y = area.bottom;
 //						bar.setSize(tempColumnWidth - space, h);

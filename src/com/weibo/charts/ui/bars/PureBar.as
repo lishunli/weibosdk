@@ -30,6 +30,11 @@ package com.weibo.charts.ui.bars
 		
 		public function set label(value:String):void
 		{
+			var txt:String = getStyle("label") as String;
+			if (txt)
+			{
+				value = txt.replace(/{value}/g, value);
+			}
 			_labelTip.text = value;
 		}
 		

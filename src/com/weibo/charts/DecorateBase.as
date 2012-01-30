@@ -80,6 +80,17 @@ package com.weibo.charts
 			target.chartHeight = value;
 		}
 		
+		/**
+		 * 保证任何装饰者都可以使用此方法设置宽高
+		 * @param w
+		 * @param h
+		 */		
+		override public function setSize(w:Number, h:Number):void
+		{
+			super.setSize(w, h);
+			target.setSize(w, h);
+		}
+		
 		
 	//========================================
 	// 内部方法
