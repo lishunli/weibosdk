@@ -58,6 +58,7 @@ package com.weibo.charts.comp.axis
 			if (!labelContainer)		labelContainer = new Sprite();
 			if (!this.contains(labelContainer))		this.addChild(labelContainer);
 		}
+		
 		override protected function destroy():void
 		{
 			if (labelContainer)
@@ -106,22 +107,18 @@ package com.weibo.charts.comp.axis
 				var dataObject:Object = axisData[i];
 				
 				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
-				label.visible = true;
+//				label.visible = true;
 				switch(_type)
 				{
 					case AxisType.LABEL_AXIS:
 					{
-//						graphics.moveTo(dataObject.position + area.x, area.y);
-//						graphics.lineTo(dataObject.position + area.x, area.bottom);
 						label.x = dataObject.position + area.x - label.width/2;
 						label.y = area.bottom + 5;
-						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
+//						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
 						break;
 					}
 					case AxisType.VALUE_AXIS:
 					{
-//						graphics.moveTo(area.x, dataObject.position + area.y);
-//						graphics.lineTo(area.right, dataObject.position + area.y);
 						label.x = area.x - label.width;
 						label.y = dataObject.position + area.y - label.height/2;
 						break;

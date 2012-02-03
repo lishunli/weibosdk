@@ -35,13 +35,13 @@ package com.weibo.controls
 		
 		public function Image(showBack:Boolean = false, autoSize:Boolean = true)
 		{
-			_width = 100;
-			_height = 100;
+			_width = 0;
+			_height = 0;
 			super();
 			_autoSize = autoSize;
 			this.showBack = showBack;
 			
-			setSize(100, 100);
+			if(!autoSize) setSize(100, 100);
 //			addEventListener(Component.DRAW, beforDraw);
 		}
 		
