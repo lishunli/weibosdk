@@ -1,6 +1,6 @@
 package com.sina.microblog
 {
-	import com.adobe.serialization.json.JSON;
+	import com.adobe.serialization.json.JSONDecoder;
 	import com.sina.microblog.data.MicroBlogStatus;
 	import com.sina.microblog.data.MicroBlogUser;
 	import com.sina.microblog.events.MicroBlogErrorEvent;
@@ -15,7 +15,6 @@ package com.sina.microblog
 	import flash.net.LocalConnection;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
@@ -60,6 +59,8 @@ package com.sina.microblog
 		 */
 		public var _testData:String;
 		
+		private var _jsonFunName:String = "decode";
+		
 		public function MicroBlog()
 		{
 			
@@ -79,7 +80,11 @@ package com.sina.microblog
 			if (result.length > 0)
 			{
 				_xauthPass = _xauthUser = "";
-				var resultObj:Object = JSON.decode(result);
+				
+//				var resultObj:Object = JSON.decode(result); //为了避开Fp11和之前的冲突		
+				var decoder:JSONDecoder = new JSONDecoder( result )
+				var resultObj:Object = decoder.getValue();
+				
 				this.access_token = resultObj["access_token"];
 				this.expires_in = resultObj["expires_in"];
 				this.refresh_token = resultObj["refresh_token"];	
@@ -102,11 +107,13 @@ package com.sina.microblog
 				ioError.message = "The network error";
 				dispatchEvent(ioError);
 				return;
-			}			
+			}
 			
 			_testData = dataStr;
 			
-			var result:Object = JSON.decode(dataStr);
+			var decoder:JSONDecoder = new JSONDecoder( dataStr );//为了避开Fp11和之前的冲突
+			var result:Object = decoder.getValue();
+			
 			if (result["error"]  != null)
 			{
 				var error:MicroBlogErrorEvent = new MicroBlogErrorEvent(processor.errorEvent);
