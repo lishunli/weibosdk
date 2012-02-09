@@ -68,7 +68,6 @@ package com.sina.microblog
 		///////////////////////////////////
 		// Event Handler
 		///////////////////////////////////
-
 		/**
 		 * 客户端登陆成功的事件 
 		 * @param e
@@ -244,7 +243,7 @@ package com.sina.microblog
 			if(pic != null){
 				if(picName == "") picName = "pic.jpg";
 				uri = API.STATUS_UPLOAD;
-				addProcessor(uri, processStatus, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
+				addProcessor(uri, processGeneralApi, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
 				if(_isSecureDomain){
 					req = getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, URLRequestMethod.POST);
 				}else{
@@ -261,7 +260,7 @@ package com.sina.microblog
 				}else{
 					req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + URLRequestMethod.POST, params, URLRequestMethod.POST);
 				}
-				addProcessor(uri, processStatus, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
+				addProcessor(uri, processGeneralApi, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
 			}else{
 				uri = API.STATUS_UPDATE;
 				if(_isSecureDomain){
@@ -269,7 +268,7 @@ package com.sina.microblog
 				}else{
 					req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + URLRequestMethod.POST, params, URLRequestMethod.POST);
 				}
-				addProcessor(uri, processStatus, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
+				addProcessor(uri, processGeneralApi, MicroBlogEvent.UPDATE_STATUS_RESULT, MicroBlogErrorEvent.UPDATE_STATUS_ERROR);
 			}
 			executeRequest(uri, req);
 		}
@@ -299,7 +298,7 @@ package com.sina.microblog
 			}
 			var boundary:String=makeBoundary();
 			req.contentType = MULTIPART_FORMDATA + boundary;		
-			req.data = makeMultipartPostData(boundary, "image", picName, pic, req.data);
+			req.data = makeMultipartPostData(boundary, "image", "", pic, req.data);
 			executeRequest(uri, req);
 		}
 		
@@ -307,11 +306,34 @@ package com.sina.microblog
 		{
 			addProcessor(uri, processGeneralApi, resultEventType, errorEventType);
 			if (params == null) var params:Object = { };
-			if(_isSecureDomain){
-				executeRequest(uri, getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, method));
-			}else{				
-				executeRequest(uri, getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + method, params, URLRequestMethod.POST));
+			var baKey:String = "";
+			for(var key:* in params)
+			{
+				if(params[key] is ByteArray)
+				{
+					baKey = key;
+					break;
+				}
 			}
+			if(baKey != "")
+			{
+				var file:ByteArray = params[key];
+				delete(params[key]);
+			}
+			
+			var req:URLRequest;
+			if(_isSecureDomain){
+				req = getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, method);
+			}else{
+				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + method, params, URLRequestMethod.POST);
+			}
+			if(baKey != "")
+			{
+				var boundary:String=makeBoundary();
+				req.contentType = MULTIPART_FORMDATA + boundary;		
+				req.data = makeMultipartPostData(boundary, baKey, "demo.jpg", file, req.data);
+			}		
+			executeRequest(uri, req);
 		}
 		
 		///////////////////////////////////
@@ -434,6 +456,7 @@ package com.sina.microblog
 		
 		protected function getMicroBlogRequest(url:String, params:Object = null, requestMethod:String="GET"):URLRequest
 		{
+			requestMethod = String(requestMethod).toUpperCase();
 			var req:URLRequest;		
 			if ( null == params ) params = { };		
 			params.source = this._consumerKey;		
@@ -449,8 +472,7 @@ package com.sina.microblog
 					val[key] = params[key];
 				}
 				req.data = val;
-			}
-			
+			}	
 			req.method=requestMethod;
 			return req;
 		}
