@@ -26,7 +26,7 @@ package com.weibo.charts.style
 //		public var barAlpha:Number = 0.8;
 		
 		public var integer:Boolean = false;
-		public var alwaysShow0:Boolean = false;
+		public var alwaysShow0:Boolean = true;
 		
 		public function ColumnChartStyle()
 		{

@@ -30,6 +30,8 @@ package com.weibo.charts
 			super();
 			this.coordinateLogic.integer = style.integer;
 			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
+			
+			setStyle("maxBarWidth", 30);
 		}
 		
 		override protected function create():void
@@ -61,10 +63,11 @@ package com.weibo.charts
 			
 			//标签单元格大小（像素）
 			var unit:Number = this.area.width / axislength;
-//			var 
+			
+			var maxWidth:Number = getStyle("maxBarWidth") as Number;
 			//原始柱子的宽度
 			var tempColumnWidth:Number = (unit * .6) / shapenum;
-			tempColumnWidth = Math.min(tempColumnWidth, 40);
+			tempColumnWidth = Math.min(tempColumnWidth, maxWidth);
 			//柱子之间的间隔
 			var space:Number = (shapenum == 1) ? 0 : tempColumnWidth * .1;
 			//与边框间隙，参照最左边柱

@@ -103,8 +103,13 @@ package com.weibo.charts.data
 			this.maximum = this.dataMaxinum = max;
 			this.checkMinAndMax();
 			
-			
 			var range:Number = this.maximum - this.minimum;
+			/*if (true)//addMore
+			{
+				range *= 1.1;
+				this.maximum = roundToPrecision(this.minimum + range, 10);
+			}*/
+			
 			var maxNumLabels:Number = axisLength / (labelLength * 2.5);//暂定
 			var tempMajorUnit:Number = range / maxNumLabels;
 			this.calculateUnit(tempMajorUnit);
@@ -124,6 +129,14 @@ package com.weibo.charts.data
 		{
 			this.minimum = this.dataMininum = min;
 			this.maximum = this.dataMaxinum = max;
+			
+			//返回空数据
+			if (isNaN(min) || isNaN(max))
+			{
+				this._axisData = [];
+				return;
+			}
+			
 			checkMinAndMax();
 			
 			var tempMajorUnit:Number = (this.maximum - this.minimum) / (length - 2);
@@ -229,7 +242,7 @@ package com.weibo.charts.data
 				this.maximum = this.maximum + 1;
 			}
 			
-			if (this.alwaysShowZero)
+			if (this.alwaysShowZero && this.minimum > 0)
 			{
 				this.minimum = 0;
 			}
@@ -290,6 +303,8 @@ package com.weibo.charts.data
 				return [];
 			}
 			var value:Number = this.minimum;
+			
+			//主轴创建前的准备工作，包括：修正，最少3段
 			if (minlen)
 			{
 				var i:int = 0;
@@ -298,11 +313,20 @@ package com.weibo.charts.data
 					i++;
 					value = roundToPrecision(value + tempUnit, 10);
 				}
-				//修正延长的最大值
-				this.maximum = value;
+				
+				//适当延长最大值
+				if (this.dataMaxinum > value - tempUnit/2)
+				{
+					this.maximum = roundToPrecision(value + tempUnit, 10);
+				}
+				//修正最大值
+				else
+				{
+					this.maximum = value;
+				}
 			}
 			
-			//
+			//开始创建轴数据（数组）
 			value = this.minimum;
 			var data:Array = [getAxisData(value)];
 			while (value < this.maximum)

@@ -164,31 +164,35 @@ package com.weibo.charts.comp
 		 */		
 		private function repareTips(tips:Array):void
 		{
-			var i:int;
-			//从上至下遍历
-			for (i = 0; i < tips.length - 1; i++)
+			if (tips.length > 1)
 			{
-				if (tips[i+1].tip.y < tips[i].tip.y + tips[i].tip.height)
+				var i:int;
+				//从上至下遍历
+				for (i = 0; i < tips.length - 1; i++)
 				{
-					tips[i+1].tip.y = tips[i].tip.y + tips[i].tip.height;
+					if (tips[i+1].tip.y < tips[i].tip.y + tips[i].tip.height)
+					{
+						tips[i+1].tip.y = tips[i].tip.y + tips[i].tip.height;
+					}
+				}
+				
+				//保证最下面一个在面面里
+				var rightBottom:Point = _tipContainer.globalToLocal(new Point(stage.stageWidth, stage.stageHeight));
+				if (tips[i].tip.y > rightBottom.y - tips[i].tip.height)
+				{
+					tips[i].tip.y = rightBottom.y - tips[i].tip.height;
+				}
+				
+				//从下至上遍历
+				for (i = tips.length - 1; i > 1; i--)
+				{
+					if (tips[i-1].tip.y > tips[i].tip.y - tips[i-1].tip.height)
+					{
+						tips[i-1].tip.y = tips[i].tip.y - tips[i-1].tip.height;
+					}
 				}
 			}
 			
-			//保证最下面一个在面面里
-			var rightBottom:Point = _tipContainer.globalToLocal(new Point(stage.stageWidth, stage.stageHeight));
-			if (tips[i].tip.y > rightBottom.y - tips[i].tip.height)
-			{
-				tips[i].tip.y = rightBottom.y - tips[i].tip.height;
-			}
-			
-			//从下至上遍历
-			for (i = tips.length - 1; i > 1; i--)
-			{
-				if (tips[i-1].tip.y > tips[i].tip.y - tips[i-1].tip.height)
-				{
-					tips[i-1].tip.y = tips[i].tip.y - tips[i-1].tip.height;
-				}
-			}
 			
 			for (i = 0; i < tips.length; i++)
 			{

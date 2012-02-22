@@ -91,8 +91,10 @@ package com.weibo.charts.comp
 			var space:Number = getStyle("space") as Number;
 			var margin:Number = getStyle("margin") as Number;
 			var labelColor:uint = getStyle("labelColor") as uint;
-			var tf1:TextFormat = new TextFormat("Arial", null, labelColor, null, null, true);
-			var tf2:TextFormat = new TextFormat("Arial", null, labelColor, null, null, false);
+			var activeColor:uint = getStyle("activeColor") as uint;
+			
+			var tf1:TextFormat = new TextFormat("Arial", null, labelColor, null, null, false);
+			var tf2:TextFormat = new TextFormat("Arial", null, activeColor, null, null, false);
 			
 			var shapenum:int = dataProvider.length;
 			var currentX:Number = getStyle("left") as Number;
@@ -102,8 +104,8 @@ package com.weibo.charts.comp
 				var iconText:IconText = new IconText();
 				container.addChild(iconText);
 				iconText.setStyle("color", colors[i]);
-				iconText.setStyle("labelColor", getStyle("labelColor"));
-				iconText.setStyle("activeColor", getStyle("activeColor"));
+//				iconText.setStyle("labelColor", getStyle("labelColor"));
+//				iconText.setStyle("activeColor", getStyle("activeColor"));
 				iconText.setStyle("labelFormat", tf1);
 				iconText.setStyle("activeFormat", tf2);
 				iconText.setLabel(getStyle("tipFun").call(null, dataProvider[i]), true);
@@ -235,11 +237,11 @@ class IconText extends UIComponent
 	{
 		if (actived)
 		{
-			label.setLabel(_text, getStyle("labelFormat") as TextFormat, true);
+			label.setLabel(_text, getStyle("activeFormat") as TextFormat, true);
 		}
 		else
 		{
-			label.setLabel(_text, getStyle("activeFormat") as TextFormat, true);
+			label.setLabel(_text, getStyle("labelFormat") as TextFormat, true);
 		}
 		label.x = 15;
 		

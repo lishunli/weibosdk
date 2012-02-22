@@ -106,7 +106,7 @@ package com.weibo.charts.comp.axis
 			{
 				var dataObject:Object = axisData[i];
 				
-				var label:DisplayObject = newLabel(labelContainer, dataObject.label);
+				var label:DisplayObject = newLabel(labelContainer, dataObject);
 //				label.visible = true;
 				switch(_type)
 				{
@@ -155,10 +155,16 @@ package com.weibo.charts.comp.axis
 			return null;
 		}
 		
-		private function newLabel(parent:DisplayObjectContainer, text:String = ""):DisplayObject
+		private function newLabel(parent:DisplayObjectContainer, dataObject:Object):DisplayObject
 		{
+			var text:String = dataObject.label;
+			var valueFun:Function = getStyle("valueFun") as Function;
 			var txt:String = getStyle("label") as String;
-			if (txt)
+			if (valueFun != null)
+			{
+				text = valueFun(dataObject.value);
+			}
+			else if (txt)
 			{
 				text = txt.replace(/{value}/g, text);
 			}
@@ -206,14 +212,14 @@ package com.weibo.charts.comp.axis
 			var count:int = axisData.length;
 			var realArea:Rectangle = area.clone();//new Rectangle(0, 0, chartWidht, chartHeight);
 			//var lastArea:Rectangle = area.clone();//realArea.clone();
-			var maxLength:Number = 20;
+			var maxLength:Number = 2;
 			var leftBottom:Point = new Point(area.left, area.bottom);
 			var tempRect:Rectangle = area.clone(); 
 			for (var i:int = 0; i < count; i++)
 			{
 				var dataObject:Object = axisData[i];
 				var label:DisplayObject;
-				label = newLabel(null, dataObject.label);
+				label = newLabel(null, dataObject);
 				switch(_type)
 				{
 					case AxisType.LABEL_AXIS:
@@ -236,9 +242,14 @@ package com.weibo.charts.comp.axis
 				if (_type == AxisType.LABEL_AXIS)
 				{
 					maxLength = Math.max(label.width, maxLength);
-					coordinateLogic.labelLength = maxLength;
 				}
 			}
+			//是否隐藏遮盖的文本
+			if (_type == AxisType.LABEL_AXIS && false)
+			{
+				coordinateLogic.labelLength = maxLength;
+			}
+			
 			realArea.left = leftBottom.x;
 			realArea.bottom = leftBottom.y;
 			realArea.right = tempRect.right;

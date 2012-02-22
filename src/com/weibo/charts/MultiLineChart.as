@@ -137,6 +137,7 @@ package com.weibo.charts
 							pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
 							tx = Math.round(area.x +  _space * 0.5  + i * _space);
 							_container.graphics.clear();
+							TweenMax.to(dot, 0.5, { x: tx, ease:Cubic.easeOut } );
 							TweenMax.to(dot, 0.5, { y: pheight, ease:Cubic.easeOut, onUpdate:dotNextFrame } );
 						}
 						
