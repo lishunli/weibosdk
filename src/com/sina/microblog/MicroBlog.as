@@ -18,6 +18,7 @@ package com.sina.microblog
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.Endian;
@@ -215,7 +216,8 @@ package com.sina.microblog
 				url += "&state=" + _localConnectionChanel; //登陆的频道会通过这个state传回callback.htm页面中。并使用localconnection去连接
 				url += "&display=flash";	
 				url += "&response_type=token";
-				if (ExternalInterface.available)
+				
+				if (ExternalInterface.available && (Capabilities.playerType == "ActiveX" || Capabilities.playerType == "PlugIn"))
 				{
 					try {
 						ExternalInterface.call("window.open", url,'newwindow','height=353,width=570,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
