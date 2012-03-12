@@ -141,7 +141,7 @@ package com.sina.microblog.data
 		 */ 
 		public function MicroBlogUser(user:Object)
 		{
-			this.id = user["id"];
+			if(user.id) this.id = user["id"];
 			this.screenName = user["screen_name"];
 			this.name = user["name"];
 			this.province = uint(user["province"]);

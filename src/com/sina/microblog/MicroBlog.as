@@ -89,7 +89,7 @@ package com.sina.microblog
 				this.access_token = resultObj["access_token"];
 				this.expires_in = resultObj["expires_in"];
 				this.refresh_token = resultObj["refresh_token"];	
-				//				trace(access_token + "::" + expires_in + "::" + refresh_token);			
+				//trace(access_token + "::" + expires_in + "::" + refresh_token);			
 				var loginEvt:MicroBlogEvent = new MicroBlogEvent(MicroBlogEvent.LOGIN_RESULT);
 				loginEvt.result = {"access_token": this.access_token, "expires_in": this.expires_in, "refresh_token": this.refresh_token};
 				dispatchEvent(loginEvt);
@@ -159,7 +159,7 @@ package com.sina.microblog
 		 */		
 		public function loginResult(access_token:String, expires_in:String, refresh_token:String):void
 		{			
-			//			trace(access_token + "::" + expires_in + "::" + refresh_token);	
+			//trace(access_token + "::" + expires_in + "::" + refresh_token);	
 			_access_token = access_token;
 			_expires_in = expires_in;
 			_refresh_token = refresh_token;
@@ -220,7 +220,7 @@ package com.sina.microblog
 				if (ExternalInterface.available && (Capabilities.playerType == "ActiveX" || Capabilities.playerType == "PlugIn"))
 				{
 					try {
-						ExternalInterface.call("window.open", url,'newwindow','height=353,width=570,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
+						ExternalInterface.call("window.open", url,'newwindow','height=450,width=600,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no, z-look=yes, alwaysRaised=yes');
 					}catch (err:Error) {
 						navigateToURL(new URLRequest(url), "_blank");
 					}
@@ -588,7 +588,6 @@ package com.sina.microblog
 			}
 			boundary="---------------------------" + boundary;
 			return boundary;
-		}
-		
+		}		
 	}
 }
