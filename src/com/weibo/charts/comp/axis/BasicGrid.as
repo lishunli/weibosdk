@@ -2,7 +2,7 @@ package com.weibo.charts.comp.axis
 {
 	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.DecorateBase;
-	import com.weibo.charts.data.ICoordinateLogic;
+	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	
 	public class BasicGrid extends DecorateBase
@@ -57,6 +57,7 @@ package com.weibo.charts.comp.axis
 			var color:uint = getStyle("color") as uint;
 			var thickness:Number = getStyle("thickness") as Number;
 			var showLabelGrid:Boolean = getStyle("labelGrid");
+			var alignLabel:Boolean = getStyle("alignLabel");
 			
 			graphics.clear();
 			graphics.lineStyle(thickness, color);
@@ -86,7 +87,18 @@ package com.weibo.charts.comp.axis
 			//画竖线
 			if (showLabelGrid || coordinateLogic.reverseAxis)
 			{
-				axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelData: coordinateLogic.labelGridData;
+				if (coordinateLogic.reverseAxis)
+				{
+					axisData = coordinateLogic.labelData;
+				}
+				else if (alignLabel)
+				{
+					axisData = coordinateLogic.labelData;
+				}
+				else
+				{
+					axisData = coordinateLogic.labelGridData;
+				}
 				count = axisData.length;
 				for (i = 0; i < count; i++)
 				{
@@ -98,9 +110,9 @@ package com.weibo.charts.comp.axis
 			
 		}
 		
-		private function get coordinateLogic():ICoordinateLogic
+		private function get coordinateLogic():CoordinateLogic
 		{
-			return this.axisLogic as ICoordinateLogic;
+			return this.axisLogic as CoordinateLogic;
 		}
 		
 		

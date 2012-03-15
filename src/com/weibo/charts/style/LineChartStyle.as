@@ -14,7 +14,6 @@ package com.weibo.charts.style
 		
 		public var dotUI:Class = BasicDot;
 		
-		public var arrColors:Array = [0x519ae5];
 		
 		public var lineColors:Array = [0x519ae5];
 		

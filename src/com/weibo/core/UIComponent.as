@@ -1,7 +1,5 @@
 package com.weibo.core
 {
-	import com.weibo.charts.MultiColumnChart;
-	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -237,6 +235,7 @@ package com.weibo.core
 			if (w == width) return;
 			_width = w;
 			invalidate("size");
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		/**
@@ -248,6 +247,7 @@ package com.weibo.core
 			if (h == height) return;
 			_height = h;
 			invalidate("size");
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		/**
@@ -262,6 +262,7 @@ package com.weibo.core
 			_width = w;
 			_height = h;
 			invalidate("size");
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 	}

@@ -24,7 +24,7 @@ package com.weibo.charts.events
 		 * 表示TIP是否带Label
 		 * data为Boolean
 		 */		
-		public static const CHART_LABELAXIS_SHOW:String = "chartLabelAxisShow";
+//		public static const CHART_LABELAXIS_SHOW:String = "chartLabelAxisShow";
 		
 		/**
 		 * 通知显示TIP

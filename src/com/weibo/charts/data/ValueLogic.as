@@ -10,6 +10,8 @@ package com.weibo.charts.data
 	 */
 	public class ValueLogic
 	{
+		private var coordinate:CoordinateLogic;
+		
 		private var _axisLength:Number = 0;
 		private var _labelLength:Number = 20;
 		
@@ -24,7 +26,7 @@ package com.weibo.charts.data
 		//单元格的单位数值
 		protected var majorUnit:Number;
 		//是否总显示0
-		public var alwaysShowZero:Boolean;
+//		public var alwaysShowZero:Boolean;
 		//是否在坐标轴上总显示整数
 		public var integer:Boolean = false;
 		
@@ -42,9 +44,9 @@ package com.weibo.charts.data
 // 构造函数
 // ------------------------------------------
 		
-		public function ValueLogic()
+		public function ValueLogic(coordinate:CoordinateLogic)
 		{
-//			this.chart = chart;chart:ChartBase
+			this.coordinate = coordinate;
 			
 			super();
 		}
@@ -201,11 +203,6 @@ package com.weibo.charts.data
 // 私有方法
 // ------------------------------------------
 		
-		/*private function get coordinateLogic():ICoordinateLogic
-		{
-			return this.chart.axisLogic as ICoordinateLogic;
-		}*/
-		
 		protected function calculateUnit(tempMajorUnit:Number):void
 		{
 			
@@ -242,7 +239,7 @@ package com.weibo.charts.data
 				this.maximum = this.maximum + 1;
 			}
 			
-			if (this.alwaysShowZero && this.minimum > 0)
+			if (this.coordinate.alwaysShow0 && this.minimum > 0)
 			{
 				this.minimum = 0;
 			}
@@ -315,7 +312,7 @@ package com.weibo.charts.data
 				}
 				
 				//适当延长最大值
-				if (this.dataMaxinum > value - tempUnit/2)
+				if (coordinate.addMore && this.dataMaxinum > value - tempUnit/2)
 				{
 					this.maximum = roundToPrecision(value + tempUnit, 10);
 				}

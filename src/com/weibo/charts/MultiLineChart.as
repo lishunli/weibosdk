@@ -5,14 +5,10 @@ package com.weibo.charts
 	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
-	import com.weibo.charts.ui.ITipUI;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
 
 	public class MultiLineChart extends CoordinateChart
 	{
@@ -35,6 +31,8 @@ package com.weibo.charts
 			super();
 			_chartStyle = style;
 			this.coordinateLogic.integer = style.integer;
+//			this.coordinateLogic.alwaysShow0 = false;
+			this.coordinateLogic.touchSide = true;
 			this.area = new Rectangle(0,0,width,height);
 		}
 		
@@ -80,11 +78,11 @@ package com.weibo.charts
 			var lineLen:int = dataAry.length;
 			
 			var lineDots:int = dataProvider["axis"].length;
-			_space = this.area.width / lineDots;
+			_space = coordinateLogic.touchSide ? this.area.width/(lineDots-1) : this.area.width/lineDots;
 			
-			trace("~~~~~~~~~~~");
-			trace("_dotArr.length :: " + _dotArr.length);
-			trace("~~~~~~~~~~~");
+//			trace("~~~~~~~~~~~");
+//			trace("_dotArr.length :: " + _dotArr.length);
+//			trace("~~~~~~~~~~~");
 			
 			if(_dotArr.length == 0)
 			{
@@ -104,7 +102,8 @@ package com.weibo.charts
 						type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
 						//pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i]));
 						pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
-						tx = Math.round(area.x +  _space * 0.5  + i * _space);
+						tx = Math.round(area.x + i * _space);
+						if (!coordinateLogic.touchSide) tx += _space * 0.5;
 						dot = new _chartStyle.dotUI();
 						ChartUIBase(dot).uiColor = _chartStyle.lineColors[j];
 						DisplayObject(dot).x = tx;				
@@ -135,7 +134,8 @@ package com.weibo.charts
 							dot = _dotArr[j][i] as IDotUI;
 							type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
 							pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
-							tx = Math.round(area.x +  _space * 0.5  + i * _space);
+							tx = Math.round(area.x + i * _space);
+							if (!coordinateLogic.touchSide) tx += _space * 0.5;
 							_container.graphics.clear();
 							TweenMax.to(dot, 0.5, { x: tx, ease:Cubic.easeOut } );
 							TweenMax.to(dot, 0.5, { y: pheight, ease:Cubic.easeOut, onUpdate:dotNextFrame } );

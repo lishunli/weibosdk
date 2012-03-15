@@ -30,6 +30,7 @@ package com.weibo.charts
 			super();
 			this.coordinateLogic.integer = style.integer;
 			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
+			this.coordinateLogic.addMore = true;
 			
 			setStyle("maxBarWidth", 30);
 		}

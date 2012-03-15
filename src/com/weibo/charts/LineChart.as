@@ -5,7 +5,9 @@ package com.weibo.charts
 	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
+	import com.weibo.charts.ui.ITip;
 	import com.weibo.charts.ui.ITipUI;
+	import com.weibo.core.UIComponent;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -64,11 +66,18 @@ package com.weibo.charts
 		{
 			if (dataProvider == null) return;
 			
-			var total:int = dataProvider.length;
+			var tipFun:Function = this.getStyle("tipFun") as Function;
+			var tipStr:String = "";
+			
+			//轴数据
+			var axisData:Array = coordinateLogic.dataProvider.axis;
+			//实际单条数据（此单线图表只显示第一条）
+			var valueData:Array = coordinateLogic.dataProvider.data[0]["value"];
+			var total:int = axisData.length;
 			var space:Number = this.area.width / total;
 			if(_arrDots.length == 0)
 			{
-				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.arrColors[0]);		
+				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColors[0]);		
 				
 				var pheight:Number;
 				var tx:Number;
@@ -77,43 +86,53 @@ package com.weibo.charts
 				
 				for(var i:int = 0; i < total ; i ++)
 				{
-					pheight = Math.round(this.coordinateLogic.getPosition(dataProvider[i].value));
+					pheight = Math.round(this.coordinateLogic.getPosition(valueData[i]));
 					tx = Math.round(area.x +  space * 0.5  + i * space);
 					dot = new _chartStyle.dotUI();
-					ChartUIBase(dot).uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
-					DisplayObject(dot).x = tx;				
+					ChartUIBase(dot).uiColor = _chartStyle.lineColors[i % (_chartStyle.lineColors.length-1)];
+					DisplayObject(dot).x = tx;
 					DisplayObject(dot).y = area.bottom;
 					TweenMax.to(dot, 0.5,{y: pheight, onUpdate:doitNextFrame});
 					_container.addChild(dot as DisplayObject);
 					_arrDots[_arrDots.length] = dot;
 					
-					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OVER, overDot);
-					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OUT, outDot);
+//					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OVER, overDot);
+//					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OUT, outDot);
 					
 					if(_chartStyle.baseStyle.tipType != 0)
-					{			
+					{
 						tip = new _chartStyle.tipUI();
-						tip.setLabel(this.getStyle("tipFun")(dataProvider[i]), new TextFormat("Arial", null, 0xffffff));
-						ChartUIBase(tip).uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
-//						tip.show(_tipContainer, tx, pheight, this.area);							
+						tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
+						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
+						ChartUIBase(tip).uiColor = _chartStyle.lineColors[i %  (_chartStyle.lineColors.length-1)];
+//						tip.show(_tipContainer, tx, pheight, this.area);
 						_tipContainer.addChild(tip as DisplayObject);
 						_arrTips[_arrTips.length] = tip;
+						//显示TIP
+						tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
 					}
 				}
 			}else{
-				if(_dataProvider.length == _arrDots.length)
+				if(total == _arrDots.length)
 				{
-					for(i = 0; i < _dataProvider.length; i ++)
+					for(i = 0; i < total; i ++)
 					{
 						dot = _arrDots[i];
-						pheight = this.coordinateLogic.getPosition(dataProvider[i].value);
+						pheight = this.coordinateLogic.getPosition(valueData[i]);
 						tip = _arrTips[i];
-						tip.setLabel(this.getStyle("tipFun")(dataProvider[i]));
+						tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
+						tip.setLabel(tipStr);
+						tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
+						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
 						_container.graphics.clear();
 						tx = Math.round(area.x +  space * 0.5  + i * space);
 						if (i == 0) _tweens = TweenMax.to(dot, 1, { x: tx, ease:Cubic.easeOut} );
 						else TweenMax.to(dot, 1, {x: tx, ease:Cubic.easeOut});
 						TweenMax.to(dot, 1, {y: Math.round(pheight), ease:Cubic.easeOut, onUpdate:doitNextFrame});
+						
+						//显示TIP
+						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
+						tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
 					}
 				}else {
 					if (_tweens != null) {
@@ -141,6 +160,10 @@ package com.weibo.charts
 			var tip:ITipUI = _arrTips[id];
 			tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
 		}
+		private function showTip(tip:ITipUI):void
+		{
+			
+		}
 		
 		private function doitNextFrame():void
 		{
@@ -151,13 +174,21 @@ package com.weibo.charts
 		{
 			removeEventListener(Event.ENTER_FRAME, tweenning);
 			_container.graphics.clear();
-			_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColor);		
-			var dot:DisplayObject = _arrDots[0];
-			_container.graphics.moveTo(dot.x, dot.y);
-			for(var i:int = 1, len:int = _arrDots.length; i < len; i ++)
+			_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColors[0]);		
+			
+			for(var i:int = 0; i < _arrDots.length; i ++)
 			{
-				dot = _arrDots[i];
-				_container.graphics.lineTo(dot.x, dot.y);
+				var dot:DisplayObject = _arrDots[i];
+				if (i == 0)
+					_container.graphics.moveTo(dot.x, dot.y);
+				else
+					_container.graphics.lineTo(dot.x, dot.y);
+				
+				if(_chartStyle.baseStyle.tipType != 0)
+				{
+					var tip:ITipUI = _arrTips[i];
+					UIComponent(tip).move(DisplayObject(dot).x,  DisplayObject(dot).y);
+				}
 			}
 			drawShadow();
 		}

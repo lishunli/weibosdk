@@ -9,30 +9,28 @@ package com.weibo.charts.data
 	 */	
 	public class LabelLogic
 	{
-		public var axisLength:Number = 450;
-		public var labelLength:Number = 30;
+		internal var axisLength:Number = 450;
+		internal var labelLength:Number = 30;
 		
-		private var _labelKey:String;
-		private var _axisData:Array;
-		private var _gridData:Array;
+		protected var _axisData:Array;
+		protected var _gridData:Array;
 		
-		private var chart:ChartBase;
+		protected var coordinate:CoordinateLogic;
 		
 // ==========================================
 // 构造函数
 // ------------------------------------------
 		
-		public function LabelLogic(chart:ChartBase)
+		public function LabelLogic(coordinate:CoordinateLogic)
 		{
-			this.chart = chart;
+			this.coordinate = coordinate;
 			super();
 		}
 		
 // ==========================================
 // 公开方法
 // ------------------------------------------
-		public function set labelKey(value:String):void { this._labelKey = value; }
-		public function get labelKey():String { return this._labelKey; }
+		
 		public function get axisData():Array { return this._axisData; }
 		public function get gridData():Array { return this._gridData; }
 
@@ -43,29 +41,35 @@ package com.weibo.charts.data
 		public function set dataProvider(data:Array):void
 		{
 			var count:int = data.length;
-			var unit:Number = axisLength / count;
+			var unit:Number = coordinate.touchSide ? axisLength/(count-1) : axisLength/count;
 			_axisData = [];
 			_gridData = [];
 			
-			var quotient:int = 1;//为避免文字重叠设置的标签出现的间隔。默认为1，即：每个标签都显示。
-			if (labelLength > unit)
-			{
+			//为避免文字重叠，设置的标签出现的间隔。默认为1，即：每个标签都显示。
+			var quotient:int = 1;
+			coordinate.autoLabel = labelLength > unit;
+//			chart.dispatchEvent(new ChartEvent(ChartEvent.CHART_LABELAXIS_SHOW, labelLength > unit, true));
+			//如果标签过长，而按需要分配
+			if (coordinate.autoLabel)
 				quotient = Math.ceil(labelLength / unit);
-			}
-			chart.dispatchEvent(new ChartEvent(ChartEvent.CHART_LABELAXIS_SHOW, labelLength > unit, true));
+			
 			
 			var i:int;
 			var startI:int = (quotient + count % quotient - 1) / 2;
+			var position:Number;
 			for (i = 0; i < count; i++)
 			{
 				//获取Label文字
 //				var label:String = (data[i] is String) ? data[i] :data[i][labelKey];
 //				if (chart.labelFun != null) label = chart.labelFun(label);
 				
-				if ((i - startI) % quotient == 0){
+				if ((i - startI) % quotient == 0)
+				{
+					position = coordinate.touchSide ? i/(count-1)*axisLength : i/count*axisLength;
+					if (!coordinate.touchSide) position += unit / 2;
 					_axisData.push({
 					label:		data[i],
-					position:	(i / count) * axisLength + unit / 2
+					position:	position
 					});
 				}
 			}
@@ -73,7 +77,7 @@ package com.weibo.charts.data
 			for (i = 1; i < count; i++)
 			{
 				_gridData.push({
-					position:	(i / count) * axisLength
+					position:	coordinate.touchSide ? i/(count-1)*axisLength : i/count*axisLength
 				});
 			}
 			

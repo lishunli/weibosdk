@@ -110,7 +110,7 @@ package com.weibo.charts.comp
 				iconText.setStyle("activeFormat", tf2);
 				iconText.setLabel(getStyle("tipFun").call(null, dataProvider[i]), true);
 				
-				iconText.x = currentX;
+//				iconText.x = currentX;
 				iconText.y = currentY;
 				
 //				trace(currentX, currentY);
@@ -125,7 +125,7 @@ package com.weibo.charts.comp
 				}*/
 			}
 			
-//			container.x = (chartWidth - container.width) / 2;
+			container.x = (chartWidth - container.width) / 2;
 			container.y = chartHeight + space;
 		}
 		

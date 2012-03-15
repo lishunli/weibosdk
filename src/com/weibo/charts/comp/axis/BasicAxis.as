@@ -2,7 +2,7 @@ package com.weibo.charts.comp.axis
 {
 	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.DecorateBase;
-	import com.weibo.charts.data.ICoordinateLogic;
+	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	
 	import flash.display.DisplayObject;
@@ -106,7 +106,7 @@ package com.weibo.charts.comp.axis
 			{
 				var dataObject:Object = axisData[i];
 				
-				var label:DisplayObject = newLabel(labelContainer, dataObject);
+				var label:DisplayObject = newLabel(labelContainer, dataObject, i == count-1);
 //				label.visible = true;
 				switch(_type)
 				{
@@ -133,9 +133,9 @@ package com.weibo.charts.comp.axis
 			}
 		}
 		
-		private function get coordinateLogic():ICoordinateLogic
+		private function get coordinateLogic():CoordinateLogic
 		{
-			return this.axisLogic as ICoordinateLogic;
+			return this.axisLogic as CoordinateLogic;
 		}
 		
 		private function get axisData():Array
@@ -155,10 +155,11 @@ package com.weibo.charts.comp.axis
 			return null;
 		}
 		
-		private function newLabel(parent:DisplayObjectContainer, dataObject:Object):DisplayObject
+		private function newLabel(parent:DisplayObjectContainer, dataObject:Object, showUnit:Boolean = false):DisplayObject
 		{
 			var text:String = dataObject.label;
 			var valueFun:Function = getStyle("valueFun") as Function;
+			var unit:String = getStyle("unit") as String;
 			var txt:String = getStyle("label") as String;
 			if (valueFun != null)
 			{
@@ -167,6 +168,10 @@ package com.weibo.charts.comp.axis
 			else if (txt)
 			{
 				text = txt.replace(/{value}/g, text);
+			}
+			if (unit && showUnit)
+			{
+				text = text + "/" + unit;
 			}
 			var label:TextField = new TextField();
 			if (parent)	parent.addChild(label);
@@ -219,7 +224,7 @@ package com.weibo.charts.comp.axis
 			{
 				var dataObject:Object = axisData[i];
 				var label:DisplayObject;
-				label = newLabel(null, dataObject);
+				label = newLabel(null, dataObject, i == count-1);
 				switch(_type)
 				{
 					case AxisType.LABEL_AXIS:
@@ -245,10 +250,8 @@ package com.weibo.charts.comp.axis
 				}
 			}
 			//是否隐藏遮盖的文本
-			if (_type == AxisType.LABEL_AXIS && false)
-			{
+			if (_type == AxisType.LABEL_AXIS && getStyle("autoHide"))
 				coordinateLogic.labelLength = maxLength;
-			}
 			
 			realArea.left = leftBottom.x;
 			realArea.bottom = leftBottom.y;

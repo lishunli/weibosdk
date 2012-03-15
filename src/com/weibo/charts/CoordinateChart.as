@@ -33,9 +33,9 @@ package com.weibo.charts
 			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));
 		}
 		
-		protected function get coordinateLogic():ICoordinateLogic
+		protected function get coordinateLogic():CoordinateLogic
 		{
-			return this.axisLogic as ICoordinateLogic;
+			return this.axisLogic as CoordinateLogic;
 		}
 	}
 }

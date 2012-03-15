@@ -52,22 +52,6 @@ package com.weibo.charts
 		{
 			target.axisLogic = value;
 		}
-		/*
-		override public function get labelFun():Function {return target.labelFun}
-		override public function set labelFun(value:Function):void{
-			target.labelFun = value;
-		}
-		
-		override public function get valueFun():Function {return target.valueFun}
-		override public function set valueFun(value:Function):void{
-			target.valueFun = value;
-		}
-		
-//		override public function get tipFun():Function {return target.tipFun}
-		override public function set tipFun(value:Function):void{
-			target.tipFun = value;
-		}
-		*/
 		override public function get chartWidth():Number{return target.chartWidth;}
 		override public function set chartWidth(value:Number):void
 		{

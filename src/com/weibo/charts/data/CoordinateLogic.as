@@ -7,7 +7,7 @@ package com.weibo.charts.data
 	 * 处理与坐标第有关的各个类之间、与系统的关系
 	 * @author yaofei
 	 */	
-	public class CoordinateLogic implements ICoordinateLogic
+	public class CoordinateLogic implements IAxisLogic
 	{
 		private var _dataProvider:Object;
 		private var _chart:ChartBase;
@@ -18,7 +18,18 @@ package com.weibo.charts.data
 		private var valueSubLogic:ValueLogic;
 		private var labelLogic:LabelLogic;
 		
-		private var alwaysShowZero:Boolean;
+		
+		//---------设置参数（Value）----------
+		//是否总显示“0”
+		public var alwaysShow0:Boolean;
+		//是否添加余
+		public var addMore:Boolean;
+		
+		//---------设置参数（Label）----------
+		//是否按长度自动隐藏标签
+		public var autoLabel:Boolean;
+		//数据项是否顶到两端：false：柱图分割法；true：曲线分割法
+		public var touchSide:Boolean;
 		
 	//===========================================
 	// 构造函数
@@ -30,14 +41,15 @@ package com.weibo.charts.data
 		public function CoordinateLogic(chart:ChartBase)
 		{
 			this._chart = chart;
-			this.valueLogic = new ValueLogic();
-			this.valueSubLogic = new ValueLogic();
-			this.labelLogic = new LabelLogic(chart);
+			this.valueLogic = new ValueLogic(this);
+			this.valueSubLogic = new ValueLogic(this);
+			this.labelLogic = new LabelLogic(this);
 		}
 		
 	//===========================================
 	// 公开方法
 	//-------------------------------------------
+		
 		
 		public function set integer(value:Boolean):void
 		{
@@ -45,10 +57,6 @@ package com.weibo.charts.data
 			this.valueSubLogic.integer = value;
 		}
 		
-		public function set alwaysShow0(value:Boolean):void
-		{
-			this.alwaysShowZero = value;
-		}
 		
 		public function get reverseAxis():Boolean { return this._axisType; }
 		public function set reverseAxis(value:Boolean):void
@@ -110,12 +118,12 @@ package com.weibo.charts.data
 			
 			
 			//处理主轴数据
-			this.valueLogic.alwaysShowZero = this.alwaysShowZero;
+//			this.valueLogic.alwaysShowZero = this.alwaysShowZero;
 			this.valueLogic.axisLength = reverseAxis ? _chart.area.width : _chart.area.height;
 			parseValueData();
 			
 			//处理副轴数据
-			this.valueSubLogic.alwaysShowZero = this.alwaysShowZero;
+//			this.valueSubLogic.alwaysShowZero = this.alwaysShowZero;
 			this.valueSubLogic.axisLength = this.valueLogic.axisLength;
 			parseSubValueData();
 			

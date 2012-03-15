@@ -198,6 +198,11 @@ package com.weibo.charts.ui.tips
 			showEffect();
 		}
 		
+		override public function move(x:Number, y:Number):void
+		{
+			super.move(x, y-9);
+		}
+		
 		protected function showEffect():void
 		{
 			this.scaleX = this.scaleY = 0;

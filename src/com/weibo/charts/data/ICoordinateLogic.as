@@ -23,7 +23,6 @@ package com.weibo.charts.data
 		 */		
 		function get reverseAxis():Boolean;
 		
-		
 		/**
 		 * 标签轴文字的宽（高）度，单位：像素
 		 * @param value Number
@@ -35,21 +34,6 @@ package com.weibo.charts.data
 		 * @param value Number
 		 */		
 		function set valueLength(value:Number):void;
-		
-		
-		/*
-		 * 指定数据中表示标签的KEY值，默认为：“label”
-		 * @param value String
-		 */		
-//		function set labelKey(value:String):void;
-		
-		/*
-		 * 指定数据中表示数值的KEY值，默认为：“value”
-		 * @param value String
-		 */		
-//		function set valueKey(value:String):void;
-		
-		
 		
 		/**
 		 * 数值轴是否显示整数
