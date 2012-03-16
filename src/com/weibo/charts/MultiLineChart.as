@@ -160,7 +160,7 @@ package com.weibo.charts
 			{
 				color = _chartStyle.lineColors[j];
 				_container.graphics.lineStyle(_chartStyle.lineThickness, color);
-				if (j == 0)
+				if (j == 0 && getStyle("showShadow"))
 				{
 					_container.graphics.beginFill(color, 0.3);
 				}

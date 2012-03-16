@@ -98,7 +98,10 @@ package com.weibo.charts
 //						bar.setSize(tempColumnWidth - space, h);
 						bar.width = tempColumnWidth - space;
 						bar.height = 0;
-						bar.setStyle("color", _chartStyle.arrColors[j %  _chartStyle.arrColors.length]);
+						if (_chartStyle.useDifferentColor)
+							bar.setStyle("color", _chartStyle.arrColors[i %  _chartStyle.arrColors.length]);
+						else
+							bar.setStyle("color", _chartStyle.arrColors[j %  _chartStyle.arrColors.length]);
 //						bar.setStyle("borderColor", _chartStyle.outlineColor);
 						bar.setStyle("labelColor", _chartStyle);
 						bar.setStyle("alpha", .6);

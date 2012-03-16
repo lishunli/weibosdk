@@ -89,7 +89,7 @@ package com.weibo.charts
 					pheight = Math.round(this.coordinateLogic.getPosition(valueData[i]));
 					tx = Math.round(area.x +  space * 0.5  + i * space);
 					dot = new _chartStyle.dotUI();
-					ChartUIBase(dot).uiColor = _chartStyle.lineColors[i % (_chartStyle.lineColors.length-1)];
+					ChartUIBase(dot).uiColor = _chartStyle.lineColors[i % (_chartStyle.lineColors.length)];
 					DisplayObject(dot).x = tx;
 					DisplayObject(dot).y = area.bottom;
 					TweenMax.to(dot, 0.5,{y: pheight, onUpdate:doitNextFrame});
@@ -104,7 +104,7 @@ package com.weibo.charts
 						tip = new _chartStyle.tipUI();
 						tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
 						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
-						ChartUIBase(tip).uiColor = _chartStyle.lineColors[i %  (_chartStyle.lineColors.length-1)];
+						ChartUIBase(tip).uiColor = _chartStyle.lineColors[i %  (_chartStyle.lineColors.length)];
 //						tip.show(_tipContainer, tx, pheight, this.area);
 						_tipContainer.addChild(tip as DisplayObject);
 						_arrTips[_arrTips.length] = tip;

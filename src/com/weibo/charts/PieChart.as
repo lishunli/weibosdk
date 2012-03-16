@@ -176,8 +176,8 @@ package com.weibo.charts
 					_arrBars.push(sector);
 					
 					var angle:Number = (endAngle + startAngle) / 2;
-					DisplayObject(sector).x = area.x + area.width / 2 + Math.cos(angle) * 50;
-					DisplayObject(sector).y = area.y + area.height / 2 + Math.sin(angle) * 50;
+					DisplayObject(sector).x = area.x + area.width / 2 + Math.cos(angle) * 15;
+					DisplayObject(sector).y = area.y + area.height / 2 + Math.sin(angle) * 15;
 					var xpos:Number = area.x + area.width / 2;
 					var ypos:Number = area.y + area.height / 2;
 					
