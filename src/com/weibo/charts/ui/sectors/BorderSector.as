@@ -113,8 +113,10 @@ package com.weibo.charts.ui.sectors
 		
 		private function calculateCircle():void
 		{
-			_basic.graphics.lineStyle(1, ColorUtil.adjustBrightness(uiColor, -20), 1);
-			_basic.graphics.beginFill(uiColor, .8);
+			var color:uint = getStyle("color") as uint;
+			
+			_basic.graphics.lineStyle(1, ColorUtil.adjustBrightness(color, -20), 1);
+			_basic.graphics.beginFill(color, .8);
 			_basic.graphics.drawCircle(0, 0, radius);
 			_basic.graphics.drawCircle(0, 0, radiusIn);
 			_basic.graphics.endFill();
@@ -128,6 +130,8 @@ package com.weibo.charts.ui.sectors
 		
 		private function calculateSector():void
 		{
+			var color:uint = getStyle("color") as uint;
+			
 			var side:Number = outlineThicknesss;
 			var angle:Number = Math.asin(side / radius);
 			var sOutAngle:Number = this.startAngle + angle;
@@ -137,8 +141,8 @@ package com.weibo.charts.ui.sectors
 			var eInAngle:Number = this.endAngle - angle;
 			
 			
-			_basic.graphics.lineStyle(1, ColorUtil.adjustBrightness(uiColor, -20), 1);
-			_basic.graphics.beginFill(uiColor, .8);
+			_basic.graphics.lineStyle(1, ColorUtil.adjustBrightness(color, -20), 1);
+			_basic.graphics.beginFill(color, .8);
 			drawSector(_basic.graphics, sOutAngle, eOutAngle, sInAngle, eInAngle, radius, radiusIn);
 			
 			var margin:Number = 2;

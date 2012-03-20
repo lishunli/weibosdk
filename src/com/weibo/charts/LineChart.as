@@ -5,7 +5,6 @@ package com.weibo.charts
 	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
-	import com.weibo.charts.ui.ITip;
 	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.core.UIComponent;
 	
@@ -42,7 +41,8 @@ package com.weibo.charts
 				_container =  new Sprite(); 
 				addChild(_container);
 			}
-			if(_tipContainer == null){
+			if(_tipContainer == null)
+			{
 				_tipContainer = new Sprite();
 				_tipContainer.mouseEnabled = _tipContainer.mouseChildren = false;
 				addChild(_tipContainer);
@@ -55,6 +55,8 @@ package com.weibo.charts
 			_arrTips = [];
 			if(_container != null)
 			{
+				_container.removeEventListener(MouseEvent.ROLL_OVER, overDot);
+				_container.removeEventListener(MouseEvent.ROLL_OUT, outDot);
 				_container.graphics.clear();
 				while(_container.numChildren > 0) _container.removeChildAt(0);
 			}
@@ -77,6 +79,12 @@ package com.weibo.charts
 			var space:Number = this.area.width / total;
 			if(_arrDots.length == 0)
 			{
+				//0：不显示,1:一直显示，2：需要触发
+				if (_chartStyle.baseStyle.tipType == 2)
+				{
+					_container.addEventListener(MouseEvent.ROLL_OVER, overDot);
+					_container.addEventListener(MouseEvent.ROLL_OUT, outDot);
+				}
 				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColors[0]);		
 				
 				var pheight:Number;
@@ -110,6 +118,7 @@ package com.weibo.charts
 						_arrTips[_arrTips.length] = tip;
 						//显示TIP
 						tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
+						DisplayObject(tip).visible = (_chartStyle.baseStyle.tipType == 1);
 					}
 				}
 			}else{
@@ -133,6 +142,7 @@ package com.weibo.charts
 						//显示TIP
 						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
 						tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
+						DisplayObject(tip).visible = (_chartStyle.baseStyle.tipType == 1);
 					}
 				}else {
 					if (_tweens != null) {
@@ -147,6 +157,7 @@ package com.weibo.charts
 		
 		protected function outDot(event:Event):void
 		{
+			if (!(event.target is IDotUI)) return;
 			var dot:Object = event.target;
 			var id:int = _arrDots.indexOf(dot);
 			var tip:ITipUI = _arrTips[id];
@@ -155,6 +166,7 @@ package com.weibo.charts
 		
 		protected function overDot(event:Event):void
 		{
+			if (!(event.target is IDotUI)) return;
 			var dot:Object = event.target;
 			var id:int = _arrDots.indexOf(dot);
 			var tip:ITipUI = _arrTips[id];
@@ -190,7 +202,7 @@ package com.weibo.charts
 					UIComponent(tip).move(DisplayObject(dot).x,  DisplayObject(dot).y);
 				}
 			}
-			drawShadow();
+			if (getStyle("showShadow")) drawShadow();
 		}
 		
 		private function drawShadow():void

@@ -93,7 +93,9 @@ package com.weibo.charts
 						h = area.height - h;
 						var bar:UIComponent = new PureBar();
 						bar.setStyle("label", getStyle("label"));
-						(bar as IBarUI).label = dataProvider.data[j].value[i];
+						if (getStyle("showLabel")){
+							(bar as IBarUI).label = dataProvider.data[j].value[i];
+						}
 						bar.y = area.bottom;
 //						bar.setSize(tempColumnWidth - space, h);
 						bar.width = tempColumnWidth - space;

@@ -2,7 +2,6 @@ package com.weibo.charts
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
-	import com.weibo.charts.data.RadiateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.PieChartStyle;
 	import com.weibo.charts.ui.ISectorUI;
@@ -136,6 +135,7 @@ package com.weibo.charts
 			var startAngle:Number;
 			var tweenMax:TweenMax;
 			if (errorSector && this.contains(errorSector)) this.removeChild(errorSector);
+			
 			if (dataProvider.length == 0 || totalNum == 0)
 			{
 				startAngle = -Math.PI / 2;
