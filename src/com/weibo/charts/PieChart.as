@@ -6,6 +6,7 @@ package com.weibo.charts
 	import com.weibo.charts.style.PieChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.ISectorUI;
+	import com.weibo.charts.utils.ColorUtil;
 	import com.weibo.core.UIComponent;
 	
 	import flash.display.DisplayObject;
@@ -130,6 +131,21 @@ package com.weibo.charts
 		{
 			if(dataProvider == null) return;
 			
+			var colors:Array;
+			if (_chartStyle.arrColors)
+			{
+				colors = _chartStyle.arrColors;
+			}
+			else
+			{
+				var unit:int = 360 / dataProvider.length;
+				colors = [];
+				for (var j:int = 0; j < dataProvider.length; j++)
+					colors.push(ColorUtil.HSB2RGB(j * unit, 70, 90));
+			}
+			
+			
+			
 			area = new Rectangle(0, 0, chartWidth, chartHeight);
 //			_tipContainer.visible = false;
 			var sector:ISectorUI;
@@ -164,7 +180,7 @@ package com.weibo.charts
 					sector.index = i;
 					sector.radius = Math.min(area.width / 2, area.height / 2);
 					sector.radiusIn = _chartStyle.radiusIn;
-					(sector as UIComponent).setStyle("color", _chartStyle.arrColors[i %  _chartStyle.arrColors.length]);
+					(sector as UIComponent).setStyle("color", colors[i %  colors.length]);
 					(sector as UIComponent).setStyle("outlineColor", _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length]);
 					(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
 					ChartUIBase(sector).outlineThicknesss = _chartStyle.gap;

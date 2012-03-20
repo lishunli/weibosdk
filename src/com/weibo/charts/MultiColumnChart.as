@@ -28,7 +28,7 @@ package com.weibo.charts
 		{
 			_chartStyle = style;
 			super(_chartStyle);
-			this.coordinateLogic.integer = style.integer;
+			this.coordinateLogic.integer = style.baseStyle.integer;
 			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
 			this.coordinateLogic.addMore = true;
 			

@@ -166,7 +166,13 @@ package com.weibo.charts.comp
 		{
 			if (tips.length > 1)
 			{
-				var i:int;
+				var i:int = 0;
+				var leftTop:Point = _tipContainer.globalToLocal(new Point(0, 0));
+				if (tips[i].tip.y < leftTop.y)
+				{
+					tips[i].tip.y = leftTop.y;
+				}
+				
 				//从上至下遍历
 				for (i = 0; i < tips.length - 1; i++)
 				{
