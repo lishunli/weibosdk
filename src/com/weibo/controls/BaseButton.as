@@ -25,7 +25,7 @@ package com.weibo.controls
 			
 		}
 		
-		override protected function initialize():void 
+		override protected function initialize():void
 		{
 			if (_states == null) _states = new Dictionary();
 		}
