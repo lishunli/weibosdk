@@ -73,7 +73,8 @@ package com.weibo.charts.ui.tips
 			if(tf != null){
 				_t.defaultTextFormat = tf;
 				_t.setTextFormat(tf);
-			}			
+			}
+			
 			this.visible = false;
 			this.scaleX = this.scaleY = 1;
 			_twidth = _t.width + _space;
@@ -105,9 +106,9 @@ package com.weibo.charts.ui.tips
 				
 				if (xpos - halfWidth < area.x)
 				{
-					if (ypos - tHeihgt - 4 < area.top)
+					_t.x = _space * 0.5;
+					if (ypos - tHeihgt - 4 < area.top + _ydis)
 					{
-						_t.x = _space * 0.5;
 						_t.y = 4;
 						pointAry[0] = new Point(0, 0);
 						pointAry[1] = new Point(7,4);
@@ -116,7 +117,6 @@ package com.weibo.charts.ui.tips
 						pointAry[4] = new Point(0,tHeihgt + 4);
 						
 					}else {
-						_t.x = _space * 0.5;
 						_t.y = -tHeihgt - 4;
 						pointAry[0] = new Point(0, _t.y);
 						pointAry[1] = new Point(tWidth, _t.y);
@@ -127,9 +127,9 @@ package com.weibo.charts.ui.tips
 					}
 				}else if (xpos + halfWidth > area.right)
 				{
-					if (ypos - tHeihgt - 4 < area.top)
+					_t.x = -tWidth + _space * 0.5;
+					if (ypos - tHeihgt - 4 < area.top + _ydis)
 					{
-						_t.x = -tWidth + _space * 0.5;
 						_t.y = 4;
 						pointAry[0] = new Point(-tWidth, 4);
 						pointAry[1] = new Point(-7, 4);
@@ -138,7 +138,6 @@ package com.weibo.charts.ui.tips
 						pointAry[4] = new Point(-tWidth, tHeihgt + 4);
 						
 					}else {
-						_t.x = -tWidth + _space * 0.5;
 						_t.y = -tHeihgt - 4;
 						pointAry[0] = new Point(-tWidth, _t.y);
 						pointAry[1] = new Point(0, _t.y);
@@ -149,20 +148,19 @@ package com.weibo.charts.ui.tips
 					}
 					
 				}else{
-					if (ypos - tHeihgt - 4 < area.y)
+					_t.x = -halfWidth + _space * 0.5;
+					if (ypos - tHeihgt - 4 < area.y + _ydis)
 					{
-						_t.x = -halfWidth + _space * 0.5;
-						_t.y = 4 + 9 + 6;
-						pointAry[0] = new Point(-halfWidth, 4 + 9 + 6);
-						pointAry[1] = new Point(-3.5, 4 + 9 + 6);
-						pointAry[2] = new Point(0, 0 + 9 + 6);
-						pointAry[3] = new Point(3.5, 4 + 9 + 6);
-						pointAry[4] = new Point(halfWidth, 4 + 9 + 6);
-						pointAry[5] = new Point(halfWidth, tHeihgt + 4 + 9 + 6);
-						pointAry[6] = new Point(-halfWidth, tHeihgt + 4 + 9 + 6);
+						_t.y = 4;
+						pointAry[0] = new Point(-halfWidth, 4);
+						pointAry[1] = new Point(-3.5, 4);
+						pointAry[2] = new Point(0, 0);
+						pointAry[3] = new Point(3.5, 4);
+						pointAry[4] = new Point(halfWidth, 4);
+						pointAry[5] = new Point(halfWidth, tHeihgt + 4);
+						pointAry[6] = new Point(-halfWidth, tHeihgt + 4);
 						
 					}else {
-						_t.x = -halfWidth + _space * 0.5;
 						_t.y = -tHeihgt - 4;
 						pointAry[0] = new Point(-halfWidth, _t.y);
 						pointAry[1] = new Point(halfWidth, _t.y);
@@ -197,7 +195,7 @@ package com.weibo.charts.ui.tips
 		
 		override public function move(x:Number, y:Number):void
 		{
-			super.move(x, y-9);
+			super.move(x, y+_ydis);
 		}
 		
 		protected function showEffect(skipEffect:Boolean):void
@@ -217,5 +215,16 @@ package com.weibo.charts.ui.tips
 		{
 			hideEffect(skipEffect);
 		}
+
+		public function get ydis():int
+		{
+			return _ydis;
+		}
+
+		public function set ydis(value:int):void
+		{
+			_ydis = value;
+		}
+
 	}
 }
