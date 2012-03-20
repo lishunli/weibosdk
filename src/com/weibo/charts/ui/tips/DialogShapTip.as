@@ -87,9 +87,8 @@ package com.weibo.charts.ui.tips
 			return 0;
 		}
 		
-		public function show(container:DisplayObjectContainer, xpos:Number, ypos:Number, area:Rectangle):void
+		public function show(container:DisplayObjectContainer, xpos:Number, ypos:Number, area:Rectangle, skipEffect:Boolean = false):void
 		{
-//			trace(">>>" + x + ":::" + y);
 			if ((xpos == 0 && ypos == 0) ||this.x != xpos || this.y != ypos)
 			{				
 				graphics.clear();			
@@ -153,14 +152,14 @@ package com.weibo.charts.ui.tips
 					if (ypos - tHeihgt - 4 < area.y)
 					{
 						_t.x = -halfWidth + _space * 0.5;
-						_t.y = 4;
-						pointAry[0] = new Point(-halfWidth, 4);
-						pointAry[1] = new Point(-3.5, 4);
-						pointAry[2] = new Point(0, 0);
-						pointAry[3] = new Point(3.5, 4);
-						pointAry[4] = new Point(halfWidth, 4);
-						pointAry[5] = new Point(halfWidth, tHeihgt + 4);
-						pointAry[6] = new Point(-halfWidth, tHeihgt + 4);
+						_t.y = 4 + 9 + 6;
+						pointAry[0] = new Point(-halfWidth, 4 + 9 + 6);
+						pointAry[1] = new Point(-3.5, 4 + 9 + 6);
+						pointAry[2] = new Point(0, 0 + 9 + 6);
+						pointAry[3] = new Point(3.5, 4 + 9 + 6);
+						pointAry[4] = new Point(halfWidth, 4 + 9 + 6);
+						pointAry[5] = new Point(halfWidth, tHeihgt + 4 + 9 + 6);
+						pointAry[6] = new Point(-halfWidth, tHeihgt + 4 + 9 + 6);
 						
 					}else {
 						_t.x = -halfWidth + _space * 0.5;
@@ -190,12 +189,10 @@ package com.weibo.charts.ui.tips
 				graphics.lineTo(point.x, point.y);
 				graphics.endFill();
 				
-				move(xpos,ypos + _ydis);
-//				trace("this.x :: " + this.x, "this.y :: " + this.y);
-//				trace();
+				move(xpos, ypos);
 				container.addChild(this);
 			}
-			showEffect();
+			showEffect(skipEffect);
 		}
 		
 		override public function move(x:Number, y:Number):void
@@ -203,20 +200,22 @@ package com.weibo.charts.ui.tips
 			super.move(x, y-9);
 		}
 		
-		protected function showEffect():void
+		protected function showEffect(skipEffect:Boolean):void
 		{
 			this.scaleX = this.scaleY = 0;
-			TweenMax.to(this, 0.8, { scaleX:1, scaleY:1, ease:Elastic.easeOut} );
+			if(!skipEffect) TweenMax.to(this, 0.8, { scaleX:1, scaleY:1, ease:Elastic.easeOut} );
+			else this.scaleX = this.scaleY = 1;
 		}
 		
-		protected function hideEffect():void
+		protected function hideEffect(skipEffect:Boolean):void
 		{
-			TweenMax.to(this, 0.3, { scaleX:0, scaleY:0 } );
+			if(!skipEffect) TweenMax.to(this, 0.3, { scaleX:0, scaleY:0 } );
+			else this.scaleX = this.scaleY = 0;
 		}		
 		
-		public function hide():void
+		public function hide(skipEffect:Boolean = false):void
 		{
-			hideEffect();
+			hideEffect(skipEffect);
 		}
 	}
 }

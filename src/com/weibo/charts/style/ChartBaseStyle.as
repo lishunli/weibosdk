@@ -27,9 +27,19 @@ package com.weibo.charts.style
 		public var bg:DisplayObject = null;
 		
 		/**
-		 * 0：不显示,1:一直显示，2：需要触发 
+		 * 0:不显示,1:一直显示，2:点触发,3:函数调用触发
 		 */		
 		public var tipType:int = 0;
+		
+		/**
+		 * 是否顶边 
+		 */		
+		public var touchSide:Boolean = true;
+		
+		/**
+		 * 数值是否取整 
+		 */		
+		public var integer:Boolean = false;
 		
 	}
 }

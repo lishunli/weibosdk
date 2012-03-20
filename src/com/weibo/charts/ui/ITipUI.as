@@ -21,11 +21,11 @@ package com.weibo.charts.ui
 		 * @param ypos
 		 * @param area
 		 */		
-		function show(container:DisplayObjectContainer, xpos:Number, ypos:Number, area:Rectangle):void;
+		function show(container:DisplayObjectContainer, xpos:Number, ypos:Number, area:Rectangle, skipEffect:Boolean = false):void;
 
 		/**
 		 * 隐藏TIP
 		 */		
-		function hide():void;
+		function hide(skipEffect:Boolean = false):void;
 	}
 }

@@ -12,8 +12,7 @@ package com.weibo.charts.style
 		
 		public var tipUI:Class = DialogShapTip;
 		
-		public var dotUI:Class = BasicDot;
-		
+		public var dotUI:Class = BasicDot;	
 		
 		public var lineColors:Array = [0x519ae5];
 		
@@ -21,7 +20,9 @@ package com.weibo.charts.style
 		
 		public var lineThickness:int = 2;
 		
-		public var integer:Boolean = false;
+		
+		
+//		public var touchSide:
 		
 	}
 }

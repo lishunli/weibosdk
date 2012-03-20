@@ -18,7 +18,6 @@ package com.weibo.charts
 			axisLogic = new CoordinateLogic(this);
 		}
 		
-		
 		override public function set dataProvider(value:Object):void
 		{
 			/*if (!axisLogic)

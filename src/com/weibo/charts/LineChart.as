@@ -172,6 +172,7 @@ package com.weibo.charts
 			var tip:ITipUI = _arrTips[id];
 			tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
 		}
+		
 		private function showTip(tip:ITipUI):void
 		{
 			
