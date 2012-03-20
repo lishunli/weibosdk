@@ -5,7 +5,6 @@ package com.weibo.charts
 	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
-	import com.weibo.charts.ui.ITipLayout;
 	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.core.UIComponent;
 	
@@ -39,8 +38,6 @@ package com.weibo.charts
 		private var _space:Number = 0;
 		private var _preLineLen:int;
 		private var _preLineDots:int;
-		
-		private var _tipLayout:ITipLayout;
 		
 		public function MultiLineChart(style:LineChartStyle)
 		{
@@ -202,18 +199,13 @@ package com.weibo.charts
 			{
 				color = _chartStyle.lineColors[j % _chartStyle.lineColors.length];
 				_container.graphics.lineStyle(_chartStyle.lineThickness, color);
-<<<<<<< .mine
+
 				//////////////////////////////////////////////////////////////////////////////////////// To Do 配置底色
-//				if (j == 0)
+//				if (j == 0 && getStyle("showShadow"))
 //				{
 //					_container.graphics.beginFill(color, 0.3);
 //				}
-=======
-				if (j == 0 && getStyle("showShadow"))
-				{
-					_container.graphics.beginFill(color, 0.3);
-				}
->>>>>>> .r97
+				
 				var firstDot:DisplayObject = _dotArr[j][0];
 				_container.graphics.moveTo(firstDot.x, firstDot.y);
 				var dot:DisplayObject;
