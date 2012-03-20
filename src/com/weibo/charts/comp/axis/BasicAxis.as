@@ -106,12 +106,14 @@ package com.weibo.charts.comp.axis
 			{
 				var dataObject:Object = axisData[i];
 				
-				var label:DisplayObject = newLabel(labelContainer, dataObject, i == count-1);
+//				var label:DisplayObject = newLabel(labelContainer, dataObject, i == count-1);
+				var label:DisplayObject;
 //				label.visible = true;
 				switch(_type)
 				{
 					case AxisType.LABEL_AXIS:
 					{
+						label = newLabel(labelContainer, dataObject, false);
 						label.x = dataObject.position + area.x - label.width/2;
 						label.y = area.bottom + 5;
 //						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
@@ -119,12 +121,14 @@ package com.weibo.charts.comp.axis
 					}
 					case AxisType.VALUE_AXIS:
 					{
+						label = newLabel(labelContainer, dataObject, i == count-1);
 						label.x = area.x - label.width;
 						label.y = dataObject.position + area.y - label.height/2;
 						break;
 					}
 					case AxisType.SUB_VALUE_AXIS:
 					{
+						label = newLabel(labelContainer, dataObject, i == count-1);
 						label.x = area.right + 0;
 						label.y = dataObject.position + area.y - label.height/2;
 						break;
@@ -169,10 +173,11 @@ package com.weibo.charts.comp.axis
 			{
 				text = txt.replace(/{value}/g, text);
 			}
-			if (unit && showUnit)
+			if (showUnit)
 			{
-				text = text + "/" + unit;
+				text = text + target.chartStyle.valueUnit;
 			}
+			
 			var label:TextField = new TextField();
 			if (parent)	parent.addChild(label);
 			label.selectable = false;

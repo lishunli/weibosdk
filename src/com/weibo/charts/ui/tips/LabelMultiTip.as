@@ -70,13 +70,13 @@ package com.weibo.charts.ui.tips
 			return _t.textWidth;
 		}
 		
-		public function show(container:DisplayObjectContainer, x:Number, y:Number, area:Rectangle):void
+		public function show(container:DisplayObjectContainer, x:Number, y:Number, area:Rectangle, skipEffect:Boolean = false):void
 		{
 			move(x,y);
 			container.addChild(this);
 		}
 		
-		public function hide():void
+		public function hide(skipEffect:Boolean = false):void
 		{
 			
 		}

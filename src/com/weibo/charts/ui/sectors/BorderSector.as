@@ -7,7 +7,7 @@ package com.weibo.charts.ui.sectors
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import ghostcat.util.display.ColorUtil;
+	import com.weibo.charts.utils.ColorUtil;
 	
 	/**
 	 * 带边框的的扇形

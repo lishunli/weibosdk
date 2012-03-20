@@ -31,5 +31,7 @@ package com.weibo.charts.style
 		public var tipColor:uint = 0x999999;
 		public var lineColor:uint = 0x333333;
 		public var lineAlpha:Number = 0.3;
+		
+		public var gap:Number = 0;
 	}
 }

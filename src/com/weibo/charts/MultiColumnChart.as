@@ -27,7 +27,7 @@ package com.weibo.charts
 		public function MultiColumnChart(style:ColumnChartStyle)
 		{
 			_chartStyle = style;
-			super();
+			super(_chartStyle);
 			this.coordinateLogic.integer = style.integer;
 			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
 			this.coordinateLogic.addMore = true;
@@ -93,7 +93,7 @@ package com.weibo.charts
 						h = area.height - h;
 						var bar:UIComponent = new PureBar();
 						bar.setStyle("label", getStyle("label"));
-						if (getStyle("showLabel")){
+						if (_chartStyle.baseStyle.tipType > 0){
 							(bar as IBarUI).label = dataProvider.data[j].value[i];
 						}
 						bar.y = area.bottom;

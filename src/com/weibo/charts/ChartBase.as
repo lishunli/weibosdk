@@ -24,14 +24,17 @@ package com.weibo.charts
 		
 		private var _area:Rectangle;
 		
-//		private var _labelFun:Function;
-//		
-//		private var _valueFun:Function;
+		private var _labelFun:Function;
 		
-//		private var _tipFun:Function;
+		private var _valueFun:Function;
 		
-		public function ChartBase()
+		private var _tipFun:Function;
+		
+		private var _chartStyle:Object;
+		
+		public function ChartBase(style:Object = null)
 		{
+			_chartStyle = style;
 			_width = 450;
 			_height = 260;
 			super();
@@ -95,7 +98,7 @@ package com.weibo.charts
 		{
 			_area = value;
 		}
-/*
+
 		public function get labelFun():Function{return _labelFun;}
 		public function set labelFun(value:Function):void
 		{
@@ -108,12 +111,12 @@ package com.weibo.charts
 			_valueFun = value;
 		}
 
-//		public function get tipFun():Function{return _tipFun;}
+		public function get tipFun():Function{return _tipFun;}
 		public function set tipFun(value:Function):void
 		{
 			_tipFun = value;
 		}
-*/
+
 		public function get chartWidth():Number{return width;}
 		public function set chartWidth(value:Number):void
 		{
@@ -125,5 +128,12 @@ package com.weibo.charts
 		{
 			height = value;
 		}
+
+		public function get chartStyle():Object { return _chartStyle; }
+		public function set chartStyle(value:Object):void
+		{
+			_chartStyle = value;
+		}
+
 	}
 }

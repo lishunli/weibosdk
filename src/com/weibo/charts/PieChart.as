@@ -4,6 +4,7 @@ package com.weibo.charts
 	import com.greensock.easing.Cubic;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.PieChartStyle;
+	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.ISectorUI;
 	import com.weibo.core.UIComponent;
 	
@@ -143,6 +144,7 @@ package com.weibo.charts
 				sector.radius = Math.min(area.width / 2, area.height / 2);
 				sector.radiusIn = _chartStyle.radiusIn;
 				sector.startAngle = startAngle;
+//				ChartUIBase(sector).outlineThicknesss = _chartStyle.gap;
 				sector.endAngle = startAngle + Math.PI * 2;
 				sector.x = area.x + area.width / 2;
 				sector.y = area.y + area.height / 2;
@@ -165,6 +167,7 @@ package com.weibo.charts
 					(sector as UIComponent).setStyle("color", _chartStyle.arrColors[i %  _chartStyle.arrColors.length]);
 					(sector as UIComponent).setStyle("outlineColor", _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length]);
 					(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
+					ChartUIBase(sector).outlineThicknesss = _chartStyle.gap;
 					//为了能看到数据值很小的图形，设置最小值
 					var sectorAngle:Number = Math.PI * 2 * (graphicsValue[i] / graphicsTotal);
 					var endAngle:Number = startAngle + sectorAngle;

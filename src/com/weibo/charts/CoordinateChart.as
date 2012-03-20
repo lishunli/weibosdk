@@ -12,9 +12,9 @@ package com.weibo.charts
 	 */	
 	public class CoordinateChart extends ChartBase
 	{
-		public function CoordinateChart()
+		public function CoordinateChart(style:Object = null)
 		{
-			super();
+			super(style);
 			axisLogic = new CoordinateLogic(this);
 		}
 		

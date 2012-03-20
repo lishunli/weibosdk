@@ -20,7 +20,11 @@ package com.weibo.charts.style
 		
 		public var lineThickness:int = 2;
 		
+		public var shadowColors:Array = [0x519ae5];
 		
+		public var shadowAlpha:Number = 0.3;
+		
+		public var valueUnit:String = "";
 		
 //		public var touchSide:
 		

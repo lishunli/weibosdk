@@ -42,7 +42,7 @@ package com.weibo.charts
 		public function MultiLineChart(style:LineChartStyle)
 		{
 			_chartStyle = style;
-			super();		
+			super(_chartStyle);		
 			this.coordinateLogic.integer = style.baseStyle.integer;
 			this.coordinateLogic.alwaysShow0 = true;
 			this.coordinateLogic.touchSide = style.baseStyle.touchSide;
@@ -101,8 +101,7 @@ package com.weibo.charts
 			var lineLen:int = dataAry.length;
 			
 			var lineDots:int = dataProvider["axis"].length;
-			
-			
+					
 			if(lineDots > 1) _space = coordinateLogic.touchSide ? this.area.width/(lineDots-1) : this.area.width/lineDots;
 			else _space = coordinateLogic.touchSide ? 0 : this.area.width * 0.5;
 
@@ -199,12 +198,11 @@ package com.weibo.charts
 			{
 				color = _chartStyle.lineColors[j % _chartStyle.lineColors.length];
 				_container.graphics.lineStyle(_chartStyle.lineThickness, color);
-
-				//////////////////////////////////////////////////////////////////////////////////////// To Do 配置底色
-//				if (j == 0 && getStyle("showShadow"))
-//				{
-//					_container.graphics.beginFill(color, 0.3);
-//				}
+				
+				if(_chartStyle.shadowColors.length > j)
+				{
+					_container.graphics.beginFill(_chartStyle.shadowColors[j], _chartStyle.shadowAlpha);
+				}
 				
 				var firstDot:DisplayObject = _dotArr[j][0];
 				_container.graphics.moveTo(firstDot.x, firstDot.y);
@@ -223,14 +221,15 @@ package com.weibo.charts
 					}
 					
 				}
-//				if (j == 0)
-//				{
-//					_container.graphics.lineStyle();
-//					_container.graphics.lineTo(dot.x, area.bottom);
-//					_container.graphics.lineTo(firstDot.x, area.bottom);
-//					_container.graphics.lineTo(firstDot.x, firstDot.y);
-//					_container.graphics.endFill();
-//				}
+				
+				if (_chartStyle.shadowColors.length > j)
+				{
+					_container.graphics.lineStyle();
+					_container.graphics.lineTo(dot.x, area.bottom);
+					_container.graphics.lineTo(firstDot.x, area.bottom);
+					_container.graphics.lineTo(firstDot.x, firstDot.y);
+					_container.graphics.endFill();
+				}
 			}			
 		}
 		
