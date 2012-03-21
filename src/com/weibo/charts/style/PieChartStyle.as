@@ -1,7 +1,7 @@
 package com.weibo.charts.style
 {
 	import com.weibo.charts.ui.sectors.BorderSector;
-	import com.weibo.charts.ui.tips.LabelTip;
+	import com.weibo.charts.ui.tips.LabelMultiTip;
 
 	public class PieChartStyle
 	{
@@ -15,7 +15,7 @@ package com.weibo.charts.style
 		
 		public var sectorUI:Class = BorderSector;
 		
-		public var tipUI:Class = LabelTip;
+		public var tipUI:Class = LabelMultiTip;
 		
 		public var errorColor:uint = 0xcccccc;
 		

@@ -142,7 +142,7 @@ package com.weibo.charts.comp
 		private function mouseShowTip(event:MouseEvent):void
 		{
 			var sector:ISectorUI = event.target as ISectorUI;
-			if (sector == null) return;
+			if (sector == null || sector.index == -1) return;
 			
 			var iconText:IconText = container.getChildAt(sector.index) as IconText;
 			if (iconText == null) return;
