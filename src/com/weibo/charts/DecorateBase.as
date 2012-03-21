@@ -64,6 +64,12 @@ package com.weibo.charts
 			target.chartHeight = value;
 		}
 		
+		override public function get chartStyle():Object { return target.chartStyle; }
+		override public function set chartStyle(value:Object):void
+		{
+			target.chartStyle = value;
+		}
+		
 		/**
 		 * 保证任何装饰者都可以使用此方法设置宽高
 		 * @param w
@@ -74,6 +80,7 @@ package com.weibo.charts
 			super.setSize(w, h);
 			target.setSize(w, h);
 		}
+		
 		
 		
 	//========================================
