@@ -179,7 +179,7 @@ package com.weibo.charts.comp.axis
 			
 			if (labelFun != null)
 			{
-				text = labelFun(dataObject.value);
+				text = labelFun(dataObject.label);
 			}
 			else if (txt)
 			{
