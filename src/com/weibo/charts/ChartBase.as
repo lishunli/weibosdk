@@ -15,7 +15,7 @@ package com.weibo.charts
 	 */	
 	public class ChartBase extends UIComponent
 	{
-		protected var _dataService:IWeiboChartService;
+//		protected var _dataService:IWeiboChartService;
 		public var effect:IEffect;
 		
 		private var _axisLogic:IAxisLogic;
@@ -23,13 +23,13 @@ package com.weibo.charts
 		protected var _dataProvider:Object;
 		
 		private var _area:Rectangle;
-		
+		/*
 		private var _labelFun:Function;
 		
 		private var _valueFun:Function;
 		
 		private var _tipFun:Function;
-		
+		*/
 		private var _chartStyle:Object;
 		
 		public function ChartBase(style:Object = null)
@@ -71,13 +71,13 @@ package com.weibo.charts
 			removeEventListener(ChartEvent.CHART_DATA_CHANGED, onChartChange);
 //			if(_dataService != null) _dataService.removeEventListener(ChartEvent.CHART_DATA_RESULT, onChartResult);
 		}
-		
+		/*
 		public function get dataService():IWeiboChartService { return _dataService; }
 		public function set dataService(value:IWeiboChartService):void
 		{
 			_dataService = value;
 		}
-
+*/
 		public function get dataProvider():Object { return _dataProvider; }
 		public function set dataProvider(value:Object):void
 		{
@@ -98,7 +98,7 @@ package com.weibo.charts
 		{
 			_area = value;
 		}
-
+/*
 		public function get labelFun():Function{return _labelFun;}
 		public function set labelFun(value:Function):void
 		{
@@ -116,7 +116,7 @@ package com.weibo.charts
 		{
 			_tipFun = value;
 		}
-
+*/
 		public function get chartWidth():Number{return width;}
 		public function set chartWidth(value:Number):void
 		{

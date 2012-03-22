@@ -45,9 +45,9 @@ package com.weibo.charts
 //			LineChartStyle(super.chartStyle) = style;
 			
 			super(style);		
-			this.coordinateLogic.integer = style.baseStyle.integer;
+			this.coordinateLogic.integer = style.integer;
 			this.coordinateLogic.alwaysShow0 = true;
-			this.coordinateLogic.touchSide = style.baseStyle.touchSide;
+			this.coordinateLogic.touchSide = style.touchSide;
 			this.area = new Rectangle(0,0,width,height);
 		}
 		
@@ -59,7 +59,7 @@ package com.weibo.charts
 				addChild(_container);
 			}
 			
-			if(_tipContainer == null && LineChartStyle(super.chartStyle).baseStyle.tipType != 0){
+			if(_tipContainer == null && LineChartStyle(super.chartStyle).tipType != 0){
 				_tipContainer = new Sprite();
 				_tipContainer.mouseEnabled = _tipContainer.mouseChildren = false;
 				addChild(_tipContainer);
@@ -110,7 +110,7 @@ package com.weibo.charts
 			if(_dotArr.length == 0)
 			{
 				_container.graphics.clear();
-				_container.graphics.lineStyle(LineChartStyle(super.chartStyle).lineThickness, LineChartStyle(super.chartStyle).lineColors[i]);
+				_container.graphics.lineStyle(LineChartStyle(super.chartStyle).lineThickness, LineChartStyle(super.chartStyle).colors[i]);
 				this.graphics.beginFill(0, 0); ///////////////////////////////////////////////////////////// Test Area范围
 				this.graphics.drawRect(area.x, area.y, area.width, area.height);
 				this.graphics.endFill();
@@ -131,7 +131,7 @@ package com.weibo.charts
 						else tx = Math.round(area.x + _space);
 						var DotClass:Class = LineChartStyle(super.chartStyle).dotUI;
 						dot = new DotClass();
-						ChartUIBase(dot).uiColor = LineChartStyle(super.chartStyle).lineColors[j % LineChartStyle(super.chartStyle).lineColors.length];
+						ChartUIBase(dot).uiColor = LineChartStyle(super.chartStyle).colors[j % LineChartStyle(super.chartStyle).colors.length];
 						DisplayObject(dot).x = tx;	
 						
 						DisplayObject(dot).y = area.bottom;
@@ -141,16 +141,16 @@ package com.weibo.charts
 						
 						_arrDots[_arrDots.length] = dot;
 						
-						if(LineChartStyle(super.chartStyle).baseStyle.tipType != 0)
+						if(LineChartStyle(super.chartStyle).tipType != 0)
 						{
 							var TipClass:Class = LineChartStyle(super.chartStyle).tipUI;
 							tip = new TipClass;
 							tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
 							tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
-							ChartUIBase(tip).uiColor = LineChartStyle(super.chartStyle).lineColors[j %  (LineChartStyle(super.chartStyle).lineColors.length)];									
+							ChartUIBase(tip).uiColor = LineChartStyle(super.chartStyle).colors[j %  (LineChartStyle(super.chartStyle).colors.length)];									
 							_arrTips[_arrTips.length] = tip;
 													
-							if(LineChartStyle(super.chartStyle).baseStyle.tipType == 2)
+							if(LineChartStyle(super.chartStyle).tipType == 2)
 							{
 								DisplayObject(dot).addEventListener(MouseEvent.ROLL_OVER, overDot);
 								DisplayObject(dot).addEventListener(MouseEvent.ROLL_OUT, outDot);
@@ -176,22 +176,22 @@ package com.weibo.charts
 							valueData = coordinateLogic.dataProvider.data[j]["value"];
 							
 							dot = _dotArr[j][i] as IDotUI;
-							ChartUIBase(dot).uiColor = LineChartStyle(super.chartStyle).lineColors[j % LineChartStyle(super.chartStyle).lineColors.length];
+							ChartUIBase(dot).uiColor = LineChartStyle(super.chartStyle).colors[j % LineChartStyle(super.chartStyle).colors.length];
 							type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
 							pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
 
 							if(lineDots > 1) tx = coordinateLogic.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
 							else tx = Math.round(area.x + _space);
 							
-							if(LineChartStyle(super.chartStyle).baseStyle.tipType != 0)
+							if(LineChartStyle(super.chartStyle).tipType != 0)
 							{
 								tip = _arrTips[j * lineDots  + i ];
 								
 								tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
 								tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
 								
-								ChartUIBase(tip).uiColor = LineChartStyle(super.chartStyle).lineColors[j %  (LineChartStyle(super.chartStyle).lineColors.length)];	
-								if(LineChartStyle(super.chartStyle).baseStyle.tipType == 2)
+								ChartUIBase(tip).uiColor = LineChartStyle(super.chartStyle).colors[j %  (LineChartStyle(super.chartStyle).colors.length)];	
+								if(LineChartStyle(super.chartStyle).tipType == 2)
 								{
 									DisplayObject(dot).addEventListener(MouseEvent.ROLL_OVER, overDot);
 									DisplayObject(dot).addEventListener(MouseEvent.ROLL_OUT, outDot);
@@ -219,7 +219,7 @@ package com.weibo.charts
 			var color:uint;
 			for (var j:int = 0, arrLen:int = _dotArr.length; j < arrLen; j++)
 			{
-				color = LineChartStyle(super.chartStyle).lineColors[j % LineChartStyle(super.chartStyle).lineColors.length];
+				color = LineChartStyle(super.chartStyle).colors[j % LineChartStyle(super.chartStyle).colors.length];
 				_container.graphics.lineStyle(LineChartStyle(super.chartStyle).lineThickness, color);
 				
 				if(LineChartStyle(super.chartStyle).shadowColors.length > j)
@@ -237,7 +237,7 @@ package com.weibo.charts
 					
 					_container.graphics.lineTo(dot.x, dot.y);
 					
-					if(LineChartStyle(super.chartStyle).baseStyle.tipType != 0)
+					if(LineChartStyle(super.chartStyle).tipType != 0)
 					{
 						var tip:ITipUI = _arrTips[j * len  + i ];
 						UIComponent(tip).move(DisplayObject(dot).x,  DisplayObject(dot).y);

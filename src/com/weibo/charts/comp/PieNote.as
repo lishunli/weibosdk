@@ -87,7 +87,7 @@ package com.weibo.charts.comp
 		{
 			if (!target.dataProvider) return;
 			
-			var colors:Array = PieChart(target).style.arrColors;
+			var colors:Array = PieChart(target).style.colors;
 			var space:Number = getStyle("space") as Number;
 			var margin:Number = getStyle("margin") as Number;
 			var labelColor:uint = getStyle("labelColor") as uint;

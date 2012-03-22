@@ -4,6 +4,7 @@ package com.weibo.charts.comp.axis
 	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
+	import com.weibo.charts.style.CoordinateChartStyle;
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -30,12 +31,6 @@ package com.weibo.charts.comp.axis
 		{
 			super(target);
 			_type = type;
-			_style = {
-				background:	false,
-				bgColor:	0xfbfbfb,
-				thickness:	1,
-				lineColor:		0x000000
-			}
 			addChild(target);
 		}
 		
@@ -43,11 +38,6 @@ package com.weibo.charts.comp.axis
 // 公开方法
 // ------------------------------------------
 		
-		/*override public function setSize(w:Number, h:Number):void
-		{
-			super.setSize(w, h);
-			target.setSize(w, h);
-		}*/
 		
 // ==========================================
 // 内部方法
@@ -91,10 +81,8 @@ package com.weibo.charts.comp.axis
 		{
 			if (!dataProvider) return;
 			
-			var background:Boolean = getStyle("background");
-			var bgColor:uint = getStyle("bgColor") as uint;
-			var color:uint = getStyle("lineColor") as uint;
-			var thickness:Number = getStyle("thickness") as Number;
+			var color:uint = coordinateStyle.axisStyle.valueLineColor;
+			var thickness:Number = coordinateStyle.axisStyle.valueLineThickness;
 			
 			graphics.clear();
 			graphics.lineStyle(thickness, color);
@@ -137,6 +125,11 @@ package com.weibo.charts.comp.axis
 			}
 		}
 		
+		private function get coordinateStyle():CoordinateChartStyle
+		{
+			return chartStyle as CoordinateChartStyle;
+		}
+		
 		private function get coordinateLogic():CoordinateLogic
 		{
 			return this.axisLogic as CoordinateLogic;
@@ -159,15 +152,34 @@ package com.weibo.charts.comp.axis
 			return null;
 		}
 		
+		private function get labelFun():Function
+		{
+			switch (_type)
+			{
+				case AxisType.LABEL_AXIS:
+					return coordinateStyle.axisStyle.labelFun;
+					break;
+				case AxisType.VALUE_AXIS:
+					return coordinateStyle.axisStyle.valueFun;
+					break;
+				case AxisType.SUB_VALUE_AXIS:
+					return coordinateStyle.axisStyle.valueFun;
+					break;
+			}
+			return null;
+		}
+		
 		private function newLabel(parent:DisplayObjectContainer, dataObject:Object, showUnit:Boolean = false):DisplayObject
 		{
 			var text:String = dataObject.label;
-			var valueFun:Function = getStyle("valueFun") as Function;
-			var unit:String = getStyle("unit") as String;
+//			var unit:String = getStyle("unit") as String;
+			//暂时保留
 			var txt:String = getStyle("label") as String;
-			if (valueFun != null)
+			var textformat:TextFormat = coordinateStyle.axisStyle.labelFormat;
+			
+			if (labelFun != null)
 			{
-				text = valueFun(dataObject.value);
+				text = labelFun(dataObject.value);
 			}
 			else if (txt)
 			{
@@ -175,14 +187,14 @@ package com.weibo.charts.comp.axis
 			}
 			if (showUnit)
 			{
-				text = text + target.chartStyle.valueUnit;
+				text = text + coordinateStyle.valueUnit;
 			}
-			
+			 
 			var label:TextField = new TextField();
 			if (parent)	parent.addChild(label);
 			label.selectable = false;
 			label.autoSize = "left";
-			label.defaultTextFormat = new TextFormat("Arial", 12, 0x999999, false);
+			label.defaultTextFormat = textformat;
 			label.text = text;
 			
 			return label;
@@ -255,7 +267,7 @@ package com.weibo.charts.comp.axis
 				}
 			}
 			//是否隐藏遮盖的文本
-			if (_type == AxisType.LABEL_AXIS && getStyle("autoHide"))
+			if (_type == AxisType.LABEL_AXIS && coordinateStyle.axisStyle.autoHide)
 				coordinateLogic.labelLength = maxLength;
 			
 			realArea.left = leftBottom.x;

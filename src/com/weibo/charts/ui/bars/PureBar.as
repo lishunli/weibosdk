@@ -30,8 +30,13 @@ package com.weibo.charts.ui.bars
 		
 		public function set label(value:String):void
 		{
+			var labelFun:Function = getStyle("labelFun") as Function;
 			var txt:String = getStyle("label") as String;
-			if (txt)
+			if (labelFun != null)
+			{
+				value = labelFun(value);
+			}
+			else if (txt)
 			{
 				value = txt.replace(/{value}/g, value);
 			}
@@ -42,8 +47,8 @@ package com.weibo.charts.ui.bars
 		{
 			if (_labelTip == null)
 			{
-				_labelTip = new Label();addChild(_labelTip);
-				_labelTip.color = 0x515151;
+				_labelTip = new Label();
+				addChild(_labelTip);
 			}
 			if (_highLight == null)
 			{
@@ -56,6 +61,9 @@ package com.weibo.charts.ui.bars
 //			TweenMax.to(this, 1, {height: _height, ease:Cubic.easeOut});
 			var alpha:Number = getStyle("alpha") as Number;
 			var color:uint = getStyle("color") as uint;
+			var labelColor:uint = getStyle("labelColor") as uint;
+			
+			_labelTip.color = labelColor;
 			
 			graphics.clear();
 			graphics.lineStyle(1, color, 1);

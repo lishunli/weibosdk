@@ -5,7 +5,10 @@ package com.weibo.charts
 	import flash.geom.Rectangle;
 	
 	/**
-	 * 图表装饰的基类。所有的装饰对象都需要继承此类使用，如：坐标轴线，网格
+	 * 图表装饰的基类。所有的装饰对象都需要继承此类使用。
+	 * 样式		chartStyle
+	 * 坐标轴线	axisLogic
+	 * 区域		area
 	 * @author YaoFei
 	 */	
 	public class DecorateBase extends ChartBase
@@ -27,7 +30,12 @@ package com.weibo.charts
 	// 公开方法
 	//----------------------------------------
 		
-//		final public function get target():ChartBase { return this._target; }
+		override public function get chartStyle():Object { return target.chartStyle; }
+		override public function set chartStyle(value:Object):void
+		{
+			target.chartStyle = value;
+		}
+		
 		/**
 		 * 找到核心图表组件类，如：LineChart
 		 * @return ChartBase
@@ -62,12 +70,6 @@ package com.weibo.charts
 		override public function set chartHeight(value:Number):void
 		{
 			target.chartHeight = value;
-		}
-		
-		override public function get chartStyle():Object { return target.chartStyle; }
-		override public function set chartStyle(value:Object):void
-		{
-			target.chartStyle = value;
 		}
 		
 		/**

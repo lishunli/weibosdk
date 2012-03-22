@@ -4,6 +4,7 @@ package com.weibo.charts.comp.axis
 	import com.weibo.charts.DecorateBase;
 	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
+	import com.weibo.charts.style.CoordinateChartStyle;
 	
 	public class BasicGrid extends DecorateBase
 	{
@@ -16,10 +17,6 @@ package com.weibo.charts.comp.axis
 		{
 			addChild(target);
 			super(target);
-			_style = {
-				thickness:	1,
-				color:		0xe7e7e7
-			}
 		}
 		
 		
@@ -27,11 +24,6 @@ package com.weibo.charts.comp.axis
 // 公开方法
 // ------------------------------------------
 		
-		/*override public function setSize(w:Number, h:Number):void
-		{
-			super.setSize(w, h);
-			target.setSize(w, h);
-		}*/
 		
 		
 // ==========================================
@@ -54,16 +46,16 @@ package com.weibo.charts.comp.axis
 		{
 			if (!target.dataProvider) return;
 			
-			var color:uint = getStyle("color") as uint;
-			var thickness:Number = getStyle("thickness") as Number;
-			var showLabelGrid:Boolean = getStyle("labelGrid");
-			var alignLabel:Boolean = getStyle("alignLabel");
+			var color:uint = coordinateStyle.gridStyle.color;
+			var thickness:Number = coordinateStyle.gridStyle.thickness;
+			var showLabelGrid:Boolean = coordinateStyle.gridStyle.showLabelGrid;
+			var alignLabel:Boolean = coordinateStyle.gridStyle.alignLabel;
 			
 			graphics.clear();
 			graphics.lineStyle(thickness, color);
-			if (getStyle("background"))
+			if (coordinateStyle.gridStyle.background)
 			{
-				graphics.beginFill(getStyle("bgColor") as uint, 1);
+				graphics.beginFill(coordinateStyle.gridStyle.backgroundColor, coordinateStyle.gridStyle.backgroundAlpha);
 			}
 			graphics.drawRect(area.x, area.y, area.width, area.height);
 			
@@ -108,6 +100,11 @@ package com.weibo.charts.comp.axis
 				}
 			}
 			
+		}
+		
+		private function get coordinateStyle():CoordinateChartStyle
+		{
+			return chartStyle as CoordinateChartStyle;
 		}
 		
 		private function get coordinateLogic():CoordinateLogic

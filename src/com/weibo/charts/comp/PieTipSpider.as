@@ -40,9 +40,9 @@ package com.weibo.charts.comp
 	// 公开方法
 	//------------------------------------------
 		
-		private function get style():PieChartStyle
+		private function get pieChartStyle():PieChartStyle
 		{
-			return (target as PieChart).style;
+			return chartStyle as PieChartStyle;
 		}
 		
 		override public function setSize(w:Number, h:Number):void
@@ -127,8 +127,8 @@ package com.weibo.charts.comp
 				var y2:Number = area.y + area.height / 2 + Math.sin(middleAngle) * (sector.radius + margin);
 				
 				
-				var tip:ITipUI = new style.tipUI();
-				var tf:TextFormat = new TextFormat("Arial", null, style.tipColor);
+				var tip:ITipUI = new pieChartStyle.tipUI();
+				var tf:TextFormat = new TextFormat("Arial", null, pieChartStyle.tipColor);
 				
 //				getStyle("tipFun").call(null, dataProvider[i]);
 				tip.setLabel(getStyle("tipFun").call(null, dataProvider[i]), tf, true);
@@ -153,7 +153,7 @@ package com.weibo.charts.comp
 			}
 			
 			_tipContainer.graphics.clear();
-			_tipContainer.graphics.lineStyle(1, this.style.lineColor, this.style.lineAlpha);
+			_tipContainer.graphics.lineStyle(1, pieChartStyle.tipLineColor, pieChartStyle.tipLineAlpha);
 			repareTips(leftTips);
 			repareTips(rightTips);
 		}

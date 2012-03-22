@@ -28,7 +28,7 @@ package com.weibo.charts
 		{
 			_chartStyle = style;
 			super(_chartStyle);
-			this.coordinateLogic.integer = style.baseStyle.integer;
+			this.coordinateLogic.integer = style.integer;
 			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
 			this.coordinateLogic.addMore = true;
 			
@@ -88,25 +88,31 @@ package com.weibo.charts
 					for (var j:int = 0; j < shapenum; j++)
 					{
 						var localXp:Number = margin + j * (tempColumnWidth + space);
+						//使用主数值轴还是副数值轴的定位
 						var type:int = dataProvider.data[j].useSubAxis ? 1 : 0;
 						var h:Number = this.coordinateLogic.getPosition(dataProvider.data[j].value[i], type);
 						h = area.height - h;
-						var bar:UIComponent = new PureBar();
-						bar.setStyle("label", getStyle("label"));
-						if (_chartStyle.baseStyle.tipType > 0){
+						
+						var bar:UIComponent = new _chartStyle.barUI();
+//						bar.setStyle("labelFun", _chartStyle.tipFun);
+//						bar.setStyle("label", getStyle("label"));
+						if (_chartStyle.tipType > 0)
+						{
 							(bar as IBarUI).label = dataProvider.data[j].value[i];
 						}
 						bar.y = area.bottom;
 //						bar.setSize(tempColumnWidth - space, h);
 						bar.width = tempColumnWidth - space;
 						bar.height = 0;
+						var barColor:uint;
 						if (_chartStyle.useDifferentColor)
-							bar.setStyle("color", _chartStyle.barColors[i %  _chartStyle.barColors.length]);
+							barColor = _chartStyle.colors[i %  _chartStyle.colors.length];
 						else
-							bar.setStyle("color", _chartStyle.barColors[j %  _chartStyle.barColors.length]);
+							barColor = _chartStyle.colors[j %  _chartStyle.colors.length];
+						bar.setStyle("color", barColor)
 //						bar.setStyle("borderColor", _chartStyle.outlineColor);
-						bar.setStyle("labelColor", _chartStyle);
-						bar.setStyle("alpha", .6);
+						bar.setStyle("labelColor", _chartStyle.tipUseBarColor ? barColor : _chartStyle.tipColor);
+						bar.setStyle("alpha", _chartStyle.tipAlpha);
 						bar.x = area.x + (i / axislength) * area.width + localXp;
 						_container.addChild(bar);
 						TweenMax.to(bar, 1, {height:h, ease:Cubic.easeOut});

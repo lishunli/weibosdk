@@ -132,9 +132,9 @@ package com.weibo.charts
 			if(dataProvider == null) return;
 			
 			var colors:Array;
-			if (_chartStyle.arrColors)
+			if (_chartStyle.colors)
 			{
-				colors = _chartStyle.arrColors;
+				colors = _chartStyle.colors;
 			}
 			else
 			{
@@ -165,7 +165,7 @@ package com.weibo.charts
 				sector.x = area.x + area.width / 2;
 				sector.y = area.y + area.height / 2;
 				(sector as UIComponent).setStyle("color", _chartStyle.errorColor);
-				(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
+//				(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
 				destroy();
 				errorSector = sector as DisplayObject;
 				addChild(errorSector);
@@ -181,8 +181,8 @@ package com.weibo.charts
 					sector.radius = Math.min(area.width / 2, area.height / 2);
 					sector.radiusIn = _chartStyle.radiusIn;
 					(sector as UIComponent).setStyle("color", colors[i %  colors.length]);
-					(sector as UIComponent).setStyle("outlineColor", _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length]);
-					(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
+//					(sector as UIComponent).setStyle("outlineColor", _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length]);
+//					(sector as UIComponent).setStyle("borderThicknesss", _chartStyle.borderThicknesss);
 					ChartUIBase(sector).outlineThicknesss = _chartStyle.gap;
 					//为了能看到数据值很小的图形，设置最小值
 					var sectorAngle:Number = Math.PI * 2 * (graphicsValue[i] / graphicsTotal);
@@ -195,8 +195,8 @@ package com.weibo.charts
 					_arrBars.push(sector);
 					
 					var angle:Number = (endAngle + startAngle) / 2;
-					DisplayObject(sector).x = area.x + area.width / 2 + Math.cos(angle) * 15;
-					DisplayObject(sector).y = area.y + area.height / 2 + Math.sin(angle) * 15;
+					DisplayObject(sector).x = area.x + area.width / 2 + Math.cos(angle) * leaveDistance;
+					DisplayObject(sector).y = area.y + area.height / 2 + Math.sin(angle) * leaveDistance;
 					var xpos:Number = area.x + area.width / 2;
 					var ypos:Number = area.y + area.height / 2;
 					
@@ -245,6 +245,14 @@ package com.weibo.charts
 			if (stage) stage.invalidate();
 		}
 		
+		private function get leaveDistance():Number
+		{
+			var radius:Number = Math.min(area.width / 2, area.height / 2);
+			var distance:Number = _chartStyle.leavePercent ? radius * _chartStyle.leavePercent: _chartStyle.leaveDistance;
+			distance = Math.abs(distance);
+			return distance;
+		}
+		
 	//==========================================
 	// 事件侦听器
 	//------------------------------------------
@@ -259,8 +267,9 @@ package com.weibo.charts
 			var sector:ISectorUI = event.target as ISectorUI;
 			
 			var angle:Number = (sector.endAngle + sector.startAngle) / 2;
-			var xpos:Number = area.x + area.width / 2 + Math.cos(angle) * 5;
-			var ypos:Number = area.y + area.height / 2 + Math.sin(angle) * 5;
+			
+			var xpos:Number = area.x + area.width / 2 + Math.cos(angle) * leaveDistance;
+			var ypos:Number = area.y + area.height / 2 + Math.sin(angle) * leaveDistance;
 			sector.x = area.x + area.width / 2;
 			sector.y = area.y + area.height / 2;
 			
