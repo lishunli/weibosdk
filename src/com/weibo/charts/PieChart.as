@@ -39,7 +39,7 @@ package com.weibo.charts
 		
 		public function PieChart(style:PieChartStyle)
 		{
-			super();
+			super(style);
 			_chartStyle = style;
 		}
 		
