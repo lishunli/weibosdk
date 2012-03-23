@@ -1,15 +1,8 @@
 package
 {
 	import com.weibo.charts.ChartBase;
-	import com.weibo.charts.MultiColumnChart;
-	import com.weibo.charts.MultiLineChart;
 	import com.weibo.charts.PieChart;
 	import com.weibo.charts.comp.PieTipSpider;
-	import com.weibo.charts.comp.axis.AxisType;
-	import com.weibo.charts.comp.axis.BasicAxis;
-	import com.weibo.charts.comp.axis.BasicGrid;
-	import com.weibo.charts.style.ColumnChartStyle;
-	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.style.PieChartStyle;
 	import com.weibo.charts.ui.tips.LabelMultiTip;
 	
@@ -17,9 +10,9 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
-	import flash.utils.setTimeout;
+	import flash.ui.ContextMenu;
+	import flash.ui.ContextMenuItem;
 	
 	[SWF(width="480", height="280", frameRate="60")]
 	public class PieChartDemo extends Sprite
@@ -28,6 +21,7 @@ package
 		
 		private var _total:Number;
 		
+		/*
 		private var _testData:Object = [
 			{"label":"北京", "value":327},
 			{"label":"深圳", "value":423},
@@ -39,12 +33,19 @@ package
 			{"label":"深圳", "value":423},
 			{"label":"上海", "value":221}
 		];
-		
+		*/
 		
 		public function PieChartDemo()
 		{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.00", false, false);
+			var cm:ContextMenu = new ContextMenu();
+			cm.hideBuiltInItems();
+			cm.customItems.push(cmi);
+			this.contextMenu = cm;
+			
 			addEventListener(Event.ENTER_FRAME, onSize);
 			function onSize(evt:Event):void {
 				if(stage.stageWidth > 0 && stage.stageHeight > 0) {
@@ -70,8 +71,6 @@ package
 			_chart.setStyle("labelGrid", true);	
 			
 			addChild(_chart);
-//			_chart.x = 10;
-//			_chart.y = 10;
 			_chart.setSize(stage.stageWidth - 30, stage.stageHeight - 40);
 			_chart.move(stage.stageWidth * 0.5 - 0.5 * _chart.width, stage.stageHeight * 0.5 - 0.5 * _chart.height);
 //			changeData(_testData);			
@@ -81,12 +80,8 @@ package
 			{
 				ExternalInterface.addCallback("setData", changeData);
 				ExternalInterface.addCallback("setStyle", setStyle);
-				setTimeout(function ():void{
-					//					ExternalInterface.call("alert", para["swfInit"]);
-					ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
-				}, 500);
-			}			
-			//			stage.addEventListener(MouseEvent.CLICK, onstageclick);
+				ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
+			}
 		}
 		
 		private function changeData(data:Object):void
@@ -126,10 +121,5 @@ package
 			}
 			return str + " " + valueHTML + "%";
 		}
-		
-		//		private function onstageclick(event:MouseEvent):void
-		//		{
-		//			_chart.dataProvider = _testData2;
-		//		}
 	}
 }

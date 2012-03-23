@@ -16,13 +16,14 @@ package
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
+	import flash.ui.ContextMenu;
+	import flash.ui.ContextMenuItem;
 	import flash.utils.setTimeout;
 	
 	[SWF(width="480", height="280", frameRate="60")]
 	public class ColumnChart extends Sprite
 	{
 		private var _chart:ChartBase;
-		
 		
 		private var _testData:Object = {
 			axis:["2011-12-13","2011-12-14","2011-12-15","2011-12-16","2011-12-17","2011-12-18"],
@@ -46,6 +47,13 @@ package
 		{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.00", false, false);
+			var cm:ContextMenu = new ContextMenu();
+			cm.hideBuiltInItems();
+			cm.customItems.push(cmi);
+			this.contextMenu = cm;
+			
 			addEventListener(Event.ENTER_FRAME, onSize);
 			function onSize(evt:Event):void {
 				if(stage.stageWidth > 0 && stage.stageHeight > 0) {
@@ -63,9 +71,9 @@ package
 //			style.useDifferentColor = true;
 //			style.baseStyle.tipType = 1;
 			
-			if(obj["barColors"] != null) style.barColors = ColorUtil.getColorsFromRGB16(String(obj["barColors"]));
+			if(obj["barColors"] != null) style.colors = ColorUtil.getColorsFromRGB16(String(obj["barColors"]));
 			if(obj["useDifferentColor"] != null) style.useDifferentColor = obj["useDifferentColor"] == 1;
-			if(obj["tipType"] != null) style.baseStyle.tipType = obj["tipType"];	
+			if(obj["tipType"] != null) style.tipType = obj["tipType"];	
 			if(obj["valueUnit"] != null) style.valueUnit = obj["valueUnit"];
 			
 			_chart = new MultiColumnChart(style);
@@ -88,9 +96,7 @@ package
 			{
 				ExternalInterface.addCallback("setData", changeData);
 				ExternalInterface.addCallback("setStyle", setStyle);
-				setTimeout(function ():void{
-					ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
-				}, 500);
+				ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
 			}
 		}
 		
@@ -101,8 +107,8 @@ package
 		
 		private function setStyle(value:Object):void
 		{
-			if(value["barColors"] != null) _chart.chartStyle["barColors"] = ColorUtil.getColorsFromRGB16(String(value["barColors"]));
-			if(value["tipType"] != null) _chart.chartStyle["baseStyle"]["tipType"] = value["tipType"];
+			if(value["barColors"] != null) _chart.chartStyle["colors"] = ColorUtil.getColorsFromRGB16(String(value["barColors"]));
+			if(value["tipType"] != null) _chart.chartStyle["tipType"] = value["tipType"];
 			if(value["useDifferentColor"] != null) _chart.chartStyle["useDifferentColor"] = value["useDifferentColor"] == 1;
 		}
 	}

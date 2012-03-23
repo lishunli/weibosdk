@@ -14,6 +14,8 @@ package
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
 	import flash.utils.setTimeout;
+	import flash.ui.ContextMenuItem;
+	import flash.ui.ContextMenu;
 	
 	[SWF(width="480", height="280", frameRate="60")]
 	public class LineChart extends Sprite
@@ -44,6 +46,13 @@ package
 		{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.00", false, false);
+			var cm:ContextMenu = new ContextMenu();
+			cm.hideBuiltInItems();
+			cm.customItems.push(cmi);
+			this.contextMenu = cm;
+			
 			addEventListener(Event.ENTER_FRAME, onSize);
 			function onSize(evt:Event):void {
 				if(stage.stageWidth > 0 && stage.stageHeight > 0) {
@@ -58,14 +67,14 @@ package
 			var obj:Object = this.loaderInfo.parameters;
 			
 			var style:LineChartStyle = new LineChartStyle();
-			style.baseStyle.integer = true;
+			style.integer = true;
 			
-			if(obj["lineColors"] != null) style.lineColors = ColorUtil.getColorsFromRGB16(String(obj["lineColors"]));
+			if(obj["lineColors"] != null) style.colors = ColorUtil.getColorsFromRGB16(String(obj["lineColors"]));
 			if(obj["shadowColors"] != null) style.shadowColors = ColorUtil.getColorsFromRGB16(String(obj["shadowColors"]));
 			if(obj["shadowAlpha"] != null) style.shadowAlpha = obj["shadowAlpha"];
 			if(obj["valueUnit"] != null) style.valueUnit = obj["valueUnit"];
-			if(obj["touchSide"] != null) style.baseStyle.touchSide = obj["touchSide"] == 1;
-			if(obj["tipType"] != null) style.baseStyle.tipType = obj["tipType"];
+			if(obj["touchSide"] != null) style.touchSide = obj["touchSide"] == 1;
+			if(obj["tipType"] != null) style.tipType = obj["tipType"];
 			
 			_chart = new MultiLineChart(style);
 			_chart = new BasicAxis(_chart, AxisType.LABEL_AXIS);
@@ -87,9 +96,7 @@ package
 			{
 				ExternalInterface.addCallback("setData", changeData);
 				ExternalInterface.addCallback("setStyle", setStyle);
-				setTimeout(function ():void{
-					ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
-				}, 500);
+				ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
 			}
 		}
 		
@@ -100,10 +107,10 @@ package
 		
 		private function setStyle(value:Object):void
 		{	
-			if(value["lineColors"] != null) _chart.chartStyle["lineColors"] = ColorUtil.getColorsFromRGB16(String(value["lineColors"]));
+			if(value["lineColors"] != null) _chart.chartStyle["colors"] = ColorUtil.getColorsFromRGB16(String(value["lineColors"]));
 			if(value["shadowColors"] != null) _chart.chartStyle.shadowColors = ColorUtil.getColorsFromRGB16(String(value["shadowColors"]));
 			if(value["shadowAlpha"] != null) _chart.chartStyle["shadowAlpha"] = value["shadowAlpha"];
-			if(value["tipType"] != null) _chart.chartStyle["baseStyle"]["tipType"] = value["tipType"];
+			if(value["tipType"] != null) _chart.chartStyle["tipType"] = value["tipType"];
 		}
 		
 	}
