@@ -23,7 +23,7 @@ package com.weibo.charts.style
 		 */		
 		public var errorColor:uint = 0xcccccc;
 		
-		public var colors:Array;// = [0xc6e17f, 0xf37f7f, 0x80b5d1, 0xefd87f, 0xd59feb];
+//		public var colors:Array;// = [0xc6e17f, 0xf37f7f, 0x80b5d1, 0xefd87f, 0xd59feb];
 //		public var outlineColors:Array;// = [0x94cd4c, 0xde5d5d, 0x4999bf, 0xe4bf11, 0xbd80cc];
 		
 		
@@ -60,7 +60,7 @@ package com.weibo.charts.style
 		
 		public function PieChartStyle()
 		{
-			
+//			colors = null;
 		}
 	}
 }

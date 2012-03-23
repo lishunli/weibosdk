@@ -122,6 +122,12 @@ package com.weibo.charts.comp.axis
 						break;
 					}
 				}
+				
+				if (label)
+				{
+					label.x = Math.round(label.x);
+					label.y = Math.round(label.y);
+				}
 			}
 		}
 		
@@ -169,6 +175,20 @@ package com.weibo.charts.comp.axis
 			return null;
 		}
 		
+		private function get axisUint():String
+		{
+			switch (_type)
+			{
+				case AxisType.VALUE_AXIS:
+					return coordinateStyle.valueUnit;
+					break;
+				case AxisType.SUB_VALUE_AXIS:
+					return coordinateStyle.valueSubUnit;
+					break;
+			}
+			return "";
+		}
+		
 		private function newLabel(parent:DisplayObjectContainer, dataObject:Object, showUnit:Boolean = false):DisplayObject
 		{
 			var text:String = dataObject.label;
@@ -187,7 +207,7 @@ package com.weibo.charts.comp.axis
 			}
 			if (showUnit)
 			{
-				text = text + coordinateStyle.valueUnit;
+				text = text + axisUint;
 			}
 			 
 			var label:TextField = new TextField();

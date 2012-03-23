@@ -11,9 +11,6 @@ package com.weibo.charts.style
 	 */
 	public class CoordinateChartStyle extends ChartBaseStyle
 	{
-//		public var showBorder:Boolean = false;
-//		public var borderThickness:int = 1;
-//		public var borderColor:int = 0x000000;
 		
 	//===============================
 	// 子对象样式
@@ -51,10 +48,6 @@ package com.weibo.charts.style
 	// 主图形样式，如曲线、柱形等
 	//-----------------------------------
 		
-		/**
-		 * 主图形的颜色
-		 */		
-		public var colors:Array = [0x519ae5];
 		
 //		public var lineColor:uint = 0x333333;
 		
@@ -89,6 +82,6 @@ package com.weibo.charts.style
 		 */
 		public var valueUnit:String = "";
 		
-		
+		public var valueSubUnit:String = "";
 	}
 }

@@ -25,7 +25,7 @@ package com.weibo.charts
 		
 		private var _dotArr:Array = [];
 		
-		private var _container:Sprite;
+		private var _shapeContainer:Sprite;
 		
 		private var _tipContainer:Sprite;
 		
@@ -35,7 +35,6 @@ package com.weibo.charts
 		private var _tweens:TweenMax;
 		
 		private var j:int = 0;
-		private var m:int = 0;
 		private var _space:Number = 0;
 		private var _preLineLen:int;
 		private var _preLineDots:int;
@@ -50,12 +49,20 @@ package com.weibo.charts
 			this.area = new Rectangle(0,0,width,height);
 		}
 		
+		
+		
+		public function get dotArr():Array 
+		{
+			return _dotArr;
+		}
+		
+		
 		override protected function create():void
 		{
-			if (_container == null)
+			if (_shapeContainer == null)
 			{
-				_container =  new Sprite();
-				addChild(_container);
+				_shapeContainer =  new Sprite();
+				addChild(_shapeContainer);
 			}
 			
 			if(_tipContainer == null && _chartStyle.tipType != 0){
@@ -71,20 +78,24 @@ package com.weibo.charts
 			_dotArr = [];
 			
 			j = 0;
-			m = 0;
 			_space = 0;
 			_preLineLen = 0;
 			_preLineDots = 0;
 			
-			if(_container != null)
+			if(_shapeContainer != null)
 			{
-				_container.graphics.clear();
-				while (_container.numChildren > 0) _container.removeChildAt(0);
+				_shapeContainer.graphics.clear();
+				while (_shapeContainer.numChildren > 0) _shapeContainer.removeChildAt(0);
+				_shapeContainer = null;
 			}			
 			
 			_arrTips = [];
 			_arrDots = [];
-			if(_tipContainer != null) while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);	
+			if(_tipContainer != null)
+			{
+				while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
+				_tipContainer = null;
+			}
 		}
 		
 		override protected function updateState():void
@@ -106,7 +117,7 @@ package com.weibo.charts
 			if(lineDots > 1) _space = coordinateLogic.touchSide ? this.area.width/(lineDots-1) : this.area.width/lineDots;
 			else _space = coordinateLogic.touchSide ? 0 : this.area.width * 0.5;
 
-			if(_dotArr.length == 0)
+			if (_dotArr.length == 0)
 			{
 //				_container.graphics.clear();
 //				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.colors[i]);
@@ -119,6 +130,7 @@ package com.weibo.charts
 					var dotAryT:Array = [];
 					var type:int;
 //					_container.graphics.endFill();
+					var lineShape:LineShape = getChildShapeAt(j) as LineShape;
 					for(var i:int = 0; i < lineDots ; i ++)
 					{
 						var valueData:Array = coordinateLogic.dataProvider.data[j]["value"];
@@ -135,7 +147,11 @@ package com.weibo.charts
 						
 						DisplayObject(dot).y = area.bottom;
 						TweenMax.to(dot, 0.5, { y: pheight, onUpdate:dotNextFrame} );
-						_container.addChild(dot as DisplayObject);
+						
+						
+						lineShape.addChild(dot as DisplayObject);
+						
+						
 						dotAryT[dotAryT.length] = dot;
 						
 						_arrDots[_arrDots.length] = dot;
@@ -165,8 +181,10 @@ package com.weibo.charts
 				}				
 				_preLineDots = lineDots;
 				_preLineLen = lineLen;			
-			}else{
-				if(_preLineLen == lineLen && _preLineDots == lineDots)
+			}
+			else
+			{
+				if (_preLineLen == lineLen && _preLineDots == lineDots)
 				{
 					for (j = 0; j < lineLen; j++)
 					{
@@ -205,7 +223,9 @@ package com.weibo.charts
 							TweenMax.to(dot, 0.5, { y: pheight, ease:Cubic.easeOut, onUpdate:dotNextFrame } );
 						}			
 					}		
-				}else {
+				}
+				else
+				{
 					this.invalidate("all");
 				}
 			}
@@ -213,28 +233,39 @@ package com.weibo.charts
 		
 		private function dotNextFrame():void
 		{
-			_container.graphics.clear();
+			var backThichness:Number = _chartStyle.lineThickness;
+			if (_chartStyle.border) backThichness += _chartStyle.borderThickness * 2;
 			
 			var color:uint;
 			for (var j:int = 0, arrLen:int = _dotArr.length; j < arrLen; j++)
 			{
 				color = _chartStyle.colors[j % _chartStyle.colors.length];
-				_container.graphics.lineStyle(_chartStyle.lineThickness, color);
+				var borderColor:uint = ColorUtil.adjustBrightness(color, -50);
+				var lineShape:LineShape = getChildShapeAt(j) as LineShape;
+				lineShape.backGraphics.clear();
+				lineShape.backGraphics.lineStyle(backThichness, borderColor);
+				lineShape.lineGraphics.clear();
+				lineShape.lineGraphics.lineStyle(_chartStyle.lineThickness, color);
 				
 				if(_chartStyle.shadowColors.length > j)
 				{
-					_container.graphics.beginFill(_chartStyle.shadowColors[j], _chartStyle.shadowAlpha);
+					lineShape.backGraphics.beginFill(_chartStyle.shadowColors[j], _chartStyle.shadowAlpha);
 				}
 				
 				var firstDot:DisplayObject = _dotArr[j][0];
-				_container.graphics.moveTo(firstDot.x, firstDot.y);
+				if (firstDot)
+				{
+					lineShape.backGraphics.moveTo(firstDot.x, firstDot.y);
+					lineShape.lineGraphics.moveTo(firstDot.x, firstDot.y);
+				}
 				var dot:DisplayObject;
 				
 				for(var i:int = 0, len:int = _dotArr[j].length; i < len; i ++)
 				{
 					dot = _dotArr[j][i];
 					
-					_container.graphics.lineTo(dot.x, dot.y);
+					lineShape.backGraphics.lineTo(dot.x, dot.y);
+					lineShape.lineGraphics.lineTo(dot.x, dot.y);
 					
 					if(_chartStyle.tipType != 0)
 					{
@@ -245,19 +276,29 @@ package com.weibo.charts
 				
 				if (_chartStyle.shadowColors.length > j)
 				{
-					_container.graphics.lineStyle();
-					_container.graphics.lineTo(dot.x, area.bottom);
-					_container.graphics.lineTo(firstDot.x, area.bottom);
-					_container.graphics.lineTo(firstDot.x, firstDot.y);
-					_container.graphics.endFill();
+					lineShape.backGraphics.lineStyle();
+					lineShape.backGraphics.lineTo(dot.x, area.bottom);
+					lineShape.backGraphics.lineTo(firstDot.x, area.bottom);
+					lineShape.backGraphics.lineTo(firstDot.x, firstDot.y);
+					lineShape.backGraphics.endFill();
 				}
 			}			
 		}
 		
-		public function get dotArr():Array 
+		private function getChildShapeAt(index:int):LineShape
 		{
-			return _dotArr;
+			if (index < _shapeContainer.numChildren)
+			{
+				return _shapeContainer.getChildAt(index) as LineShape;
+			}
+			else
+			{
+				var lineShape:LineShape = new LineShape();
+				_shapeContainer.addChild(lineShape);
+				return lineShape;
+			}
 		}
+		
 		
 		protected function outDot(event:MouseEvent):void
 		{
@@ -277,4 +318,36 @@ package com.weibo.charts
 		
 	}
 	
+}
+
+
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+
+class LineShape extends Sprite
+{
+
+	private var line:Shape;
+
+	private var side:Shape;
+	
+	
+	public function LineShape()
+	{
+		side = new Shape();
+		line = new Shape();
+		addChild(side);
+		addChild(line);
+	}
+	
+	public function get backGraphics():Graphics
+	{
+		return side.graphics;
+	}
+	
+	public function get lineGraphics():Graphics
+	{
+		return line.graphics;
+	}
 }

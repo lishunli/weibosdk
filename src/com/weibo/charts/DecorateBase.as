@@ -1,6 +1,7 @@
 package com.weibo.charts
 {
 	import com.weibo.charts.data.IAxisLogic;
+	import com.weibo.charts.style.ChartBaseStyle;
 	
 	import flash.geom.Rectangle;
 	
@@ -30,8 +31,8 @@ package com.weibo.charts
 	// 公开方法
 	//----------------------------------------
 		
-		override public function get chartStyle():Object { return target.chartStyle; }
-		override public function set chartStyle(value:Object):void
+		override public function get chartStyle():ChartBaseStyle { return target.chartStyle; }
+		override public function set chartStyle(value:ChartBaseStyle):void
 		{
 			target.chartStyle = value;
 		}

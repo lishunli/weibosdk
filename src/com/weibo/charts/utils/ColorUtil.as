@@ -99,13 +99,12 @@ package com.weibo.charts.utils
 		}
 		
 		/**
-		 * 调整亮度
-		 *
-		 * @param rgb	颜色值
-		 * @param brite	颜色变化量
-		 * 这个值表示的是颜色的数值增加量，数值由-255至255，为0则不改变。
-		 * @return	返回一个新的颜色值
-		 */
+		 * 更改RGB颜色值亮度
+		 * 有效范围：-255至255之间
+		 * @param rgb
+		 * @param brite
+		 * @return 
+		 */		
 		public static function adjustBrightness(rgb:uint, brite:Number):uint
 		{
 			var r:Number = Math.max(Math.min(((rgb >> 16) & 0xFF) + brite, 255), 0);

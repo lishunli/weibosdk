@@ -3,6 +3,7 @@ package com.weibo.charts
 	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.data.ICoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
+	import com.weibo.charts.style.CoordinateChartStyle;
 	
 	import flash.geom.Rectangle;
 
@@ -12,7 +13,7 @@ package com.weibo.charts
 	 */	
 	public class CoordinateChart extends ChartBase
 	{
-		public function CoordinateChart(style:Object = null)
+		public function CoordinateChart(style:CoordinateChartStyle = null)
 		{
 			super(style);
 			axisLogic = new CoordinateLogic(this);

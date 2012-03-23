@@ -30,7 +30,7 @@ package com.weibo.charts
 		
 		public function LineChart(style:LineChartStyle)
 		{
-			super();
+			super(style);
 			_chartStyle = style;
 		}
 		
@@ -80,12 +80,12 @@ package com.weibo.charts
 			if(_arrDots.length == 0)
 			{
 				//0：不显示,1:一直显示，2：需要触发
-				if (_chartStyle.baseStyle.tipType == 2)
+				if (_chartStyle.tipType == 2)
 				{
 					_container.addEventListener(MouseEvent.ROLL_OVER, overDot);
 					_container.addEventListener(MouseEvent.ROLL_OUT, outDot);
 				}
-				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColors[0]);		
+				_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.colors[0]);		
 				
 				var pheight:Number;
 				var tx:Number;
@@ -97,7 +97,7 @@ package com.weibo.charts
 					pheight = Math.round(this.coordinateLogic.getPosition(valueData[i]));
 					tx = Math.round(area.x +  space * 0.5  + i * space);
 					dot = new _chartStyle.dotUI();
-					ChartUIBase(dot).uiColor = _chartStyle.lineColors[i % (_chartStyle.lineColors.length)];
+					ChartUIBase(dot).uiColor = _chartStyle.colors[i % (_chartStyle.colors.length)];
 					DisplayObject(dot).x = tx;
 					DisplayObject(dot).y = area.bottom;
 					TweenMax.to(dot, 0.5,{y: pheight, onUpdate:doitNextFrame});
@@ -107,18 +107,18 @@ package com.weibo.charts
 //					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OVER, overDot);
 //					DisplayObject(dot).addEventListener(MouseEvent.ROLL_OUT, outDot);
 					
-					if(_chartStyle.baseStyle.tipType != 0)
+					if(_chartStyle.tipType != 0)
 					{
 						tip = new _chartStyle.tipUI();
 						tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
 						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
-						ChartUIBase(tip).uiColor = _chartStyle.lineColors[i %  (_chartStyle.lineColors.length)];
+						ChartUIBase(tip).uiColor = _chartStyle.colors[i %  (_chartStyle.colors.length)];
 //						tip.show(_tipContainer, tx, pheight, this.area);
 						_tipContainer.addChild(tip as DisplayObject);
 						_arrTips[_arrTips.length] = tip;
 						//显示TIP
 						tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
-						DisplayObject(tip).visible = (_chartStyle.baseStyle.tipType == 1);
+						DisplayObject(tip).visible = (_chartStyle.tipType == 1);
 					}
 				}
 			}else{
@@ -142,7 +142,7 @@ package com.weibo.charts
 						//显示TIP
 						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
 						tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, this.area);
-						DisplayObject(tip).visible = (_chartStyle.baseStyle.tipType == 1);
+						DisplayObject(tip).visible = (_chartStyle.tipType == 1);
 					}
 				}else {
 					if (_tweens != null) {
@@ -187,7 +187,7 @@ package com.weibo.charts
 		{
 			removeEventListener(Event.ENTER_FRAME, tweenning);
 			_container.graphics.clear();
-			_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.lineColors[0]);		
+			_container.graphics.lineStyle(_chartStyle.lineThickness, _chartStyle.colors[0]);		
 			
 			for(var i:int = 0; i < _arrDots.length; i ++)
 			{
@@ -197,7 +197,7 @@ package com.weibo.charts
 				else
 					_container.graphics.lineTo(dot.x, dot.y);
 				
-				if(_chartStyle.baseStyle.tipType != 0)
+				if(_chartStyle.tipType != 0)
 				{
 					var tip:ITipUI = _arrTips[i];
 					UIComponent(tip).move(DisplayObject(dot).x,  DisplayObject(dot).y);

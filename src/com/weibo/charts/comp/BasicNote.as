@@ -71,7 +71,7 @@ package com.weibo.charts.comp
 		{
 			if (!target.dataProvider) return;
 			
-			var colors:Array = getStyle("colors") as Array;
+			var colors:Array = chartStyle.colors;
 			var space:Number = getStyle("space") as Number;
 			var margin:Number = getStyle("margin") as Number;
 			var shapenum:int = dataProvider.data.length;

@@ -9,7 +9,6 @@ package com.weibo.charts.comp
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextFormat;
 	
@@ -131,7 +130,7 @@ package com.weibo.charts.comp
 				var tf:TextFormat = new TextFormat("Arial", null, pieChartStyle.tipColor);
 				
 //				getStyle("tipFun").call(null, dataProvider[i]);
-				tip.setLabel(getStyle("tipFun").call(null, dataProvider[i]), tf, true);
+				tip.setLabel(pieChartStyle.tipFun.call(null, dataProvider[i]), tf, true);
 				_tipContainer.addChild(tip as DisplayObject);
 				_arrTips[_arrTips.length] = tip;
 				

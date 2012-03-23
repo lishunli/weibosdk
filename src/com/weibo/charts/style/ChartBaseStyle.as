@@ -20,5 +20,14 @@ package com.weibo.charts.style
 		 */		
 		public var bg:DisplayObject = null;
 		
+		/**
+		 * 主图形的颜色
+		 */		
+		public var colors:Array = [0x519ae5];
+		
+		
+		public var border:Boolean = false;
+		public var borderThickness:int = 1;
+//		public var borderColor:int = 0x000000;
 	}
 }

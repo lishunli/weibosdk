@@ -4,6 +4,7 @@ package com.weibo.charts
 	import com.weibo.charts.effects.IEffect;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.service.IWeiboChartService;
+	import com.weibo.charts.style.ChartBaseStyle;
 	import com.weibo.core.UIComponent;
 	
 	import flash.geom.Rectangle;
@@ -30,9 +31,9 @@ package com.weibo.charts
 		
 		private var _tipFun:Function;
 		*/
-		private var _chartStyle:Object;
+		private var _chartStyle:ChartBaseStyle;
 		
-		public function ChartBase(style:Object = null)
+		public function ChartBase(style:ChartBaseStyle = null)
 		{
 			_chartStyle = style;
 			_width = 450;
@@ -129,8 +130,8 @@ package com.weibo.charts
 			height = value;
 		}
 
-		public function get chartStyle():Object { return _chartStyle; }
-		public function set chartStyle(value:Object):void
+		public function get chartStyle():ChartBaseStyle { return _chartStyle; }
+		public function set chartStyle(value:ChartBaseStyle):void
 		{
 			_chartStyle = value;
 		}
