@@ -45,6 +45,7 @@ package com.weibo.charts.ui.tips
 		public function TipsManager(targetChart:CoordinateChart)
 		{
 			_targetChart = targetChart;
+			_targetChart.chartStyle
 		}
 		
 		public function destroy():void
@@ -76,14 +77,14 @@ package com.weibo.charts.ui.tips
 				_oneUnit = _targetChart.chartStyle["touchSide"] ? _targetChart.area.width / (_targetChart.dataProvider["axis"].length - 1) :  _targetChart.area.width / _targetChart.dataProvider["axis"].length;			
 				var TipClass:Class = _targetChart.chartStyle["tipUI"];
 				_singleTip = new TipClass;
-				_singleTip.setLabel("2011年11月12日<br/>活跃度：299345", new TextFormat("Arial", 12, 0x000000, false, null, null, null, null, null, null ,null, null, 7), true);
+
 				_tipContainer.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);	
 				
 			}else if(_targetChart.chartStyle["tipType"] != 0)
 			{
 				var dot:IDotUI;
 				var tip:ITipUI;
-				var tipFun:Function = _targetChart.getStyle("tipFun") as Function;
+				var tipFun:Function = _targetChart.chartStyle["tipFun"] as Function;
 				TipClass = _targetChart.chartStyle["tipUI"];
 				var tipStr:String = "";
 				
@@ -112,8 +113,8 @@ package com.weibo.charts.ui.tips
 						if(lineDots > 1) tx = _targetChart.coordinateLogic.touchSide ? Math.round(_targetChart.area.x + j * _space) : Math.round(_targetChart.area.x + j * _space + _space * 0.5);
 						else tx = Math.round(_targetChart.area.x + _space);
 						
-						tipStr = (tipFun == null) ? valueData[j] : tipFun(valueData[j]);
-						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
+						tipStr = (tipFun == null) ? valueData[j] : tipFun(i, j);
+						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff), true);
 						ChartUIBase(tip).uiColor = _targetChart.chartStyle.colors[i %  (_targetChart.chartStyle.colors.length)];
 						_arrTips[_arrTips.length] = tip;
 						if(_targetChart.chartStyle["tipType"] == 2)
@@ -156,6 +157,12 @@ package com.weibo.charts.ui.tips
 				}
 				_selectedID = id;
 				
+				var tipFun:Function = _targetChart.chartStyle["tipFun"] as Function;
+				var tipStr:String = "";
+				
+				var tipIPos:int = 0;
+				var tipJPos:int = _selectedID;
+				
 				if(_targetChart.chartStyle["tipType"] == 3 || _dataLen == 1)
 				{
 					var finalDot:ChartUIBase = _targets[_selectedID];
@@ -163,7 +170,11 @@ package com.weibo.charts.ui.tips
 					for(i = 0; i < _dataLen ; i ++)
 					{
 						dot = _targets[_selectedID + i * _axisLen];
-						if(Math.abs(dot.y - ty) < Math.abs(finalDot.y - ty)) finalDot = dot;
+						if(Math.abs(dot.y - ty) < Math.abs(finalDot.y - ty))
+						{
+							finalDot = dot;
+							tipIPos = i;
+						}
 						dot.selected = false;
 					}
 					ty = finalDot.y;
@@ -176,7 +187,11 @@ package com.weibo.charts.ui.tips
 						dot.selected = true;
 					}
 				}
-//				trace(ChartUIBase(_singleTip).width );
+				
+				var valueData:Array = _targetChart.coordinateLogic.dataProvider.data[tipIPos]["value"];
+				tipStr = (tipFun == null) ? valueData[tipJPos] : tipFun(tipIPos, tipJPos);			
+				_singleTip.setLabel(tipStr, new TextFormat("Arial", 12, 0x000000, false, null, null, null, null, null, null ,null, null, 7), true);
+				
 				if(_tipContainer.mouseX + ChartUIBase(_singleTip).uiWidth > _targetChart.area.right) tx = _targetChart.area.right - ChartUIBase(_singleTip).uiWidth;
 				if(_tipContainer.mouseY + ChartUIBase(_singleTip).uiHeight > _targetChart.area.bottom) ty = _targetChart.area.bottom - ChartUIBase(_singleTip).uiHeight;
 				
@@ -221,7 +236,7 @@ package com.weibo.charts.ui.tips
 						if(lineDots > 1) tx = _targetChart.coordinateLogic.touchSide ? Math.round(_targetChart.area.x + j * _space) : Math.round(_targetChart.area.x + j * _space + _space * 0.5);
 						else tx = Math.round(_targetChart.area.x + _space);
 						
-						tipStr = (tipFun == null) ? valueData[j] : tipFun(valueData[j]);
+						tipStr = (tipFun == null) ? valueData[j] : tipFun(i, j);
 						tip.setLabel(tipStr, new TextFormat("Arial", null, 0xffffff));
 						ChartUIBase(tip).uiColor = _targetChart.chartStyle.colors[i %  (_targetChart.chartStyle.colors.length)];
 						_arrTips[_arrTips.length] = tip;
