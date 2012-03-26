@@ -33,7 +33,7 @@ package com.weibo.charts
 			dispatchEvent(new ChartEvent(ChartEvent.CHART_DATA_CHANGED));
 		}
 		
-		protected function get coordinateLogic():CoordinateLogic
+		public function get coordinateLogic():CoordinateLogic
 		{
 			return this.axisLogic as CoordinateLogic;
 		}

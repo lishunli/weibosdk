@@ -62,7 +62,7 @@ package com.weibo.charts.style
 		
 		
 		/**
-		 * 0:不显示,1:一直显示，2:点触发,3:函数调用触发
+		 * 0:不显示,1:一直显示，2:点触发,3:鼠标追随,4:整体显示
 		 */		
 		public var tipType:int = 0;
 		

@@ -196,8 +196,8 @@ package com.weibo.core
 		 */
 		public function move(xpos:Number, ypos:Number):void
 		{
-			this.x = xpos;
-			this.y = ypos;
+			this.x = Math.round(xpos);
+			this.y = Math.round(ypos);
 		}
 		
 		/**

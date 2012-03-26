@@ -14,12 +14,19 @@ package com.weibo.charts.ui
 		private var _outlineColor:Number = 0x000000;
 		private var _outlineThicknesss:Number = 1;
 		
+		private var _selected:Boolean = false;
+		
 		public function ChartUIBase()
 		{
 			super();
 		}
 		
-		protected function inEffect():void
+		protected function overEffect(skipEffect:Boolean = false):void
+		{
+			
+		}
+		
+		protected function outEffect(skipEffect:Boolean = false):void
 		{
 			
 		}
@@ -75,5 +82,13 @@ package com.weibo.charts.ui
 			_uiAlpha = value;
 			this.invalidate("styles");
 		}
+
+		public function get selected():Boolean { return _selected; }
+		public function set selected(value:Boolean):void
+		{
+			_selected = value;
+			this.invalidate("state");
+		}
+
 	}
 }

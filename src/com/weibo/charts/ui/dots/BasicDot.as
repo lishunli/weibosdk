@@ -41,12 +41,38 @@ package com.weibo.charts.ui.dots
 		
 		private function outThis(e:MouseEvent):void
 		{
-			TweenMax.to(this, 0.3, {scaleX: 1, scaleY: 1});
+			if(!selected) outEffect();
 		}
 		
 		private function overThis(e:MouseEvent):void
 		{
-			TweenMax.to(this, 0.5, {scaleX: 1.2, scaleY: 1.2, ease:Elastic.easeOut});
+			if(!selected) overEffect();
+		}
+		
+		override protected function overEffect(skipEffect:Boolean=false):void
+		{
+			if(!skipEffect) TweenMax.to(this, 0.5, {scaleX: 1.2, scaleY: 1.2, ease:Elastic.easeOut});
+			else this.scaleX = this.scaleY = 1.2;
+		}
+		
+		override protected function outEffect(skipEffect:Boolean=false):void
+		{
+			if(!skipEffect) TweenMax.to(this, 0.3, {scaleX: 1, scaleY: 1});
+			else this.scaleX = this.scaleY = 1;
+		}
+		
+		override public function set selected(value:Boolean):void
+		{
+			if(value)
+			{
+				this.removeEventListener(MouseEvent.ROLL_OVER, overThis);
+				this.removeEventListener(MouseEvent.ROLL_OUT, outThis);
+				this.overEffect(false);
+			}else{
+				this.outEffect(false);
+				addEvents();
+			}
+			
 		}
 		
 	}
