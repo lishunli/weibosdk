@@ -103,21 +103,21 @@ package com.weibo.charts.comp.axis
 					{
 						label = newLabel(labelContainer, dataObject, false);
 						label.x = dataObject.position + area.x - label.width/2;
-						label.y = area.bottom + 5;
+						label.y = area.bottom + coordinateStyle.axisStyle.marginBottom;
 //						if (label.x < stageHSide.x || (label.x + label.width) > stageHSide.y) label.visible = false;
 						break;
 					}
 					case AxisType.VALUE_AXIS:
 					{
 						label = newLabel(labelContainer, dataObject, i == count-1);
-						label.x = area.x - label.width;
+						label.x = area.x - label.width - coordinateStyle.axisStyle.marginLeft;
 						label.y = dataObject.position + area.y - label.height/2;
 						break;
 					}
 					case AxisType.SUB_VALUE_AXIS:
 					{
 						label = newLabel(labelContainer, dataObject, i == count-1);
-						label.x = area.right + 0;
+						label.x = area.right + coordinateStyle.axisStyle.marginRight;
 						label.y = dataObject.position + area.y - label.height/2;
 						break;
 					}
@@ -237,11 +237,6 @@ package com.weibo.charts.comp.axis
 			onChartAxisResize();
 			this.invalidate();
 		}
-		/*
-		private function onChartChanged(event:ChartEvent):void
-		{
-			
-		}*/
 		
 		/**
 		 * 根据轴的文字调整图表尺寸
@@ -252,11 +247,10 @@ package com.weibo.charts.comp.axis
 			if (!dataProvider) return;
 			
 			var count:int = axisData.length;
-			var realArea:Rectangle = area.clone();//new Rectangle(0, 0, chartWidht, chartHeight);
-			//var lastArea:Rectangle = area.clone();//realArea.clone();
 			var maxLength:Number = 2;
-			var leftBottom:Point = new Point(area.left, area.bottom);
-			var tempRect:Rectangle = area.clone(); 
+//			var leftBottom:Point = new Point(area.left, area.bottom);
+			var realArea:Rectangle = area.clone();//new Rectangle(0, 0, chartWidht, chartHeight);
+//			var tempRect:Rectangle = area.clone();
 			for (var i:int = 0; i < count; i++)
 			{
 				var dataObject:Object = axisData[i];
@@ -265,18 +259,14 @@ package com.weibo.charts.comp.axis
 				switch(_type)
 				{
 					case AxisType.LABEL_AXIS:
-						leftBottom.y = Math.min(chartHeight - label.height, leftBottom.y);
-//						realArea.bottom = Math.min(chartHeight - label.height, realArea.bottom);
+						realArea.bottom = Math.min(chartHeight - label.height - coordinateStyle.axisStyle.marginBottom, realArea.bottom);
 						break;
 					case AxisType.VALUE_AXIS:
-//						trace(dataObject.label)
-						leftBottom.x = Math.max(label.width, leftBottom.x);
-//						realArea.left = Math.max(label.width, realArea.left);
+						realArea.left = Math.max(label.width + coordinateStyle.axisStyle.marginLeft, realArea.left);
+						if (i == (count-1)) realArea.top = Math.max(realArea.top, label.height/2);
 						break;
 					case AxisType.SUB_VALUE_AXIS:
-//						trace(dataObject.label)
-						tempRect.right = Math.min(chartWidth - label.width, tempRect.right);
-//						realArea.left = Math.max(label.width, realArea.left);
+						realArea.right = Math.min(chartWidth - label.width - coordinateStyle.axisStyle.marginRight, realArea.right);
 						break;
 				}
 				//横坐标为标题类型的
@@ -290,9 +280,9 @@ package com.weibo.charts.comp.axis
 			if (_type == AxisType.LABEL_AXIS && coordinateStyle.axisStyle.autoHide)
 				coordinateLogic.labelLength = maxLength;
 			
-			realArea.left = leftBottom.x;
-			realArea.bottom = leftBottom.y;
-			realArea.right = tempRect.right;
+//			realArea.left = leftBottom.x;
+//			realArea.bottom = leftBottom.y;
+//			realArea.right = tempRect.right;
 			
 			//area.containsRect(realArea) && 
 			if (!area.equals(realArea) && area.width > 0 && area.height > 0)
@@ -300,13 +290,13 @@ package com.weibo.charts.comp.axis
 				area = realArea;//area.intersection(realArea);
 				
 				axisLogic.dataProvider = dataProvider;
-//				onChartAxisResize();
 				target.dispatchEvent(new ChartEvent(ChartEvent.CHART_AXIS_RESIZE));
-//				target.dispatchEvent(new ChartEvent(ChartEvent.CHART_RESIZE, null, true));
 			}
-//			else {
+			else {
 //				trace(_style.axisType, "Rectange相同");
-//			}
+//				area.left -= coordinateStyle.axisStyle.marginY;
+//				area.bottom -= coordinateStyle.axisStyle.marginX;
+			}
 		}
 		
 	}
