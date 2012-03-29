@@ -77,7 +77,6 @@ package com.weibo.charts.ui.tips
 				_oneUnit = _targetChart.chartStyle["touchSide"] ? _targetChart.area.width / (_targetChart.dataProvider["axis"].length - 1) :  _targetChart.area.width / _targetChart.dataProvider["axis"].length;			
 				var TipClass:Class = _targetChart.chartStyle["tipUI"];
 				_singleTip = new TipClass;
-
 				_tipContainer.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);	
 				
 			}else if(_targetChart.chartStyle["tipType"] != 0)
@@ -204,7 +203,14 @@ package com.weibo.charts.ui.tips
 		
 		public function updateInitState():void
 		{
-			if(_targetChart.chartStyle["tipType"] != 0)
+			if(_targetChart.chartStyle["tipType"] == 3 || _targetChart.chartStyle["tipType"] == 4)
+			{
+				_oneUnit = _targetChart.chartStyle["touchSide"] ? _targetChart.area.width / (_targetChart.dataProvider["axis"].length - 1) :  _targetChart.area.width / _targetChart.dataProvider["axis"].length;			
+//				var TipClass:Class = _targetChart.chartStyle["tipUI"];
+//				_singleTip = new TipClass;
+//				_tipContainer.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+				
+			}else if(_targetChart.chartStyle["tipType"] != 0)
 			{
 				var dot:IDotUI;
 				var tip:ITipUI;
