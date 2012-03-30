@@ -41,6 +41,14 @@ package com.weibo.charts.ui.dots
 			this.buttonMode = true;
 		}
 		
+		override protected function destroy():void
+		{
+			if(contains(_small)) removeChild(_small);
+			if(contains(_big)) removeChild(_big);
+			_small = null;
+			_big = null;
+		}
+		
 		override protected function addEvents():void
 		{
 			this.addEventListener(MouseEvent.ROLL_OVER, overThis);

@@ -8,6 +8,7 @@ package com.weibo.charts.ui.tips
 	import flash.display.CapsStyle;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.GradientType;
+	import flash.filters.DropShadowFilter;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -37,7 +38,9 @@ package com.weibo.charts.ui.tips
 				_t.selectable = false;
 				_t.x = _t.y = 5;
 				addChild(_t);
-			}	
+			}
+			
+			this.filters = [new DropShadowFilter(2,45,0,0.5)];
 		}
 		
 		/**

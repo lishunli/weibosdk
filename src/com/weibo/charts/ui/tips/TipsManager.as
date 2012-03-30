@@ -1,7 +1,5 @@
 package com.weibo.charts.ui.tips
 {
-	import com.greensock.TweenMax;
-	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.CoordinateChart;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
@@ -11,6 +9,8 @@ package com.weibo.charts.ui.tips
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.external.ExternalInterface;
+	import flash.geom.Point;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
 
@@ -41,6 +41,8 @@ package com.weibo.charts.ui.tips
 		private var _axisLen:int;
 		
 		private var _selectedID:int = -1;
+		
+		private var _chartPos:Point;
 		
 		public function TipsManager(targetChart:CoordinateChart)
 		{
@@ -77,6 +79,8 @@ package com.weibo.charts.ui.tips
 				_oneUnit = _targetChart.chartStyle["touchSide"] ? _targetChart.area.width / (_targetChart.dataProvider["axis"].length - 1) :  _targetChart.area.width / _targetChart.dataProvider["axis"].length;			
 				var TipClass:Class = _targetChart.chartStyle["tipUI"];
 				_singleTip = new TipClass;
+				
+				_chartPos = _tipContainer.parent.localToGlobal(new Point(_tipContainer.x, _tipContainer.y));
 				_tipContainer.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);	
 				
 			}else if(_targetChart.chartStyle["tipType"] != 0)
@@ -132,19 +136,19 @@ package com.weibo.charts.ui.tips
 		
 		protected function onEnterFrame(event:Event):void
 		{
-			if(_tipContainer.stage.mouseX > _targetChart.area.left &&
-				_tipContainer.stage.mouseX < _targetChart.area.right && 
-				_tipContainer.stage.mouseY > _targetChart.area.top &&
-				_tipContainer.stage.mouseY < _targetChart.area.bottom)
+			
+			if(_tipContainer.mouseX > _targetChart.area.left &&
+				_tipContainer.mouseX < _targetChart.area.right && 
+				_tipContainer.mouseY > _targetChart.area.top &&
+				_tipContainer.mouseY < _targetChart.area.bottom)
 			{
-				var pos:Number = (_tipContainer.stage.mouseX - _targetChart.area.left) / _oneUnit;		
+				var pos:Number = (_tipContainer.stage.mouseX - _targetChart.area.left - _chartPos.x) / _oneUnit;		
 				var id:int = _targetChart.chartStyle["touchSide"] ? Math.round(pos) : Math.floor(pos);
-//				trace(id);
 //				_singleTip.show(_tipContainer, _tipContainer.stage.mouseX, _tipContainer.stage.mouseY, _targetChart.area);		
 //				if(_selectedID == id) return;
 				
 				var ty:Number = _tipContainer.mouseY;
-				var tx:Number = _targetChart.area.left;
+				var tx:Number = _targetChart.area.left + _chartPos.x;
 				
 				if(_selectedID != id && _selectedID >= 0)
 				{
@@ -165,7 +169,7 @@ package com.weibo.charts.ui.tips
 				if(_targetChart.chartStyle["tipType"] == 3 || _dataLen == 1)
 				{
 					var finalDot:ChartUIBase = _targets[_selectedID];
-					tx = finalDot.x;
+					
 					for(i = 0; i < _dataLen ; i ++)
 					{
 						dot = _targets[_selectedID + i * _axisLen];
@@ -177,6 +181,7 @@ package com.weibo.charts.ui.tips
 						dot.selected = false;
 					}
 					ty = finalDot.y;
+					tx = finalDot.x;
 					finalDot.selected = true;
 				}else if(_targetChart.chartStyle["tipType"] == 4){
 					for(i = 0; i < _dataLen ; i ++)
@@ -191,12 +196,21 @@ package com.weibo.charts.ui.tips
 				tipStr = (tipFun == null) ? valueData[tipJPos] : tipFun(tipIPos, tipJPos);			
 				_singleTip.setLabel(tipStr, new TextFormat("Arial", 12, 0x000000, false, null, null, null, null, null, null ,null, null, 7), true);
 				
-				if(_tipContainer.mouseX + ChartUIBase(_singleTip).uiWidth > _targetChart.area.right) tx = _targetChart.area.right - ChartUIBase(_singleTip).uiWidth;
-				if(_tipContainer.mouseY + ChartUIBase(_singleTip).uiHeight > _targetChart.area.bottom) ty = _targetChart.area.bottom - ChartUIBase(_singleTip).uiHeight;
+				if(tx + ChartUIBase(_singleTip).uiWidth >= _targetChart.area.right) tx = _targetChart.area.right - ChartUIBase(_singleTip).uiWidth;
+				if(ty + ChartUIBase(_singleTip).uiHeight >= _targetChart.area.bottom) ty = _targetChart.area.bottom - ChartUIBase(_singleTip).uiHeight;
 				
 				_singleTip.show(_tipContainer, tx, ty, _targetChart.area);
 			}else{
 				_singleTip.hide();
+				if(_selectedID >= 0)
+				{
+					for(i = 0; i < _dataLen ; i ++)
+					{
+						dot = _targets[_selectedID + i * _axisLen];
+						dot.selected = false;
+					}
+				}
+					
 				_selectedID = -1;
 			}
 		}
@@ -209,6 +223,7 @@ package com.weibo.charts.ui.tips
 //				var TipClass:Class = _targetChart.chartStyle["tipUI"];
 //				_singleTip = new TipClass;
 //				_tipContainer.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+				_chartPos = _tipContainer.parent.localToGlobal(new Point(_tipContainer.x, _tipContainer.y));
 				
 			}else if(_targetChart.chartStyle["tipType"] != 0)
 			{
