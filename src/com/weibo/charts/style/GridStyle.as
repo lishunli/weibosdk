@@ -18,6 +18,8 @@ package com.weibo.charts.style
 		public var backgroundColor:uint = 0xfbfbfb;
 		public var backgroundAlpha:Number = .3;
 		
+		public var addMore:Boolean = true;
+		
 		public function GridStyle()
 		{
 			

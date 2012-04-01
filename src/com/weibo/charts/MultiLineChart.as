@@ -45,10 +45,11 @@ package com.weibo.charts
 		{
 			_chartStyle = style;
 			super(style);		
-			this.coordinateLogic.integer = style.integer;
-			this.coordinateLogic.alwaysShow0 = true;
-			this.coordinateLogic.touchSide = style.touchSide;
-			this.area = new Rectangle(0,0,width,height);
+//			this.coordinateLogic.integer = style.integer;
+//			this.coordinateLogic.alwaysShow0 = true;
+//			this.coordinateLogic.touchSide = style.touchSide;
+//			this.coordinateLogic.addMore = style.gridStyle.addMore;
+//			this.area = new Rectangle(0,0,width,height);
 		}
 		
 		
@@ -91,7 +92,7 @@ package com.weibo.charts
 				_shapeContainer.graphics.clear();
 				while (_shapeContainer.numChildren > 0) _shapeContainer.removeChildAt(0);
 //				_shapeContainer = null;
-			}			
+			}
 			
 			_arrTips = [];
 			_arrDots = [];
@@ -115,8 +116,8 @@ package com.weibo.charts
 			
 			var lineDots:int = dataProvider["axis"].length;
 			
-			if(lineDots > 1) _space = coordinateLogic.touchSide ? this.area.width/(lineDots-1) : this.area.width/lineDots;
-			else _space = coordinateLogic.touchSide ? 0 : this.area.width * 0.5;
+			if(lineDots > 1) _space = _chartStyle.touchSide ? this.area.width/(lineDots-1) : this.area.width/lineDots;
+			else _space = _chartStyle.touchSide ? 0 : this.area.width * 0.5;
 
 			if (_dotArr.length == 0)
 			{
@@ -130,8 +131,8 @@ package com.weibo.charts
 						var valueData:Array = coordinateLogic.dataProvider.data[j]["value"];
 						
 						type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
-						pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
-						if(lineDots > 1) tx = coordinateLogic.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
+						pheight = Math.round(area.y + this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
+						if(lineDots > 1) tx = _chartStyle.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
 						else tx = Math.round(area.x + _space);
 						var DotClass:Class = _chartStyle.dotUI;
 						dot = new DotClass();
@@ -163,9 +164,9 @@ package com.weibo.charts
 							dot = _dotArr[j][i] as IDotUI;
 							ChartUIBase(dot).uiColor = _chartStyle.colors[j % _chartStyle.colors.length];
 							type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
-							pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
+							pheight = Math.round(area.y + this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
 
-							if(lineDots > 1) tx = coordinateLogic.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
+							if(lineDots > 1) tx = _chartStyle.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
 							else tx = Math.round(area.x + _space);
 //							_container.graphics.clear();
 							TweenMax.to(dot, 0.5, { x: tx, ease:Cubic.easeOut } );

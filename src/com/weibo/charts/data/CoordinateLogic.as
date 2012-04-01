@@ -1,6 +1,7 @@
 package com.weibo.charts.data
 {
 	import com.weibo.charts.ChartBase;
+	import com.weibo.charts.style.CoordinateChartStyle;
 
 	/**
 	 * 笛卡尔坐标处理核心类
@@ -21,22 +22,19 @@ package com.weibo.charts.data
 		
 		//---------设置参数（Value）----------
 		//是否总显示“0”
-		public var alwaysShow0:Boolean;
+//		public var alwaysShow0:Boolean;
 		//是否添加余
-		public var addMore:Boolean;
+//		public var addMore:Boolean;
 		
 		//---------设置参数（Label）----------
 		//是否按长度自动隐藏标签
-		public var autoLabel:Boolean;
+//		internal var autoLabel:Boolean;
 		//数据项是否顶到两端：false：柱图分割法；true：曲线分割法
-		public var touchSide:Boolean;
+//		public var touchSide:Boolean;
 		
 	//===========================================
 	// 构造函数
 	//-------------------------------------------
-		
-//		private var _labelKey:String = "label";
-//		private var _valueKey:String = "value";
 		
 		public function CoordinateLogic(chart:ChartBase)
 		{
@@ -50,12 +48,16 @@ package com.weibo.charts.data
 	// 公开方法
 	//-------------------------------------------
 		
+		public function get chartStyle():CoordinateChartStyle
+		{
+			return _chart.chartStyle as CoordinateChartStyle;
+		}
 		
-		public function set integer(value:Boolean):void
+		/*public function set integer(value:Boolean):void
 		{
 			this.valueLogic.integer = value;
 			this.valueSubLogic.integer = value;
-		}
+		}*/
 		
 		
 		public function get reverseAxis():Boolean { return this._axisType; }
@@ -73,9 +75,6 @@ package com.weibo.charts.data
 		{
 			this.labelLogic.labelLength = value;
 		}
-		
-//		public function set valueKey(value:String):void { this._valueKey = value; }
-//		public function set labelKey(value:String):void { this._labelKey = value; }
 		
 		public function get labelData():Array
 		{

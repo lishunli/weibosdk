@@ -2,6 +2,7 @@ package com.weibo.charts.data
 {
 	import com.weibo.charts.ChartBase;
 	import com.weibo.charts.events.ChartEvent;
+	import com.weibo.charts.style.CoordinateChartStyle;
 
 	/**
 	 * 标签轴处理逻辑
@@ -41,17 +42,16 @@ package com.weibo.charts.data
 		public function set dataProvider(data:Array):void
 		{
 			var count:int = data.length;
-			var unit:Number = coordinate.touchSide ? axisLength/(count-1) : axisLength/count;
+			var unit:Number = chartStyle.touchSide ? axisLength/(count-1) : axisLength/count;
 			_axisData = [];
 			_gridData = [];
 			
 			//为避免文字重叠，设置的标签出现的间隔。默认为1，即：每个标签都显示。
 			var quotient:int = 1;
-			coordinate.autoLabel = labelLength > unit;
+//			coordinate.autoLabel = labelLength > unit;
 //			chart.dispatchEvent(new ChartEvent(ChartEvent.CHART_LABELAXIS_SHOW, labelLength > unit, true));
-			//如果标签过长，而按需要分配
-			if (coordinate.autoLabel)
-				quotient = Math.ceil(labelLength / unit);
+			//coordinate.autoLabel 如果标签过长，而按需要分配
+			if (labelLength > unit) quotient = Math.ceil(labelLength / unit);
 			
 			
 			var i:int;
@@ -65,8 +65,8 @@ package com.weibo.charts.data
 				
 				if ((i - startI) % quotient == 0)
 				{
-					position = coordinate.touchSide ? i/(count-1)*axisLength : i/count*axisLength;
-					if (!coordinate.touchSide) position += unit / 2;
+					position = chartStyle.touchSide ? i/(count-1)*axisLength : i/count*axisLength;
+					if (!chartStyle.touchSide) position += unit / 2;
 					_axisData.push({
 					label:		data[i],
 					position:	position
@@ -77,10 +77,15 @@ package com.weibo.charts.data
 			for (i = 1; i < count; i++)
 			{
 				_gridData.push({
-					position:	coordinate.touchSide ? i/(count-1)*axisLength : i/count*axisLength
+					position:	chartStyle.touchSide ? i/(count-1)*axisLength : i/count*axisLength
 				});
 			}
 			
+		}
+		
+		private function get chartStyle():CoordinateChartStyle
+		{
+			return coordinate.chartStyle;
 		}
 		
 	}

@@ -28,11 +28,11 @@ package com.weibo.charts
 		{
 			_chartStyle = style;
 			super(_chartStyle);
-			this.coordinateLogic.integer = style.integer;
-			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
-			this.coordinateLogic.addMore = true;
+//			this.coordinateLogic.integer = style.integer;
+//			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
+//			this.coordinateLogic.addMore = style.gridStyle.addMore;
 			
-			setStyle("maxBarWidth", 30);
+//			setStyle("maxBarWidth", 30);
 		}
 		
 		override protected function create():void
@@ -65,7 +65,7 @@ package com.weibo.charts
 			//标签单元格大小（像素）
 			var unit:Number = this.area.width / axislength;
 			
-			var maxWidth:Number = getStyle("maxBarWidth") as Number;
+			var maxWidth:Number = _chartStyle.maxBarWidth;//getStyle("maxBarWidth") as Number;
 			//原始柱子的宽度
 			var tempColumnWidth:Number = (unit * .6) / shapenum;
 			tempColumnWidth = Math.min(tempColumnWidth, maxWidth);

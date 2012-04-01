@@ -28,7 +28,7 @@ package com.weibo.charts.data
 		//是否总显示0
 //		public var alwaysShowZero:Boolean;
 		//是否在坐标轴上总显示整数
-		public var integer:Boolean = false;
+//		public var integer:Boolean = false;
 		
 		//数据中表示Label的Key值文字，用于匹配数据
 //		private var _labelKey:String;
@@ -210,7 +210,7 @@ package com.weibo.charts.data
 			var roundedMajorUnit:Number = Math.pow(10, order);
 			
 			var diff:Number = Math.ceil(tempMajorUnit / Math.pow(10,order-1));
-			if (!this.integer || order > 0)
+			if (!this.coordinate.chartStyle.integer || order > 0)
 			{
 				tempMajorUnit = diff * Math.pow(10,order-1);
 			}
@@ -239,7 +239,7 @@ package com.weibo.charts.data
 				this.maximum = this.maximum + 1;
 			}
 			
-			if (this.coordinate.alwaysShow0 && this.minimum > 0)
+			if (this.coordinate.chartStyle.alwaysShow0 && this.minimum > 0)
 			{
 				this.minimum = 0;
 			}
@@ -312,7 +312,7 @@ package com.weibo.charts.data
 				}
 				
 				//适当延长最大值
-				if (coordinate.addMore && this.dataMaxinum > value - tempUnit/2)
+				if (coordinate.chartStyle.gridStyle.addMore && this.dataMaxinum > value - tempUnit/2)
 				{
 					this.maximum = roundToPrecision(value + tempUnit, 10);
 				}

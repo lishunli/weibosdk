@@ -1,6 +1,7 @@
 package com.weibo.charts.ui.tips
 {
 	import com.weibo.charts.CoordinateChart;
+	import com.weibo.charts.style.CoordinateChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
 	import com.weibo.charts.ui.ITipUI;
@@ -95,8 +96,8 @@ package com.weibo.charts.ui.tips
 				var lineLen:int = dataAry.length;		
 				var lineDots:int = _targetChart.dataProvider["axis"].length;
 				
-				if(lineDots > 1) _space = _targetChart.coordinateLogic.touchSide ? _targetChart.area.width/(lineDots-1) : _targetChart.area.width/lineDots;
-				else _space = _targetChart.coordinateLogic.touchSide ? 0 : _targetChart.area.width * 0.5;
+				if(lineDots > 1) _space = chartStyle.touchSide ? _targetChart.area.width/(lineDots-1) : _targetChart.area.width/lineDots;
+				else _space = chartStyle.touchSide ? 0 : _targetChart.area.width * 0.5;
 				
 				var pheight:Number;
 				var tx:Number;
@@ -113,7 +114,7 @@ package com.weibo.charts.ui.tips
 						var type:int = _targetChart.dataProvider["data"][i]["useSubAxis"] ? 1 : 0;
 						//pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i]));
 						pheight = Math.round(_targetChart.coordinateLogic.getPosition(_targetChart.dataProvider["data"][i]["value"][j], type));
-						if(lineDots > 1) tx = _targetChart.coordinateLogic.touchSide ? Math.round(_targetChart.area.x + j * _space) : Math.round(_targetChart.area.x + j * _space + _space * 0.5);
+						if(lineDots > 1) tx = chartStyle.touchSide ? Math.round(_targetChart.area.x + j * _space) : Math.round(_targetChart.area.x + j * _space + _space * 0.5);
 						else tx = Math.round(_targetChart.area.x + _space);
 						
 						tipStr = (tipFun == null) ? valueData[j] : tipFun(i, j);
@@ -237,8 +238,8 @@ package com.weibo.charts.ui.tips
 				var lineLen:int = dataAry.length;		
 				var lineDots:int = _targetChart.dataProvider["axis"].length;
 				
-				if(lineDots > 1) _space = _targetChart.coordinateLogic.touchSide ? _targetChart.area.width/(lineDots-1) : _targetChart.area.width/lineDots;
-				else _space = _targetChart.coordinateLogic.touchSide ? 0 : _targetChart.area.width * 0.5;
+				if(lineDots > 1) _space = chartStyle.touchSide ? _targetChart.area.width/(lineDots-1) : _targetChart.area.width/lineDots;
+				else _space = chartStyle.touchSide ? 0 : _targetChart.area.width * 0.5;
 				
 				var pheight:Number;
 				var tx:Number;
@@ -254,7 +255,7 @@ package com.weibo.charts.ui.tips
 						var type:int = _targetChart.dataProvider["data"][i]["useSubAxis"] ? 1 : 0;
 						//pheight = Math.round(this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i]));
 						pheight = Math.round(_targetChart.coordinateLogic.getPosition(_targetChart.dataProvider["data"][i]["value"][j], type));
-						if(lineDots > 1) tx = _targetChart.coordinateLogic.touchSide ? Math.round(_targetChart.area.x + j * _space) : Math.round(_targetChart.area.x + j * _space + _space * 0.5);
+						if(lineDots > 1) tx = chartStyle.touchSide ? Math.round(_targetChart.area.x + j * _space) : Math.round(_targetChart.area.x + j * _space + _space * 0.5);
 						else tx = Math.round(_targetChart.area.x + _space);
 						
 						tipStr = (tipFun == null) ? valueData[j] : tipFun(i, j);
@@ -300,6 +301,11 @@ package com.weibo.charts.ui.tips
 			var dot:Object = event.currentTarget;
 			var tip:ITipUI = _uiMap[dot];
 			tip.show(_tipContainer, DisplayObject(dot).x,  DisplayObject(dot).y, _targetChart.area);
+		}
+		
+		private function get chartStyle():CoordinateChartStyle
+		{
+			return _targetChart.coordinateLogic as CoordinateChartStyle;
 		}
 
 	}

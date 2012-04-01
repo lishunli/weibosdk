@@ -17,6 +17,7 @@ package com.weibo.charts
 		{
 			super(style);
 			axisLogic = new CoordinateLogic(this);
+			this.area = new Rectangle(0,0,width,height);
 		}
 		
 		override public function set dataProvider(value:Object):void
