@@ -305,7 +305,7 @@ package com.weibo.charts.ui.tips
 		
 		private function get chartStyle():CoordinateChartStyle
 		{
-			return _targetChart.coordinateLogic as CoordinateChartStyle;
+			return _targetChart.coordinateLogic.chartStyle;
 		}
 
 	}
