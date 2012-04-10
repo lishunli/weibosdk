@@ -1,6 +1,7 @@
 package com.weibo.controls 
 {
 	import com.weibo.core.UIComponent;
+	
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -32,6 +33,10 @@ package com.weibo.controls
 			_format = format;
 			_tf.defaultTextFormat = _format;
 			_tf.setTextFormat(_format);
+		}
+		public function set text(value:String):void
+		{
+			_tf.text = value;
 		}
 		
 		///////////////////////////////////

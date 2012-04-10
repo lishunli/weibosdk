@@ -94,7 +94,7 @@ package com.weibo.charts
 				
 				for(var i:int = 0; i < total ; i ++)
 				{
-					pheight = Math.round(this.coordinateLogic.getPosition(valueData[i]));
+					pheight = area.y + this.coordinateLogic.getPosition(valueData[i]);
 					tx = Math.round(area.x +  space * 0.5  + i * space);
 					dot = new _chartStyle.dotUI();
 					ChartUIBase(dot).uiColor = _chartStyle.colors[i % (_chartStyle.colors.length)];
@@ -127,7 +127,7 @@ package com.weibo.charts
 					for(i = 0; i < total; i ++)
 					{
 						dot = _arrDots[i];
-						pheight = this.coordinateLogic.getPosition(valueData[i]);
+						pheight = area.y + this.coordinateLogic.getPosition(valueData[i]);
 						tip = _arrTips[i];
 						tipStr = (tipFun == null) ? valueData[i] : tipFun(valueData[i]);
 						tip.setLabel(tipStr);

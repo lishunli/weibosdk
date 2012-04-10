@@ -114,7 +114,7 @@ package com.weibo.charts
 		override protected function addEvents():void
 		{
 			super.addEvents();
-			addEventListener(Event.RENDER, drawTips);
+			addEventListener(Event.RENDER, drawTipsHandler);
 			if (_container) _container.addEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
 			if (_container) _container.addEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
 		}
@@ -122,7 +122,7 @@ package com.weibo.charts
 		override protected function removeEvents():void
 		{
 			super.removeEvents();
-			removeEventListener(Event.RENDER, drawTips);
+			removeEventListener(Event.RENDER, drawTipsHandler);
 			if (_container) _container.removeEventListener(MouseEvent.MOUSE_OVER, mouseShowTip);
 			if (_container) _container.removeEventListener(MouseEvent.MOUSE_OUT, mouseHideTip);
 		}
@@ -169,6 +169,8 @@ package com.weibo.charts
 				destroy();
 				errorSector = sector as DisplayObject;
 				addChild(errorSector);
+				_arrBars.push(sector);
+				drawTipsHandler(null);
 			}
 			else if (_arrBars.length == 0)
 			{
@@ -257,7 +259,7 @@ package com.weibo.charts
 	// 事件侦听器
 	//------------------------------------------
 		
-		private function drawTips(event:Event):void
+		private function drawTipsHandler(event:Event):void
 		{
 			dispatchEvent(new ChartEvent(ChartEvent.CHART_TIPS_SHOW, _arrBars, true, true));
 		}

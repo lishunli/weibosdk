@@ -116,7 +116,8 @@ package com.weibo.charts.comp
 }
 
 
-import com.weibo.charts.comp.Label;
+
+import com.weibo.controls.Label;
 
 import flash.display.Shape;
 import flash.display.Sprite;

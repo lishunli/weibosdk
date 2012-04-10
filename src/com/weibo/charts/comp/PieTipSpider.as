@@ -153,6 +153,7 @@ package com.weibo.charts.comp
 			
 			_tipContainer.graphics.clear();
 			_tipContainer.graphics.lineStyle(1, pieChartStyle.tipLineColor, pieChartStyle.tipLineAlpha);
+			graphics.drawRect(0, 0, 200, 300);
 			repareTips(leftTips);
 			repareTips(rightTips);
 		}
