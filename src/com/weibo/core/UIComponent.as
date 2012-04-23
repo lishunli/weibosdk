@@ -27,9 +27,12 @@ package com.weibo.core
 //			validate();
 			create();
 			addEvents();
+			layout();
+			updateState();
 			
-			invalidate(ValidateType.SIZE);
-			invalidate(ValidateType.STATE);
+//			invalidate(ValidateType.SIZE);
+//			invalidate(ValidateType.STATE);
+			
 //			invalidate("all");
 		}
 		
@@ -80,16 +83,19 @@ package com.weibo.core
 			}
 			else
 			{
-				//布局对象
+				//布局对象，包含还是并列updateState?
 				if (_validateTypeObject[ValidateType.SIZE])
 				{
-					delete _validateTypeObject[ValidateType.SIZE];
+//					delete _validateTypeObject[ValidateType.SIZE];
+					_validateTypeObject = {};
 					layout();
+					updateState();
 				}
 				//更新对象状态
-				if (_validateTypeObject[ValidateType.STATE])
+				else if (_validateTypeObject[ValidateType.STATE])
 				{
-					delete _validateTypeObject[ValidateType.STATE];
+//					delete _validateTypeObject[ValidateType.STATE];
+					_validateTypeObject = {};
 					updateState();
 				}
 			}

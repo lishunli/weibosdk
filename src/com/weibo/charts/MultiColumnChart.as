@@ -27,6 +27,7 @@ package com.weibo.charts
 		public function MultiColumnChart(style:ColumnChartStyle)
 		{
 			_chartStyle = style;
+			style.touchSide = false;
 			super(_chartStyle);
 //			this.coordinateLogic.integer = style.integer;
 //			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;

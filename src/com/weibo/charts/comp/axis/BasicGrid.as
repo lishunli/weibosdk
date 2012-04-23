@@ -5,9 +5,16 @@ package com.weibo.charts.comp.axis
 	import com.weibo.charts.data.CoordinateLogic;
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.style.CoordinateChartStyle;
+	import com.weibo.charts.style.GridStyle;
+	
+	import flash.display.CapsStyle;
+	import flash.display.JointStyle;
+	import flash.display.LineScaleMode;
+	import flash.display.Shape;
 	
 	public class BasicGrid extends DecorateBase
 	{
+		private var border:Shape;
 		
 // ==========================================
 // 构造函数
@@ -30,6 +37,19 @@ package com.weibo.charts.comp.axis
 // 内部方法
 // ------------------------------------------
 		
+		override protected function create():void
+		{
+			super.create();
+			border = new Shape();
+			addChildAt(border, 0);
+		}
+		override protected function destroy():void
+		{
+			super.destroy();
+			removeChild(border);
+			border = null;
+		}
+		
 		override protected function addEvents():void
 		{
 			super.addEvents();
@@ -46,18 +66,46 @@ package com.weibo.charts.comp.axis
 		{
 			if (!target.dataProvider) return;
 			
-			var color:uint = coordinateStyle.gridStyle.color;
-			var thickness:Number = coordinateStyle.gridStyle.thickness;
-			var showLabelGrid:Boolean = coordinateStyle.gridStyle.showLabelGrid;
-			var alignLabel:Boolean = coordinateStyle.gridStyle.alignLabel;
+			var gridStyle:GridStyle = coordinateStyle.gridStyle;
+			var showLabelGrid:Boolean = gridStyle.showLabelGrid;
 			
 			graphics.clear();
-			graphics.lineStyle(thickness, color);
-			if (coordinateStyle.gridStyle.background)
+			//背景
+			if (gridStyle.background)
 			{
-				graphics.beginFill(coordinateStyle.gridStyle.backgroundColor, coordinateStyle.gridStyle.backgroundAlpha);
+				graphics.beginFill(gridStyle.backgroundColor, gridStyle.backgroundAlpha);
 			}
+			graphics.lineStyle(gridStyle.thickness, gridStyle.lineColor);
 			graphics.drawRect(area.x, area.y, area.width, area.height);
+			
+			
+			//===== 边框 =====
+			border.graphics.clear();
+			border.graphics.lineStyle(gridStyle.borderThickness, gridStyle.borderColor, 1, false, LineScaleMode.NONE, CapsStyle.ROUND);
+			//----- 左边
+			if (gridStyle.leftBorder)
+			{
+				border.graphics.moveTo(area.left, area.top);
+				border.graphics.lineTo(area.left, area.bottom);
+			}
+			//----- 底边
+			if (gridStyle.bottomBorder)
+			{
+				border.graphics.moveTo(area.left, area.bottom);
+				border.graphics.lineTo(area.right, area.bottom);
+			}
+			//----- 右边
+			if (gridStyle.rightBorder)
+			{
+				border.graphics.moveTo(area.right, area.bottom);
+				border.graphics.lineTo(area.right, area.top);
+			}
+			//----- 顶边
+			if (gridStyle.topBorder)
+			{
+				border.graphics.moveTo(area.right, area.top);
+				border.graphics.lineTo(area.left, area.top);
+			}
 			
 			var axisData:Array;
 			var count:int;
@@ -83,7 +131,7 @@ package com.weibo.charts.comp.axis
 				{
 					axisData = coordinateLogic.labelData;
 				}
-				else if (alignLabel)
+				else if (gridStyle.alignLabel)
 				{
 					axisData = coordinateLogic.labelData;
 				}

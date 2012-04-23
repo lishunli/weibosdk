@@ -6,6 +6,7 @@ package com.weibo.charts
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
 	import com.weibo.charts.ui.ITipUI;
+	import com.weibo.charts.ui.dots.NullDot;
 	import com.weibo.charts.ui.tips.TipsManager;
 	import com.weibo.charts.utils.ColorUtil;
 	import com.weibo.core.UIComponent;
@@ -134,7 +135,7 @@ package com.weibo.charts
 						pheight = Math.round(area.y + this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
 						if(lineDots > 1) tx = _chartStyle.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
 						else tx = Math.round(area.x + _space);
-						var DotClass:Class = _chartStyle.dotUI;
+						var DotClass:Class = _chartStyle.dotUI || NullDot;
 						dot = new DotClass();
 						ChartUIBase(dot).uiColor = _chartStyle.colors[j % _chartStyle.colors.length];
 						DisplayObject(dot).x = tx;	

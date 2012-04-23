@@ -87,7 +87,6 @@ package com.weibo.charts.comp
 				iconText.x = currentX;
 				iconText.y = currentY;
 				
-				
 				currentX += iconText.width + margin;
 				/*if (iconText.x + iconText.width > width / 2)
 				{
@@ -117,7 +116,7 @@ package com.weibo.charts.comp
 
 
 
-import com.weibo.controls.Label;
+import com.weibo.charts.comp.Label;
 
 import flash.display.Shape;
 import flash.display.Sprite;
