@@ -18,7 +18,7 @@ class SDKProxy {
                 $param=$_POST;
                 $ext=end(explode(".",$_FILES['pic']['name'] ));
                 $file=$_FILES['pic']['tmp_name'].'.'.$ext;
-                move_uploaded_file($_FILES['pic']['tmp_name'],$file);
+                @move_uploaded_file($_FILES['pic']['tmp_name'],$file);
                 $param['pic']='@'.$file;
             }
             $result=$this->apiPost($this->url,$param);
