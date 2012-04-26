@@ -7,6 +7,7 @@ class SDKProxy {
 
     public function run() {
         $this->uri = $_GET['uri'];
+        $this->clientName = empty($_GET['file'])?'pic':$_GET['file'];
         $this->method =strtolower($_GET['method']);
         $this->url=self::OPEN_API.$this->uri.'.json';
         $param=$this->getParamStr($_POST);
@@ -16,10 +17,10 @@ class SDKProxy {
         }  else {
             if(!empty($_FILES)){
                 $param=$_POST;
-                $ext=end(explode(".",$_FILES['pic']['name'] ));
-                $file=$_FILES['pic']['tmp_name'].'.'.$ext;
-                @move_uploaded_file($_FILES['pic']['tmp_name'],$file);
-                $param['pic']='@'.$file;
+                $ext=end(explode(".",$_FILES[$this->clientName]['name'] ));
+                $file=$_FILES[$this->clientName]['tmp_name'].'.'.$ext;
+                @move_uploaded_file($_FILES[$this->clientName]['tmp_name'],$file);
+                $param[$this->clientName]='@'.$file;
             }
             $result=$this->apiPost($this->url,$param);
             if(file_exists($file))@unlink ($file);
