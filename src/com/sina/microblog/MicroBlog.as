@@ -303,7 +303,7 @@ package com.sina.microblog
 			if(_isSecureDomain){
 				req = getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, URLRequestMethod.POST);
 			}else{
-				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + URLRequestMethod.POST, params, URLRequestMethod.POST);
+				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&file=image&method=" + URLRequestMethod.POST, params, URLRequestMethod.POST);
 			}
 			var boundary:String=makeBoundary();
 			req.contentType = MULTIPART_FORMDATA + boundary;		
@@ -334,7 +334,7 @@ package com.sina.microblog
 			if(_isSecureDomain){
 				req = getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, method);
 			}else{
-				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&method=" + method, params, URLRequestMethod.POST);
+				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&file=" + baKey + "&method=" + method, params, URLRequestMethod.POST);
 			}
 			if(baKey != "")
 			{
@@ -425,7 +425,6 @@ package com.sina.microblog
 		{
 			_proxyURI = value;
 			_isSecureDomain = (_proxyURI == "");
-			trace(">>" + _isSecureDomain + "::" + _proxyURI);
 		}
 		
 		///////////////////////////////////
