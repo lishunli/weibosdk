@@ -195,8 +195,6 @@ package com.weibo.charts
 				var lineShape:LineShape = getChildShapeAt(j) as LineShape;
 				lineShape.backGraphics.clear();
 				lineShape.backGraphics.lineStyle(backThichness, borderColor);
-//				lineShape.gridGraphics.clear();
-//				lineShape.gridGraphics.lineStyle(1, _chartStyle.shadowGridColors[j], _chartStyle.shadowGridAlpha);
 				lineShape.lineGraphics.clear();
 				lineShape.lineGraphics.lineStyle(_chartStyle.lineThickness, color);
 				
@@ -212,26 +210,14 @@ package com.weibo.charts
 					lineShape.lineGraphics.moveTo(firstDot.x, firstDot.y);
 				}
 				var dot:DisplayObject;
-				var i:int, len:int = _dotArr[j].length;
-				for(i = 0; i < len; i ++)
+				
+				for(var i:int = 0, len:int = _dotArr[j].length; i < len; i ++)
 				{
 					dot = _dotArr[j][i];
 					
 					lineShape.backGraphics.lineTo(dot.x, dot.y);
 					lineShape.lineGraphics.lineTo(dot.x, dot.y);			
 				}
-				
-				/*if (_chartStyle.shadowGridColors.length > j)//曲线网格
-				{
-					for(i = 0; i < len; i ++)
-					{
-						dot = _dotArr[j][i];
-						
-						lineShape.gridGraphics.moveTo(dot.x, dot.y);
-						lineShape.gridGraphics.lineTo(dot.x, area.bottom);			
-					}
-				}*/
-				
 				_tipsManager.refresh();
 				
 				if (_chartStyle.shadowColors.length > j)
@@ -270,9 +256,8 @@ import flash.display.Sprite;
 
 class LineShape extends Sprite
 {
-	private var line:Shape;
 
-	private var grid:Shape;
+	private var line:Shape;
 
 	private var side:Shape;
 	
@@ -280,21 +265,14 @@ class LineShape extends Sprite
 	public function LineShape()
 	{
 		side = new Shape();
-//		grid = new Shape();
 		line = new Shape();
 		addChild(side);
-//		addChild(grid);
 		addChild(line);
 	}
 	
 	public function get backGraphics():Graphics
 	{
 		return side.graphics;
-	}
-	
-	public function get gridGraphics():Graphics
-	{
-		return grid.graphics;
 	}
 	
 	public function get lineGraphics():Graphics
