@@ -16,6 +16,9 @@ package com.weibo.charts.style
 		public var shadowAlpha:Number = 0.3;
 		public var shadowColors:Array = [0x519ae5];
 		
+//		public var shadowGridAlpha:Number = 1;
+//		public var shadowGridColors:Array = [0x519ae5];
+		
 		public var dotUI:Class;
 		
 		

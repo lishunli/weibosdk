@@ -146,6 +146,7 @@ package com.weibo.charts.comp
 		
 		override protected function updateState():void
 		{
+			//颜色还是什么不能用?
 //			_textfield.defaultTextFormat = format;
 			_textfield.setTextFormat(format);
 		}

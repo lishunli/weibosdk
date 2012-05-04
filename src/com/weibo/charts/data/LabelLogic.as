@@ -51,7 +51,8 @@ package com.weibo.charts.data
 //			coordinate.autoLabel = labelLength > unit;
 //			chart.dispatchEvent(new ChartEvent(ChartEvent.CHART_LABELAXIS_SHOW, labelLength > unit, true));
 			//coordinate.autoLabel 如果标签过长，而按需要分配
-			if (labelLength > unit) quotient = Math.ceil(labelLength / unit);
+			if (chartStyle.axisStyle.autoHide && labelLength > unit)
+				quotient = Math.ceil(labelLength / unit);
 			
 			
 			var i:int;

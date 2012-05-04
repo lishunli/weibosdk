@@ -1,9 +1,9 @@
 package com.weibo.controls 
 {
 	import com.weibo.core.UIComponent;
-	import com.weibo.managers.RepaintManager;
+	import com.weibo.core.ValidateType;
+	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	
 	/**
@@ -80,8 +80,7 @@ package com.weibo.controls
 		{
 			super.addChild(child);	
 			child.addEventListener(Event.RESIZE, onResize);
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);			
+			invalidate(ValidateType.SIZE);		
 			return child;
 		}
 		
@@ -95,8 +94,7 @@ package com.weibo.controls
         {
 			super.addChild(child);
 			child.addEventListener(Event.RESIZE, onResize);
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);	
+			invalidate(ValidateType.SIZE);
 			return child;
 		}
 		
@@ -109,8 +107,7 @@ package com.weibo.controls
         {
             super.removeChild(child);
             child.removeEventListener(Event.RESIZE, onResize);
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);	
+			invalidate(ValidateType.SIZE);
             return child;
         }
 
@@ -123,8 +120,7 @@ package com.weibo.controls
         {
             var child:DisplayObject = super.removeChildAt(index);
             child.removeEventListener(Event.RESIZE, onResize);
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);	
+			invalidate(ValidateType.SIZE);
             return child;
         }		
 		
@@ -134,8 +130,7 @@ package com.weibo.controls
 		 */
 		protected function onResize(event:Event):void
 		{
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);		
+			invalidate(ValidateType.SIZE);
 		}
 		
 		/**
@@ -145,8 +140,7 @@ package com.weibo.controls
 		public function set spacing(value:Number):void 
 		{
 			_spacing = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);					
+			invalidate(ValidateType.SIZE);				
 		}
 		
 		/**
@@ -156,8 +150,7 @@ package com.weibo.controls
 		public function set alignment(value:String):void 
 		{
 			_alignment = value;
-			this._validateTypeObject["size"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);					
+			invalidate(ValidateType.SIZE);				
 		}
 		
 	}

@@ -15,6 +15,8 @@ package com.weibo.charts.style
 		
 		
 		//===== 数值轴部分 =====
+		public var showValueUnit:Boolean = true;
+		
 		public var valueFun:Function;
 		public var valueFormat:TextFormat = new TextFormat("Arial", 12, 0x999999, false);
 		

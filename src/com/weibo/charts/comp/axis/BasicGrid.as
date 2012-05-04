@@ -112,7 +112,7 @@ package com.weibo.charts.comp.axis
 			var dataObject:Object;
 			var i:int;
 			//画横线
-			if (showLabelGrid || !coordinateLogic.reverseAxis)
+			if (coordinateStyle.gridStyle.showValueGrid && (showLabelGrid || !coordinateLogic.reverseAxis))
 			{
 				axisData = coordinateLogic.reverseAxis ? coordinateLogic.labelGridData : coordinateLogic.valueData;
 				count= axisData.length;
@@ -130,21 +130,40 @@ package com.weibo.charts.comp.axis
 				if (coordinateLogic.reverseAxis)
 				{
 					axisData = coordinateLogic.labelData;
+					count = axisData.length;
+					for (i = 0; i < count; i++)
+					{
+						dataObject = axisData[i];
+						graphics.moveTo(dataObject.position + target.area.x, target.area.y);
+						graphics.lineTo(dataObject.position + target.area.x, target.area.bottom);
+					}
 				}
 				else if (gridStyle.alignLabel)
 				{
 					axisData = coordinateLogic.labelData;
+					count = axisData.length;
+					for (i = 0; i < count; i++)
+					{
+						dataObject = axisData[i];
+						if (coordinateStyle.axisStyle.labelFun != null && 
+							coordinateStyle.axisStyle.labelFun(dataObject.label) == "")
+						{
+							continue;
+						}
+						graphics.moveTo(dataObject.position + target.area.x, target.area.y);
+						graphics.lineTo(dataObject.position + target.area.x, target.area.bottom);
+					}
 				}
 				else
 				{
 					axisData = coordinateLogic.labelGridData;
-				}
-				count = axisData.length;
-				for (i = 0; i < count; i++)
-				{
-					dataObject = axisData[i];
-					graphics.moveTo(dataObject.position + target.area.x, target.area.y);
-					graphics.lineTo(dataObject.position + target.area.x, target.area.bottom);
+					count = axisData.length;
+					for (i = 0; i < count; i++)
+					{
+						dataObject = axisData[i];
+						graphics.moveTo(dataObject.position + target.area.x, target.area.y);
+						graphics.lineTo(dataObject.position + target.area.x, target.area.bottom);
+					}
 				}
 			}
 			

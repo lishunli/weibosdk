@@ -205,7 +205,9 @@ package com.weibo.charts.comp.axis
 			{
 				text = txt.replace(/{value}/g, text);
 			}
-			if (showUnit)
+			
+			//暂时只对标签轴起作用
+			if (coordinateStyle.axisStyle.showValueUnit && showUnit)
 			{
 				text = text + axisUint;
 			}

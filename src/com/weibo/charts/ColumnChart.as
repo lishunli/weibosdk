@@ -3,33 +3,37 @@ package com.weibo.charts
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
 	import com.weibo.charts.style.ColumnChartStyle;
-	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IBarUI;
-	import com.weibo.charts.ui.ITipUI;
+	import com.weibo.charts.ui.bars.PureBar;
+	import com.weibo.core.UIComponent;
 	
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
 
+	/**
+	 * 
+	 * yaofei
+	 */
 	public class ColumnChart extends CoordinateChart
 	{
 		private var _chartStyle:ColumnChartStyle;
 		
+		private var _container:Sprite;
+		private var _tipContainer:Sprite;
+		
 		private var _arrBars:Array = [];
 		
-		private var _arrTips:Array = [];
-		
-		private var _container:Sprite;
-		
-		private var _tipContainer:Sprite;
+//		private var _arrTips:Array = [];
 		
 		public function ColumnChart(style:ColumnChartStyle)
 		{
-			super();
 			_chartStyle = style;
-			this.coordinateLogic.integer = style.integer;
-			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
+			style.touchSide = false;
+			super(_chartStyle);
+//			this.coordinateLogic.integer = style.integer;
+//			this.coordinateLogic.alwaysShow0 = style.alwaysShow0;
+//			this.coordinateLogic.addMore = style.gridStyle.addMore;
+			
+//			setStyle("maxBarWidth", 30);
 		}
 		
 		override protected function create():void
@@ -49,69 +53,76 @@ package com.weibo.charts
 			if(_container != null) while(_container.numChildren > 0) _container.removeChildAt(0);
 			if(_tipContainer != null) while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
 			_arrBars = [];
-			_arrTips = [];
+//			_arrTips = [];
 		}
-		
 		
 		override protected function updateState():void
 		{
-			if(dataProvider != null)
+			if (dataProvider == null) return;
+			
+			var axislength:int = dataProvider.axis.length;
+			var shapenum:int = dataProvider.data.length;
+			
+			//标签单元格大小（像素）
+			var unit:Number = this.area.width / axislength;
+			
+			var maxWidth:Number = _chartStyle.maxBarWidth;//getStyle("maxBarWidth") as Number;
+			//原始柱子的宽度
+			var tempColumnWidth:Number = (unit * .6) / shapenum;
+			tempColumnWidth = Math.min(tempColumnWidth, maxWidth);
+			//柱子之间的间隔
+			var space:Number = (shapenum == 1) ? 0 : tempColumnWidth * .1;
+			//与边框间隙，参照最左边柱
+			var margin:Number = unit - (tempColumnWidth - space) * shapenum - space * (shapenum -1);
+			margin /= 2;
+//			if(axislength == 0 && shapenum == 0)
+//			{
+//			destroy();
+			
+			if (_arrBars.length > 0)
 			{
-				var total:int = dataProvider.length;
-				var space:Number = this.area.width / total;
-				if(_arrBars.length == 0)
+				invalidate("all");
+				_arrBars = [];
+			} else {
+				for(var i:int = 0; i < axislength ; i ++)
 				{
-					for(var i:int = 0; i < total ; i ++)
+					for (var j:int = 0; j < shapenum; j++)
 					{
-						var bar:ChartUIBase = new _chartStyle.barUI();
-						var uiWidth:Number = space * 0.5;
-						if (uiWidth < 4) uiWidth = 4;
-						ChartUIBase(bar).uiWidth = space * 0.6;
-						var pheight:Number = this.coordinateLogic.getPosition(dataProvider[i].value);
-						ChartUIBase(bar).uiHeight = Math.round(area.bottom - pheight);
-						ChartUIBase(bar).uiColor = _chartStyle.arrColors[i %  _chartStyle.arrColors.length];
-//						ChartUIBase(bar).uiAlpha = _chartStyle.barAlpha;
-//						ChartUIBase(bar).outlineColor = _chartStyle.outlineColor ? uint(_chartStyle.outlineColor) : _chartStyle.arrOutlineColors[i %  _chartStyle.arrOutlineColors.length];
-						DisplayObject(bar).x = area.x +  space * 0.5  + i * space;
-						DisplayObject(bar).y = area.bottom;
-						_container.addChild(bar as DisplayObject);
-						_arrBars[_arrBars.length] = bar;
-						if(_chartStyle.tipType != 0)
+						var localXp:Number = margin + j * (tempColumnWidth + space);
+						//使用主数值轴还是副数值轴的定位
+						var type:int = dataProvider.data[j].useSubAxis ? 1 : 0;
+						var h:Number = this.coordinateLogic.getPosition(dataProvider.data[j].value[i], type);
+						h = area.height - h;
+						
+						var bar:UIComponent = new _chartStyle.barUI();
+//						bar.setStyle("labelFun", _chartStyle.tipFun);
+//						bar.setStyle("label", getStyle("label"));
+						if (_chartStyle.tipType > 0)
 						{
-							var tip:ITipUI = new _chartStyle.tipUI();
-							tip.setLabel(this.getStyle("tipFun")(dataProvider[i]), new TextFormat("Arial", null, ChartUIBase(bar).outlineColor));
-//							tip.show(_tipContainer, DisplayObject(bar).x - tip.width * 0.5 - 2, area.bottom ,this.area);	
-							TweenMax.to(tip, 1, {y: Math.round(pheight - DisplayObject(tip).height), ease:Cubic.easeOut});
-							_arrTips[_arrTips.length] = tip;
+							(bar as IBarUI).label = dataProvider.data[j].value[i];
 						}
+						bar.y = area.bottom;
+//						bar.setSize(tempColumnWidth - space, h);
+						bar.width = tempColumnWidth - space;
+						bar.height = 0;
+						var barColor:uint;
+						if (_chartStyle.useDifferentColor)
+							barColor = _chartStyle.colors[i %  _chartStyle.colors.length];
+						else
+							barColor = _chartStyle.colors[j %  _chartStyle.colors.length];
+						bar.setStyle("color", barColor)
+//						bar.setStyle("borderColor", _chartStyle.outlineColor);
+						bar.setStyle("labelColor", _chartStyle.tipUseBarColor ? barColor : _chartStyle.tipColor);
+						bar.setStyle("alpha", _chartStyle.tipAlpha);
+						bar.x = area.x + (i / axislength) * area.width + localXp;
+						_container.addChild(bar);
+						TweenMax.to(bar, 1, {height:h, ease:Cubic.easeOut});
+						_arrBars.push(bar);
 					}
-				}else{
-					if(_dataProvider.length == _arrBars.length)
-					{
-						for(i = 0; i < _dataProvider.length; i ++)
-						{
-							bar = _arrBars[i];
-							pheight = this.coordinateLogic.getPosition(dataProvider[i].value);
-							ChartUIBase(bar).uiHeight = Math.round(area.bottom - pheight);
-							var xpos:Number = area.x + space * 0.5 + i * space;
-							TweenMax.to(bar, 1, {x: xpos, ease:Cubic.easeOut});
-							
-							if(_chartStyle.tipType != 0)
-							{
-								tip = _arrTips[i];
-								tip.setLabel(this.getStyle("tipFun")(dataProvider[i]));
-	//							TweenMax.to(tip, 1, {x: xpos - tip.uiWidth * 0.5, ease:Cubic.easeOut});
-								TweenMax.to(tip, 1, {y: Math.round(pheight - DisplayObject(tip).height), ease:Cubic.easeOut});
-							}
-						}
-					}else{
-						//全部重置、下一次渲染
-						this.invalidate("all");
-					}
+					
 				}
 			}
 		}
-		
-		
 	}
+	
 }

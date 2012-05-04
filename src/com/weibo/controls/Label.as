@@ -1,6 +1,7 @@
 package com.weibo.controls 
 {
 	import com.weibo.core.UIComponent;
+	import com.weibo.core.ValidateType;
 	
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -33,10 +34,13 @@ package com.weibo.controls
 			_format = format;
 			_tf.defaultTextFormat = _format;
 			_tf.setTextFormat(_format);
+			invalidate(ValidateType.SIZE);
 		}
 		public function set text(value:String):void
 		{
-			_tf.text = value;
+//			_tf.text = value;
+			this._text = value;
+			invalidate(ValidateType.SIZE);
 		}
 		
 		///////////////////////////////////
@@ -48,19 +52,26 @@ package com.weibo.controls
 			_tf.selectable = false;
 			_tf.mouseEnabled = false;
 			_tf.autoSize = TextFieldAutoSize.LEFT;
+//			_tf.border = true;
 			_tf.text = _text;
+			addChild(_tf);
 			if (_format != null) setTextFormat(_format);
 		}
 		
 		override protected function layout():void
 		{
-			addChild(_tf);
+			this._tf.text = _text;//被推迟
 		}
 		
 		override public function get width():Number
 		{
 			if (_tf != null) return _tf.textWidth;
 			else return super.width;
+		}
+		override public function get height():Number
+		{
+			if (_tf != null) return _tf.height;
+			else return super.height;
 		}
 		
 	}

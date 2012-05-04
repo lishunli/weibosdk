@@ -13,6 +13,7 @@ package com.weibo.charts.style
 		public var lineColor:uint = 0xe7e7e7;
 		public var thickness:Number = 1;
 		
+		public var showValueGrid:Boolean = true;
 		public var showLabelGrid:Boolean = false;
 		
 		public var alignLabel:Boolean = false;

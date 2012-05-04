@@ -1,8 +1,8 @@
 package com.weibo.controls 
 {
 	import com.weibo.core.UIComponent;
-	import com.weibo.managers.RepaintManager;
-	import flash.display.DisplayObject;
+	import com.weibo.core.ValidateType;
+	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
@@ -25,7 +25,7 @@ package com.weibo.controls
 			
 		}
 		
-		override protected function initialize():void
+		override protected function create():void
 		{
 			if (_states == null) _states = new Dictionary();
 		}
@@ -60,8 +60,9 @@ package com.weibo.controls
 			if(overUI != null) _states["over"] = overUI;
 			if(disableUI != null) _states["disable"] = disableUI;
 			
-			_validateTypeObject["all"] = true;
-			validate();
+//			_validateTypeObject["all"] = true;
+//			validate();
+			invalidate(ValidateType.ALL);
 		}
 		
 		private function onMouseDownHandler(e:MouseEvent):void 
@@ -144,8 +145,7 @@ package com.weibo.controls
 				_hitArea.addEventListener(MouseEvent.ROLL_OUT, onRollOutHandler);
 			}
 			
-			_validateTypeObject["state"] = true;
-			RepaintManager.getInstance().addToRepaintQueue(this);
+			invalidate();
 		}
 	}
 }
