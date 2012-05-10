@@ -232,7 +232,7 @@ package com.weibo.charts.data
 			{
 				var tempnum:Number = this.minimum;
 				this.minimum = this.maximum;
-				this.maximum = this.minimum;
+				this.maximum = tempnum;
 			}
 			else if (this.minimum == this.maximum)
 			{

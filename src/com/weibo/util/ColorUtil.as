@@ -1,4 +1,4 @@
-package com.weibo.charts.utils
+package com.weibo.util
 {
 	/**
 	 * 颜色工具类

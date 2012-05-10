@@ -8,15 +8,10 @@ package com.weibo.charts
 	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.charts.ui.dots.NullDot;
 	import com.weibo.charts.ui.tips.TipsManager;
-	import com.weibo.charts.utils.ColorUtil;
-	import com.weibo.core.UIComponent;
+	import com.weibo.util.ColorUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
-	import flash.external.ExternalInterface;
-	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
 
 	public class LineChart extends CoordinateChart
 	{
@@ -129,7 +124,7 @@ package com.weibo.charts
 					var lineShape:LineShape = getChildShapeAt(j) as LineShape;
 					for(var i:int = 0; i < lineDots ; i ++)
 					{
-						var valueData:Array = coordinateLogic.dataProvider.data[j]["value"];
+//						var valueData:Array = coordinateLogic.dataProvider.data[j]["value"];
 						
 						type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
 						pheight = Math.round(area.y + this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
@@ -161,7 +156,7 @@ package com.weibo.charts
 					{
 						for (i = 0; i < lineDots; i++)
 						{
-							valueData = coordinateLogic.dataProvider.data[j]["value"];							
+//							valueData = coordinateLogic.dataProvider.data[j]["value"];							
 							dot = _dotArr[j][i] as IDotUI;
 							ChartUIBase(dot).uiColor = _chartStyle.colors[j % _chartStyle.colors.length];
 							type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
