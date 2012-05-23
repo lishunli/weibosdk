@@ -111,6 +111,9 @@ package com.sina.microblog
 			}
 			
 			_testData = dataStr;
+//			trace("========================================" + processor.resultEvent);
+//			trace(_testData);
+//			trace("========================================");
 			
 			var decoder:JSONDecoder = new JSONDecoder( dataStr );//为了避开Fp11和之前的冲突
 			var result:Object = decoder.getValue();
@@ -244,7 +247,7 @@ package com.sina.microblog
 		{
 			var req:URLRequest;
 			var params:Object = {};
-			if ( status ) params.status = encodeMsg(status);			
+			if ( status ) params.status = status;			
 			if (!isNaN(lat)) params.lat = lat;
 			if (!isNaN(long)) params.long = long;
 			if (annotations != "") params.annotations = annotations;
@@ -287,7 +290,7 @@ package com.sina.microblog
 		 * 
 		 * <p>如果该函数被成功执行，将会抛出MicroBlogEvent事件，该事件<br/>
 		 * type为<b>MicroBlogEvent.AVATAR_UPDATE_RESULT</b><br/>
-		 * result为一个MicroBlogUser实例.</p>
+		 * </p>
 		 * 
 		 * <p>如果该函数调用失败，将会抛出MicroBlogErrorEvent事件，该事件<br/>
 		 * type为<b>MicroBlogErrorEvent.AVATAR_UPDATE_ERROR</b></p>
@@ -299,15 +302,15 @@ package com.sina.microblog
 			var req:URLRequest;
 			var params:Object = { };
 			var uri:String = API.ACCOUNT_AVATAR_UPLOAD;
-			addProcessor(uri, processUser, MicroBlogEvent.AVATAR_UPDATE_RESULT, MicroBlogErrorEvent.AVATAR_UPDATE_ERROR);
+			addProcessor(uri, processGeneralApi, MicroBlogEvent.AVATAR_UPDATE_RESULT, MicroBlogErrorEvent.AVATAR_UPDATE_ERROR);
 			if(_isSecureDomain){
 				req = getMicroBlogRequest(API.API_BASE_URL + uri + ".json", params, URLRequestMethod.POST);
 			}else{
-				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&file=image&method=" + URLRequestMethod.POST, params, URLRequestMethod.POST);
+				req = getMicroBlogRequest(_proxyURI + "?uri=" + uri + "&file=image&method=post", params, URLRequestMethod.POST);
 			}
 			var boundary:String=makeBoundary();
 			req.contentType = MULTIPART_FORMDATA + boundary;		
-			req.data = makeMultipartPostData(boundary, "image", "", pic, req.data);
+			req.data = makeMultipartPostData(boundary, "image", "avatar.jpg", pic, req.data);
 			executeRequest(uri, req);
 		}
 		
