@@ -41,6 +41,10 @@ package com.weibo.charts.ui.tips
 			}	
 		}
 		
+		override protected function destroy():void
+		{
+		}
+		
 		override protected function layout():void
 		{
 			
@@ -56,15 +60,6 @@ package com.weibo.charts.ui.tips
 			
 		}
 		
-		override protected function destroy():void
-		{
-//			if (_t != null)
-//			{
-//				removeChild(_t);
-//				_t = null;
-//			}
-//			graphics.clear();
-		}
 		
 		public function setLabel(value:String, tf:TextFormat=null, renderAsHTML:Boolean=false):void
 		{
@@ -104,72 +99,72 @@ package com.weibo.charts.ui.tips
 				
 				_ydis = 9;
 				
-				if (xpos - halfWidth < area.x)
+				if (xpos - halfWidth < area.x)//超出左边
 				{
 					_t.x = _space * 0.5;
 					if (ypos - tHeihgt - 4 < area.top + _ydis)
 					{
-						_t.y = 4;
+						_t.y = 4+_ydis;
 						pointAry[0] = new Point(0, 0);
-						pointAry[1] = new Point(7,4);
-						pointAry[2] = new Point(tWidth,4);
-						pointAry[3] = new Point(tWidth, tHeihgt + 4);
-						pointAry[4] = new Point(0,tHeihgt + 4);
+						pointAry[1] = new Point(7,_t.y);
+						pointAry[2] = new Point(tWidth,_t.y);
+						pointAry[3] = new Point(tWidth, tHeihgt + 4+_ydis);
+						pointAry[4] = new Point(0,tHeihgt + 4+_ydis);
 						
 					}else {
-						_t.y = -tHeihgt - 4;
+						_ydis *= -1;
+						_t.y = -tHeihgt - 4+_ydis;
 						pointAry[0] = new Point(0, _t.y);
 						pointAry[1] = new Point(tWidth, _t.y);
-						pointAry[2] = new Point(tWidth, -4);
-						pointAry[3] = new Point(7, -4);
+						pointAry[2] = new Point(tWidth, -4+_ydis);
+						pointAry[3] = new Point(7, -4+_ydis);
 						pointAry[4] = new Point(0, 0);
-						_ydis *= -1;
 					}
-				}else if (xpos + halfWidth > area.right)
+				}else if (xpos + halfWidth > area.right)//超出右边
 				{
 					_t.x = -tWidth + _space * 0.5;
-					if (ypos - tHeihgt - 4 < area.top + _ydis)
+					if (ypos - tHeihgt - 4 > area.top + _ydis)
 					{
-						_t.y = 4;
-						pointAry[0] = new Point(-tWidth, 4);
-						pointAry[1] = new Point(-7, 4);
+						_t.y = 4+_ydis;
+						pointAry[0] = new Point(-tWidth, _t.y);
+						pointAry[1] = new Point(-7, _t.y);
 						pointAry[2] = new Point(0, 0);
-						pointAry[3] = new Point(0, tHeihgt + 4);
-						pointAry[4] = new Point(-tWidth, tHeihgt + 4);
+						pointAry[3] = new Point(0, tHeihgt + 4+_ydis);
+						pointAry[4] = new Point(-tWidth, tHeihgt + 4+_ydis);
 						
 					}else {
-						_t.y = -tHeihgt - 4;
+						_ydis *= -1;
+						_t.y = -tHeihgt - 4+_ydis;
 						pointAry[0] = new Point(-tWidth, _t.y);
 						pointAry[1] = new Point(0, _t.y);
 						pointAry[2] = new Point(0, 0);
-						pointAry[3] = new Point(-7, -4);
-						pointAry[4] = new Point(-tWidth, -4);
-						_ydis *= -1;
+						pointAry[3] = new Point(-7, -4+_ydis);
+						pointAry[4] = new Point(-tWidth, -4+_ydis);
 					}
 					
-				}else{
+				}else{//横向正常
 					_t.x = -halfWidth + _space * 0.5;
 					if (ypos - tHeihgt - 4 < area.y + _ydis)
 					{
-						_t.y = 4;
-						pointAry[0] = new Point(-halfWidth, 4);
-						pointAry[1] = new Point(-3.5, 4);
+						_t.y = 4+_ydis;
+						pointAry[0] = new Point(-halfWidth, 4+_ydis);
+						pointAry[1] = new Point(-3.5, 4+_ydis);
 						pointAry[2] = new Point(0, 0);
-						pointAry[3] = new Point(3.5, 4);
-						pointAry[4] = new Point(halfWidth, 4);
-						pointAry[5] = new Point(halfWidth, tHeihgt + 4);
-						pointAry[6] = new Point(-halfWidth, tHeihgt + 4);
+						pointAry[3] = new Point(3.5, 4+_ydis);
+						pointAry[4] = new Point(halfWidth, 4+_ydis);
+						pointAry[5] = new Point(halfWidth, tHeihgt + 4+_ydis);
+						pointAry[6] = new Point(-halfWidth, tHeihgt + 4+_ydis);
 						
 					}else {
-						_t.y = -tHeihgt - 4;
+						_ydis *= -1;
+						_t.y = -tHeihgt - 4+_ydis;
 						pointAry[0] = new Point(-halfWidth, _t.y);
 						pointAry[1] = new Point(halfWidth, _t.y);
-						pointAry[2] = new Point(halfWidth, -4);
-						pointAry[3] = new Point(3.5, -4);
+						pointAry[2] = new Point(halfWidth, -4+_ydis);
+						pointAry[3] = new Point(3.5, -4+_ydis);
 						pointAry[4] = new Point(0, 0);
-						pointAry[5] = new Point(-3.5, -4);
-						pointAry[6] = new Point(-halfWidth, -4);
-						_ydis *= -1;
+						pointAry[5] = new Point(-3.5, -4+_ydis);
+						pointAry[6] = new Point(-halfWidth, -4+_ydis);
 					}
 				}
 				
@@ -195,7 +190,7 @@ package com.weibo.charts.ui.tips
 		
 		override public function move(x:Number, y:Number):void
 		{
-			super.move(x, y+_ydis);
+			super.move(x, y);
 		}
 		
 		protected function showEffect(skipEffect:Boolean):void

@@ -127,7 +127,7 @@ package com.weibo.core
 		 * 
 		 * @param type
 		 */		
-		final protected function invalidate(type:String = ValidateType.STATE):void
+		final protected function invalidate(type:String = "state"):void
 		{
 			_validateTypeObject[type] = true;
 			addEventListener(Event.ENTER_FRAME, invalidateAtFrame);

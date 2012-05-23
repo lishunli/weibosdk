@@ -271,7 +271,7 @@ package com.weibo.charts.data
 			{
 				var oldMaximum:Number = this.dataMaxinum;
 				this.maximum = Math.ceil(dataMaxinum / this.majorUnit) * majorUnit;
-				if (oldMaximum == this.maximum)
+				if (oldMaximum == this.maximum && coordinate.chartStyle.gridStyle.addMore)
 				{
 					this.maximum += majorUnit;
 				}

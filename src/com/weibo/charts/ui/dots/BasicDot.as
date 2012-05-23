@@ -5,7 +5,6 @@ package com.weibo.charts.ui.dots
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.IDotUI;
 	
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	/**
@@ -17,10 +16,16 @@ package com.weibo.charts.ui.dots
 		
 		public function BasicDot() 
 		{
-			
+			this.buttonMode = true;
 		}
 		
-		override protected function create():void
+		override protected function addEvents():void
+		{
+			this.addEventListener(MouseEvent.ROLL_OVER, overThis);
+			this.addEventListener(MouseEvent.ROLL_OUT, outThis);
+		}
+		
+		override protected function updateState():void
 		{
 			this.graphics.clear();
 			this.graphics.beginFill(0xffffff);
@@ -30,13 +35,6 @@ package com.weibo.charts.ui.dots
 			this.graphics.beginFill(uiColor);
 			this.graphics.drawCircle(0,0,3);
 			this.graphics.endFill();
-			this.buttonMode = true;
-		}
-		
-		override protected function addEvents():void
-		{
-			this.addEventListener(MouseEvent.ROLL_OVER, overThis);
-			this.addEventListener(MouseEvent.ROLL_OUT, outThis);
 		}
 		
 		private function outThis(e:MouseEvent):void

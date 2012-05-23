@@ -60,28 +60,28 @@ package com.weibo.charts.ui
 		public function set uiColor(value:Number):void
 		{
 			_uiColor = value;
-			this.invalidate(ValidateType.ALL);
+			this.invalidate(ValidateType.STATE);
 		}	
 
 		public function get outlineColor():Number{return _outlineColor;}
 		public function set outlineColor(value:Number):void
 		{
 			_outlineColor = value;
-			this.invalidate(ValidateType.ALL);
+			this.invalidate(ValidateType.STATE);
 		}
 
 		public function get outlineThicknesss():Number{return _outlineThicknesss;}
 		public function set outlineThicknesss(value:Number):void
 		{
 			_outlineThicknesss = value;
-			this.invalidate(ValidateType.ALL);
+			this.invalidate(ValidateType.STATE);
 		}
 
 		public function get uiAlpha():Number{return _uiAlpha;}
 		public function set uiAlpha(value:Number):void
 		{
 			_uiAlpha = value;
-			this.invalidate(ValidateType.ALL);
+			this.invalidate(ValidateType.STATE);
 		}
 
 		public function get selected():Boolean { return _selected; }

@@ -50,10 +50,10 @@ package com.weibo.charts
 		
 		
 		
-		public function get dotArr():Array 
+		/*public function get dotArr():Array 
 		{
 			return _dotArr;
-		}
+		}*/
 		
 		
 		override protected function create():void
