@@ -38,5 +38,13 @@ package com.sina.microblog.events
 			super(type, bubbles, cancelable);
 		}
 		
+		override public function clone():Event
+		{
+			var e:MicroBlogErrorEvent = new MicroBlogErrorEvent(type, bubbles, cancelable);
+			e.message = message;
+			e.code = code;
+			return e;
+		}
+		
 	}
 }
