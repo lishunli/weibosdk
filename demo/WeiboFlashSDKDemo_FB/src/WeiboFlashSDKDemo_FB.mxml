@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="appCreationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.sina.microblog.WeiboService;
+			import com.sina.microblog.events.MicroBlogEvent;
+			
+			import mx.events.FlexEvent;
+			
+			//封装微博相关的后端服务
+			private var _service:WeiboService;
+			
+			protected function appCreationCompleteHandler(event:FlexEvent):void
+			{
+				//填入你的app key和app secrect，以及你自己部署的代理接口地址，
+				//关于代理接口的部署参照：http://www.flashache.com/2011/11/28/guide-to-weibo-flash-sdk-cn/ 前半部分的内容
+				_service = new WeiboService("0000000000000", "000000000000000000000000000000000000000", 
+					"http://flashsdk.sinaapp.com/proxy/proxy.php");
+			}
+			
+			protected function btnLogin_clickHandler(event:MouseEvent):void
+			{
+				_service.login();
+				_service.addEventListener(MicroBlogEvent.LOGIN_RESULT, onLoginResult);
+			}
+			
+			protected function onLoginResult(event:Event):void
+			{
+				_service.removeEventListener(MicroBlogEvent.LOGIN_RESULT, onLoginResult);		
+				//微博接口
+//				_service.publicTimeline();
+//				_service.homeTimeline(0,0,1);
+//				_service.friendsTimeline(0,0,1,1);
+//				_service.friendsTimelineIds(0,0,1);
+//				_service.userTimeline(null,null, 0, 0,50, 1, 0, 0, 1);
+//				_service.userTimelineIds(null, null, 0, 0, 1);
+//				_service.repostByMe();
+//				_service.mentions("0", "0", 1);
+//				_service.bilateralTimeline("0", "0", 1);
+//				_service.statusShow("3443048342455319");
+//				_service.querymid(		//-----------------------------------------未测试
+//				_service.repostDaily(1);
+//				_service.repostWeekly(1,0);
+//				_service.commentsDaily(1);
+//				_service.commentsWeekly(1);
+//				_service.count("3443048342455319");
+//				_service.repost(    	 	//-----------------------------------------未测试
+//				_service.destroy(		//-----------------------------------------未测试
+//				_service.update("test" + Math.random());
+//				_service.upload(			//-----------------------------------------未测试
+//				_service.emotions();
+				
+//				_service.commentsShow("3443048342455319");
+//				_service.commentsByMe("3443048342455319",0,0,1);
+				
+//				_service.getUID();		
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Button label="授权登陆" click="btnLogin_clickHandler(event)" id="btnLogin" />
+	
+</s:Application>
