@@ -111,6 +111,7 @@ package com.sina.microblog
 			}
 			
 			_testData = dataStr;
+			
 //			trace("========================================" + processor.resultEvent);
 //			trace(_testData);
 //			trace("========================================");

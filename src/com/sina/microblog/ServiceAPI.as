@@ -46,8 +46,29 @@ package com.sina.microblog
 		public static const COMMENTS_MENTIONS:String = "comments/mentions";
 		public static const COMMENTS_SHOW_BATCH:String = "comments/show_batch";
 		
+		/////////////////////////////////////////////////////////////
+		//////// 评论 —— 写入接口
+		/////////////////////////////////////////////////////////////
+		public static const COMMENTS_CREATE:String = "comments/create";		
+		public static const COMMENTS_DESTROY:String = "comments/destroy";		
+		public static const COMMENTS_DESTROY_BATCH:String = "comments/destroy_batch";		
+		public static const COMMENTS_REPLY:String = "comments/reply";		
+	
+		/////////////////////////////////////////////////////////////
+		//////// 用户 —— 读取接口
+		/////////////////////////////////////////////////////////////
+		public static const USERS_SHOW:String = "users/show";		
+		public static const DOMAIN_SHOW:String = "users/domain_show";		
+		public static const USERS_COUNTS:String = "users/counts";				
 		
-		
+		/////////////////////////////////////////////////////////////
+		//////// 关系 —— 关注读取接口
+		/////////////////////////////////////////////////////////////
+		public static const FRIENDSHIPS_FRIENDS:String = "friendships/friends";		
+		public static const FRIENDSHIPS_IN_COMMON:String = "friendships/friends/in_common";		
+		public static const FRIENDSHIPS_BILATERAL:String = "friendships/friends/bilateral";	
+		public static const FRIENDSHIPS_BILATERAL_IDS:String = "friendships/friends/bilateral/ids";		
+		public static const FRIENDSHIPS_IDS:String = "friendships/friends/ids";
 		
 		public static const GET_UID:String = "account/get_uid";
 		

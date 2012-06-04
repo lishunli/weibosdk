@@ -83,7 +83,9 @@ package com.sina.microblog.events
 		public static const EMOTIONS_ERROR:String = "emotionsError";
 		
 		
-		
+		/////////////////////////////////////////////////////////////
+		//////// 评论 —— 读取接口
+		/////////////////////////////////////////////////////////////
 		public static const COMMENTS_SHOW_RESULT:String = "commentsShowResult";
 		public static const COMMENTS_SHOW_ERROR:String = "commentsShowError";
 		
@@ -101,6 +103,52 @@ package com.sina.microblog.events
 		
 		public static const COMMENTS_SHOW_BATCH_RESULT:String = "commentsShowBatchResult";
 		public static const COMMENTS_SHOW_BATCH_ERROR:String = "commentsShowBatchError";
+		
+		/////////////////////////////////////////////////////////////
+		//////// 评论 —— 写入接口
+		/////////////////////////////////////////////////////////////
+		public static const COMMENTS_CREATE_RESULT:String = "commentsCreateResult";
+		public static const COMMENTS_CREATE_ERROR:String = "commentsCreateError";
+		
+		public static const COMMENTS_DESTROY_RESULT:String = "commentsDestroyResult";
+		public static const COMMENTS_DESTROY_ERROR:String = "commentsDestroyError";
+		
+		public static const COMMENTS_DESTROY_BATCH_RESULT:String = "commentsDestroyBatchResult";
+		public static const COMMENTS_DESTROY_BATCH_ERROR:String = "commentsDestroyBatchError";
+		
+		public static const COMMENTS_REPLY_RESULT:String = "commentsReplyResult";
+		public static const COMMENTS_REPLY_ERROR:String = "commentsReplyError";
+		
+		
+		/////////////////////////////////////////////////////////////
+		//////// 用户 —— 读取接口
+		/////////////////////////////////////////////////////////////		
+		public static const USERS_SHOW_RESULT:String = "usersShowResult";
+		public static const USERS_SHOW_ERROR:String = "usersShowError";
+		
+		public static const DOMAIN_SHOW_RESULT:String = "domainShowResult";
+		public static const DOMAIN_SHOW_ERROR:String = "domainShowError";
+		
+		public static const USERS_COUNTS_RESULT:String = "usersCountsResult";
+		public static const USERS_COUNTS_ERROR:String = "usersCountsError";
+		
+		/////////////////////////////////////////////////////////////
+		//////// 关系 —— 关注读取接口
+		/////////////////////////////////////////////////////////////
+		public static const FRIENDSHIPS_FRIENDS_RESULT:String = "friendshipsFriendsResult";
+		public static const FRIENDSHIPS_FRIENDS_ERROR:String = "friendshipsFriendsError";
+		
+		public static const FRIENDSHIPS_IN_COMMON_RESULT:String = "friendshipsInCommonResult";
+		public static const FRIENDSHIPS_IN_COMMON_ERROR:String = "friendshipsInCommonError";
+		
+		public static const FRIENDSHIPS_BILATERAL_RESULT:String = "friendshipsBilateralResult";
+		public static const FRIENDSHIPS_BILATERAL_ERROR:String = "friendshipsBilateralError";
+		
+		public static const FRIENDSHIPS_BILATERAL_IDS_RESULT:String = "friendshipsBilateralIdsResult";
+		public static const FRIENDSHIPS_BILATERAL_IDS_ERROR:String = "friendshipsBilateralIdsError";
+		
+		public static const FRIENDSHIPS_IDS_RESULT:String = "friendshipsIdsResult";
+		public static const FRIENDSHIPS_IDS_ERROR:String = "friendshipsIdsError";
 		
 		
 		
