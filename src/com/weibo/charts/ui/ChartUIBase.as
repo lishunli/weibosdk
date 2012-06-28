@@ -10,29 +10,20 @@ package com.weibo.charts.ui
 		private var _uiWidth:Number = 30;
 		private var _uiHeight:Number = 0;
 		
-		private var _uiColor:Number = 0xffffff;
+		private var _uiColor:Number = 0xffccff;
 		private var _uiAlpha:Number = 1;
 		private var _outlineColor:Number = 0x000000;
 		private var _outlineThicknesss:Number = 1;
 		
 		private var _selected:Boolean = false;
+		private var _state:String;
 		
 		public function ChartUIBase()
 		{
 			super();
 		}
 		
-		protected function overEffect(skipEffect:Boolean = false):void
-		{
-			
-		}
-		
-		protected function outEffect(skipEffect:Boolean = false):void
-		{
-			
-		}
-		
-		public function addMe(parent:DisplayObjectContainer):void
+		/*public function addMe(parent:DisplayObjectContainer):void
 		{
 			parent.addChild(this);
 		}
@@ -40,7 +31,7 @@ package com.weibo.charts.ui
 		public function removeMe():void
 		{
 			if (this.parent) parent.addChild(this);
-		}
+		}*/
 
 		public function get uiWidth():Number{return _uiWidth;}
 		public function set uiWidth(value:Number):void
@@ -89,6 +80,16 @@ package com.weibo.charts.ui
 		{
 			_selected = value;
 			this.invalidate(ValidateType.STATE);
+		}
+		
+		public function get state():String
+		{
+			return _state;
+		}
+		public function set state(value:String):void
+		{
+			_state = value;
+			invalidate();
 		}
 
 	}

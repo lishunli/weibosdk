@@ -1,8 +1,27 @@
 package com.weibo.core
 {
+	import com.weibo.events.UIComponentEvent;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	/**
+	 * 微型框架-基类
+	 * 提高运行效率
+	 * 以模板开发模式简化了开发
+	 * 实现尺寸适应
+	 * create
+	 * destroy
+	 * addEvents
+	 * removeEvents
+	 * layout
+	 * updateState
+	 * invalidate();根据参数更新相应模块
+	 * ValidateType.ALL-->销毁所有模版内容并重新创建
+	 * ValidateType.SIZE-->改变尺寸，影响布局
+	 * ValidateType.STATE-->只改变状态
+	 * @author sinaweibo
+	 */	
 	public class UIComponent extends Sprite
 	{
 		
@@ -11,11 +30,8 @@ package com.weibo.core
 		/*
 		public static const ALL:String="all";
 		public static const SIZE:String="size";
-//		public static const STYLES:String="styles";
 		public static const STATE:String="state";
 //		public static const DATA:String="data";
-//		public static const SCROLL:String="scroll";
-//		public static const SELECTED:String="selected";
 		*/
 		
 //==========================================
@@ -30,176 +46,99 @@ package com.weibo.core
 		//样式
 		protected var _style:Object = {};
 		
-		//保留到渲染前再执行
-//		protected var _haveResized:Boolean = false;
+		//尺寸是否发生了变化
+		protected var _haveResized:Boolean = false;
+		//是否需要渲染
+		protected var _needRender:Boolean = false;
+		
 		
 	//==========================================
 	// 构造函数
 	//------------------------------------------
-		
+
 		public function UIComponent()
 		{
 			super();
+			this.visible = false;
 			
 			//初始化
-//			validate();//ENTER_FRAME时期
 			create();
 			addEvents();
-			layout();//这里是直接调用，所以不能发送事件（应该在渲染前，有子对象后才会发送事件）
-			updateState();
 			
-//			invalidate("all");//创建此对象避免调用
+			addEventListener(Event.RESIZE, resizeHandler);
+			addEventListener(UIComponentEvent.LAYOUT, layoutHandler);//冒泡阶段，保证子对象-->父对象顺序
+			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
+			
+			invalidate(ValidateType.SIZE);
 		}
 		
 		
 //==========================================
 // 私有方法
-		/*
-		private function validate():void
-		{
-			//打扫添加的不良信息，只保留有效值。
-			for (var type:Object in _validateTypeObject)
-			{
-				switch (type)
-				{
-					case ValidateType.ALL:
-						break;
-					case ValidateType.STYLES:
-						break;
-					case ValidateType.SIZE:
-						break;
-					case ValidateType.STATE:
-						break;
-					default:
-						delete _validateTypeObject[type];
-						break;
-				}
-			}
-			//重置全部内容
-			if (_validateTypeObject[ValidateType.ALL])
-			{
-				_validateTypeObject = {};
-				removeEvents();
-				destroy();
-				create(); //创建对象
-				resized(); //布局对象
-				updateState(); //更新对象状态
-				addEvents(); //给对象添加事件
-			}
-			//样式,是否需要？比ALL方式只少了updateState！！
-			else if (_validateTypeObject[ValidateType.STYLES])
-			{
-				_validateTypeObject = {};
-				removeEvents();
-				destroy();
-				create(); //创建对象
-				resized(); //布局对象
-				addEvents(); //给对象添加事件
-			}
-			else
-			{
-				//布局对象，包含还是并列updateState?
-				//SIZE先于STATE，SIZE里应该只设置和排列尺寸内容，具体处理显示层再在STATE里处理
-				//这样保证父级渲染里能读到子级尺寸
-				if (_validateTypeObject[ValidateType.SIZE])
-				{
-//					delete _validateTypeObject[ValidateType.SIZE];
-					_validateTypeObject = {};
-					resized();
-					updateState();
-				}
-				//更新对象状态
-				else if (_validateTypeObject[ValidateType.STATE])
-				{
-//					delete _validateTypeObject[ValidateType.STATE];
-					_validateTypeObject = {};
-					updateState();
-				}
-			}
-		}
-		*/
 		
 		/**
-		 * 组件的属性或样式以哪种方式发生了改变。
-		 * 注意这里隐藏着一个关于尺寸的重要的机制
-		 * 如果设置容器的属性：容器先添加了Event.ENTER_FRAME，所以容器先于子对象执行validate。
-		 * 如果设置子对象属性：则子对象执行validate，并发送尺寸事件，容器收到事件直接处理。
-		 * 
+		 * 组件的属性或样式的改变方式。
 		 * @param type
 		 */		
 		final protected function invalidate(type:String = "state"):void
 		{
 			_validateTypeObject[type] = true;
+			if (type == ValidateType.SIZE)
+			{
+				//启动父级对象改变尺寸
+				dispatchEvent(new Event(Event.RESIZE, true));
+			}
 			addEventListener(Event.ENTER_FRAME, invalidateAtFrame);
 		}
 		
 		private function invalidateAtFrame(event:Event):void
 		{
+			this.visible = true;
 			removeEventListener(Event.ENTER_FRAME, invalidateAtFrame);
 			
-			var needRender:Boolean = false;
+			_haveResized = false;
+			_needRender = false;
 			//重置全部内容
 			if (_validateTypeObject[ValidateType.ALL])
 			{
-				_validateTypeObject = {};//一定要立即重置，使ENTER_FRAME期间也可以设置invalidate
-				needRender = true;
+				_validateTypeObject = {};//一定要立即重置，使其可以立即重新设置invalidate
+				_haveResized = true;
+				_needRender = true;
 				removeEvents();
 				destroy();
 				create();//创建对象
-				layout();//设置布局和尺寸
 				addEvents();//给对象添加事件
 				
-				dispatchEvent(new Event(Event.RESIZE, true, false));
 			}
-			//布局对象，包含还是并列updateState?
-			//SIZE先于STATE，SIZE里应该只设置和排列尺寸内容，具体处理显示层再在STATE里处理
-			//这样保证父级渲染里能读到子级尺寸
+			//布局对象
 			else if (_validateTypeObject[ValidateType.SIZE])
 			{
 				_validateTypeObject = {};//同上
-				needRender = true;
-				layout();
+				_haveResized = true;
+				_needRender = true;
 				
-				//★各种容器尺寸：利用事件冒泡，容器整体侦听由内向外冒泡，减轻维护子类成本
-				//发出事件的时机：ENTER_FRAME！
-				dispatchEvent(new Event(Event.RESIZE, true, false));
 			}
+			//更新状态
 			else if (_validateTypeObject[ValidateType.STATE])
 			{
 				_validateTypeObject = {};//同上
-				
-				needRender = true;
+				_needRender = true;
 			}
 			else
 			{
 				_validateTypeObject = {};//同样有必要
 			}
 			
-			//推迟到RENDER阶段
-			//1.读到尺寸。2.容器和此对象同步渲染
-			if (stage && needRender)
+			//利用事件冒泡，容器整体侦听由内向外冒泡，减轻维护子类成本
+			if (_haveResized)
 			{
-				stage.addEventListener(Event.RENDER, invalidateAtRender);
-				stage.invalidate();
+				dispatchEvent(new Event(UIComponentEvent.LAYOUT, true));
 			}
-			/*else
-			{
-//				_haveResized = false;
-			}*/
+			
+			//推迟到Render阶段
+			if (stage && _needRender) stage.invalidate();
 		}
 		
-		private function invalidateAtRender(event:Event):void
-		{
-			stage.removeEventListener(Event.RENDER, invalidateAtRender);
-			/*if (_haveResized)
-			{
-				//发出事件后再处理，这会影响到容器？？
-				layout();
-				_haveResized = false;
-			}*/
-			
-			updateState();
-		}
 		
 		
 //==========================================
@@ -223,33 +162,31 @@ package com.weibo.core
 		
 		/**
 		 * 需要被子类重写，完成添加事件侦听的目的
-		 * 子类使用时要调用super.addEvents();尤其是容器
 		 */	
 		protected function addEvents():void
 		{
-			addEventListener(Event.RESIZE, resizeHandler);
+			
 		}
 
 		/**
 		 * 需要被子类重写，完成移除事件侦听的目的
-		 * 子类使用时要调用super.removeEvents();尤其是容器
 		 */		
 		protected function removeEvents():void
 		{
-			removeEventListener(Event.RESIZE, resizeHandler);
+			
 		}
 		
 		/**
 		 * 需要被子类重写，完成内容排版的目的
-		 * 运行时期：一般都在ENTER_FRAME中
-		 * 这里只计算尺寸，这样保证父级渲染里能读到子级尺寸
-		 * 只有在必要时才计算尺寸，减少计算尺寸的开支。
+		 * 运行时期：FRAME_CONSTRUCTED
+		 * 此时能读到子对象尺寸。
+		 * 职责：设置宽高、布局子对象。
+		 * 注意：容器的子类考虑是否继承容器行为：super.layout();
 		 */	
 		protected function layout():void
 		{
 			
 		}
-		
 		
 		/**
 		 * 需要被子类重写，完成状态更新的目的
@@ -266,11 +203,8 @@ package com.weibo.core
 		public function setStyle(style:String, value:Object):void
 		{
 			_style[style] = value;
-//			invalidate(ValidateType.STYLES);
 			invalidate();
 		}
-		
-//		protected function get style():Object { return _style; }
 		
 		public function getStyle(style:String):Object
 		{
@@ -280,7 +214,6 @@ package com.weibo.core
 		public function clearStyle(style:String):void
 		{
 			delete _style[style];
-//			invalidate(ValidateType.STYLES);
 			invalidate();
 		}
 		
@@ -291,8 +224,8 @@ package com.weibo.core
 		 */
 		public function move(xpos:Number, ypos:Number):void
 		{
-			this.x = Math.round(xpos);
-			this.y = Math.round(ypos);
+			this.x = xpos;
+			this.y = ypos;
 		}
 		
 		/**
@@ -350,22 +283,56 @@ package com.weibo.core
 //==========================================
 // 事件侦听器
 		
-		/**
-		 * 处理接收到的子对象的尺寸更新事件
-		 * 发送事件的时机：ENTER_FRAME。
-		 * 处理事件的时机：被推迟到了RENDER。
-		 * 一次性处理多个事件，提高性能
-		 */	
-		protected function resizeHandler(event:Event):void
+		private function addToStageHandler(event:Event):void
 		{
-			if (event.target == this) return;//排除自己发出的事件
-			//直接启动RENDER
-			if (stage)
-			{
-				stage.addEventListener(Event.RENDER, invalidateAtRender);
-				stage.invalidate();
-			}
+			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			addEventListener(Event.RENDER, invalidateAtRender);//添加渲染事件，利用冒泡
+			
+			if (_needRender) stage.invalidate();
 		}
 		
+		private function removedFromStageHandler(event:Event):void
+		{
+			removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			removeEventListener(Event.RENDER, invalidateAtRender);
+		}
+		
+		private function invalidateAtRender(event:Event):void
+		{
+			if (_needRender) updateState();
+		}
+		
+		/**
+		 * 处理接收到的子对象的尺寸更新
+		 * @param event
+		 */	
+		private function resizeHandler(event:Event):void
+		{
+			if (event.target == this) return;//排除自身(避免死循环，且自身已添加)
+			//子对象发生了尺寸变化，因此父对象也需要同帧变化尺寸
+			invalidate(ValidateType.SIZE);
+		}
+		
+		/**
+		 * 处理接收到的尺寸布局变化
+		 * 由EnterFrame时期发送的事件
+		 * 包括自身内的冒泡链，即：子对象-父对象（显示列表链）计算尺寸
+		 * @param event
+		 */		
+		private function layoutHandler(event:Event):void
+		{
+			removeEventListener(Event.FRAME_CONSTRUCTED, frameConstructedHandler);//保证顺序！务删！
+			addEventListener(Event.FRAME_CONSTRUCTED, frameConstructedHandler);
+		}
+		
+		private function frameConstructedHandler(event:Event):void{
+			removeEventListener(Event.FRAME_CONSTRUCTED, frameConstructedHandler);
+			layout();
+			
+			//由子对象发生的尺寸变化，触发updateState
+			_haveResized = true;
+			_needRender = true;
+			if (stage)	stage.invalidate();
+		}
 	}
 }

@@ -12,6 +12,7 @@ package com.weibo.charts.style
 		public var labelFun:Function;
 		public var labelFormat:TextFormat = new TextFormat("Arial", 12, 0x999999, false);
 		public var autoHide:Boolean = false;
+		public var partLength:uint = 1;
 		
 		
 		//===== 数值轴部分 =====

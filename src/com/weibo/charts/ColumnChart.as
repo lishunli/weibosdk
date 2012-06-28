@@ -1,10 +1,9 @@
 package com.weibo.charts
 {
-	import com.greensock.TweenMax;
+	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.weibo.charts.style.ColumnChartStyle;
 	import com.weibo.charts.ui.IBarUI;
-	import com.weibo.charts.ui.bars.PureBar;
 	import com.weibo.core.UIComponent;
 	
 	import flash.display.Sprite;
@@ -116,7 +115,7 @@ package com.weibo.charts
 						bar.setStyle("alpha", _chartStyle.tipAlpha);
 						bar.x = area.x + (i / axislength) * area.width + localXp;
 						_container.addChild(bar);
-						TweenMax.to(bar, 1, {height:h, ease:Cubic.easeOut});
+						TweenLite.to(bar, 1, {height:h, ease:Cubic.easeOut});
 						_arrBars.push(bar);
 					}
 					

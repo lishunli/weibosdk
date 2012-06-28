@@ -6,12 +6,20 @@ package com.weibo.charts.comp
 	import com.weibo.charts.events.ChartEvent;
 	import com.weibo.charts.ui.ISectorUI;
 	
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
 	
 	public class PieNote extends DecorateBase
 	{
+		[Embed(source="com/weibo/charts/assets/male.png")]
+		private var Male:Class;
+		private var male:Bitmap = new Male();
+		[Embed(source="com/weibo/charts/assets/female.png")]
+		private var Female:Class;
+		private var female:Bitmap = new Female();
+		
 		private var container:Sprite;
 		
 		private var currentNote:IconText;
@@ -28,7 +36,8 @@ package com.weibo.charts.comp
 				{
 					space:	10,
 					margin:	30,
-					left:	30
+					left:	30,
+					align:	"horizontal"
 				}
 		}
 		
@@ -97,32 +106,58 @@ package com.weibo.charts.comp
 			var tf2:TextFormat = new TextFormat("Arial", null, activeColor, null, null, false);
 			
 			var shapenum:int = dataProvider.length;
-			var currentX:Number = getStyle("left") as Number;
-			var currentY:Number = 0;
 			for (var i:int = 0; i < shapenum; i++)
 			{
 				var iconText:IconText = new IconText();
 				container.addChild(iconText);
+				var label:String = dataProvider[i].label;
+				if (label.indexOf("男") != -1)
+					iconText.icon = male;
+				else if (label.indexOf("女") != -1)
+					iconText.icon = female;
+				else
+					iconText.icon = null;
 				iconText.setStyle("color", colors[i]);
 //				iconText.setStyle("labelColor", getStyle("labelColor"));
 //				iconText.setStyle("activeColor", getStyle("activeColor"));
 				iconText.setStyle("labelFormat", tf1);
 				iconText.setStyle("activeFormat", tf2);
 				iconText.setLabel(getStyle("tipFun").call(null, dataProvider[i]), true);
-				
-//				iconText.x = currentX;
-				iconText.y = currentY;
-				
-//				trace(currentX, currentY);
-				currentY += iconText.height + 0;
-				/*if (iconText.x + iconText.width > width / 2)
+			}
+			
+			var currentX:Number = 0;
+			var currentY:Number = 0;
+			if (getStyle("align") == "horizontal")
+			{
+				currentX = 0;
+				currentY = 0;
+				for (i = 0; i < container.numChildren; i++)
 				{
-					currentX = 0;
+					iconText = container.getChildAt(i) as IconText;
+					
+					iconText.x = currentX;
+					iconText.y = currentY;
+					if (iconText.x + iconText.width > width / 2)
+					{
+						currentX = 0;
+						currentY += iconText.height + 0;
+					}
+					else
+					{
+						currentX = width / 2;
+					}
+				}
+			}
+			else
+			{
+				currentY = 0;
+				for (i = 0; i < container.numChildren; i++)
+				{
+					iconText = container.getChildAt(i) as IconText;
+					
+					iconText.y = currentY;
 					currentY += iconText.height + 0;
-				}else
-				{
-					currentX = width / 2;
-				}*/
+				}
 			}
 			
 			container.x = (chartWidth - container.width) / 2;
@@ -161,10 +196,11 @@ package com.weibo.charts.comp
 }
 
 
-import com.weibo.charts.comp.Label;
 import com.weibo.charts.ui.tips.LabelMultiTip;
 import com.weibo.core.UIComponent;
+import com.weibo.core.ValidateType;
 
+import flash.display.DisplayObject;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.text.TextFormat;
@@ -172,7 +208,8 @@ import flash.text.TextFormat;
 class IconText extends UIComponent
 {
 	private var container:Sprite = new Sprite();
-	private var icon:Shape;
+	private var _defaultIcon:Shape;
+	private var _icon:DisplayObject;
 	private var label:LabelMultiTip;
 	private var _text:String = "";
 	
@@ -180,26 +217,33 @@ class IconText extends UIComponent
 	
 	public function IconText()
 	{
+		_defaultIcon = new Shape();
 		super();
 	}
+	
 
+	public function get icon():DisplayObject
+	{
+		return _icon;
+	}
+
+	public function set icon(value:DisplayObject):void
+	{
+		_icon = value;
+		invalidate(ValidateType.ALL);
+	}
+	
+	public function get actived():Boolean{return _actived;}
 	public function set actived(value:Boolean):void
 	{
 		_actived = value;
 		invalidate();
 	}
-	public function get actived():Boolean
-	{
-		return _actived;
-	}
 	
 	public function setLabel(value:String, renderAsHTML:Boolean = false):void
 	{
 		_text = value;
-//		trace(this.name, value)
-//		label.format = tf;
 		label.setLabel(_text, getStyle("labelFormat") as TextFormat, true);
-//		label.text = "wfwfw";
 		invalidate();
 	}
 	override public function get width():Number
@@ -212,23 +256,20 @@ class IconText extends UIComponent
 	}
 	override protected function create():void
 	{
-		if (icon == null)
+		if (_icon == null)
 		{
-			icon = new Shape();
+			_icon = _defaultIcon;
 		}
-		if (label == null)
-		{
-			label = new LabelMultiTip();
-		}
+		label = new LabelMultiTip();
 		
-		container.addChild(icon);
+		container.addChild(_icon);
 		container.addChild(label);
 		addChild(container);
 	}
 	
 	override protected function destroy():void
 	{
-		container.removeChild(icon);
+		if (_icon && container.contains(_icon)) container.removeChild(_icon);
 		container.removeChild(label);
 		addChild(container);
 	}
@@ -245,11 +286,15 @@ class IconText extends UIComponent
 		}
 		label.x = 15;
 		
-		icon.graphics.clear();
-//		icon.graphics.lineStyle(1, color, 1);
-		icon.graphics.beginFill(getStyle("color") as uint, 1);
-		icon.graphics.drawRect(0, 0, 10, 10);
+		_defaultIcon.graphics.clear();
+		if (_icon == _defaultIcon)
+		{
+			if (getStyle("border"))	_defaultIcon.graphics.lineStyle(1, getStyle("color") as uint, 1);
+			_defaultIcon.graphics.beginFill(getStyle("color") as uint, 1);
+			_defaultIcon.graphics.drawRect(0, 0, 10, 10);
+		}
 		
-		icon.y = (label.height - icon.height) / 2;
+		
+		_icon.y = (label.height - _icon.height) / 2;
 	}
 }

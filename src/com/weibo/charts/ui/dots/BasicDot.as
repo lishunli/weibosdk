@@ -47,13 +47,13 @@ package com.weibo.charts.ui.dots
 			if(!selected) overEffect();
 		}
 		
-		override protected function overEffect(skipEffect:Boolean=false):void
+		protected function overEffect(skipEffect:Boolean=false):void
 		{
 			if(!skipEffect) TweenMax.to(this, 0.5, {scaleX: 1.2, scaleY: 1.2, ease:Elastic.easeOut});
 			else this.scaleX = this.scaleY = 1.2;
 		}
 		
-		override protected function outEffect(skipEffect:Boolean=false):void
+		protected function outEffect(skipEffect:Boolean=false):void
 		{
 			if(!skipEffect) TweenMax.to(this, 0.3, {scaleX: 1, scaleY: 1});
 			else this.scaleX = this.scaleY = 1;

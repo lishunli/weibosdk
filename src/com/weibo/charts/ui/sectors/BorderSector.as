@@ -2,12 +2,11 @@ package com.weibo.charts.ui.sectors
 {
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.ISectorUI;
+	import com.weibo.util.ColorUtil;
 	
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-	
-	import com.weibo.charts.utils.ColorUtil;
 	
 	/**
 	 * 带边框的的扇形

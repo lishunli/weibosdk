@@ -6,7 +6,7 @@ package com.weibo.util
 	 */
 	public class ColorUtil
 	{
-		public static var defaultColors:Array = [0x999999];
+//		public static var defaultColors:Array = [0x999999];
 		
 		/**
 		 * 转换字符串到uint色值数组

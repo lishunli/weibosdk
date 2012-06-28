@@ -10,6 +10,7 @@ package com.weibo.events
 	{		
 		public static const MOVE:String = "move";
 		public static const LOCATE:String = "locate";
+		public static const LAYOUT:String = "layout";
 		
 		public var data:Object;
 		

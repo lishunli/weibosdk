@@ -6,8 +6,8 @@ package com.weibo.charts
 	import com.weibo.charts.style.PieChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.ISectorUI;
-	import com.weibo.charts.utils.ColorUtil;
 	import com.weibo.core.UIComponent;
+	import com.weibo.util.ColorUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;

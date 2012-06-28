@@ -1,10 +1,9 @@
 package com.weibo.charts
 {
-	import com.greensock.TweenMax;
+	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.weibo.charts.style.LineChartStyle;
 	import com.weibo.charts.ui.ChartUIBase;
-	import com.weibo.charts.ui.IDotUI;
 	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.charts.ui.dots.NullDot;
 	import com.weibo.charts.ui.tips.TipsManager;
@@ -12,6 +11,7 @@ package com.weibo.charts
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.Event;
 
 	public class LineChart extends CoordinateChart
 	{
@@ -20,22 +20,16 @@ package com.weibo.charts
 		 */		
 		private var _chartStyle:LineChartStyle;
 		
-		private var _dotArr:Array = [];
-		
 		private var _shapeContainer:Sprite;
-		
 		private var _tipContainer:Sprite;
 		private var _tipsManager:TipsManager
 		
+		private var _dotArr:Array = [];
 		private var _arrTips:Array = [];
 		private var _arrDots:Array = [];
 		
-		private var _tweens:TweenMax;
-		
-		private var j:int = 0;
-		private var _space:Number = 0;
-		private var _preLineLen:int;
-		private var _preLineDots:int;
+		private var _lastLineNum:int;
+		private var _lastAxisLen:int;
 		
 		public function LineChart(style:LineChartStyle)
 		{
@@ -50,10 +44,10 @@ package com.weibo.charts
 		
 		
 		
-		/*public function get dotArr():Array 
+		public function get dotArr():Array 
 		{
 			return _dotArr;
-		}*/
+		}
 		
 		
 		override protected function create():void
@@ -75,23 +69,19 @@ package com.weibo.charts
 		
 		override protected function destroy():void
 		{
-//			_dotArr.length = 0;
 			_dotArr = [];
+			_arrTips = [];
+			_arrDots = [];
 			
-			j = 0;
-			_space = 0;
-			_preLineLen = 0;
-			_preLineDots = 0;
+			_lastLineNum = 0;
+			_lastAxisLen = 0;
 			
 			if(_shapeContainer != null)
 			{
 				_shapeContainer.graphics.clear();
 				while (_shapeContainer.numChildren > 0) _shapeContainer.removeChildAt(0);
-//				_shapeContainer = null;
+				_shapeContainer = null;
 			}
-			
-			_arrTips = [];
-			_arrDots = [];
 			
 			_tipsManager.destroy();
 		}
@@ -102,79 +92,90 @@ package com.weibo.charts
 			
 			var pheight:Number;
 			var tx:Number;
-			var dot:IDotUI;
+			var dot:ChartUIBase;
 			var tip:ITipUI;
 			var tipFun:Function = this.getStyle("tipFun") as Function;
 			var tipStr:String = "";
 			
-			var dataAry:Array = dataProvider["data"] as Array;
-			var lineLen:int = dataAry.length;
+			var axisLen:int = dataProvider["axis"].length;
+			var lineNum:int = dataProvider["data"].length;
 			
-			var lineDots:int = dataProvider["axis"].length;
-			
-			if(lineDots > 1) _space = _chartStyle.touchSide ? this.area.width/(lineDots-1) : this.area.width/lineDots;
-			else _space = _chartStyle.touchSide ? 0 : this.area.width * 0.5;
-
-			if (_dotArr.length == 0)
+			var unit:Number;
+			if (_chartStyle.touchSide && axisLen>1)
 			{
-				for (j = 0; j < lineLen; j++)
-				{
-					var dotAryT:Array = [];
-					var type:int;
-					var lineShape:LineShape = getChildShapeAt(j) as LineShape;
-					for(var i:int = 0; i < lineDots ; i ++)
-					{
-//						var valueData:Array = coordinateLogic.dataProvider.data[j]["value"];
-						
-						type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
-						pheight = Math.round(area.y + this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i], type));
-						if(lineDots > 1) tx = _chartStyle.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
-						else tx = Math.round(area.x + _space);
-						var DotClass:Class = _chartStyle.dotUI || NullDot;
-						dot = new DotClass();
-						ChartUIBase(dot).uiColor = _chartStyle.colors[j % _chartStyle.colors.length];
-						DisplayObject(dot).x = tx;	
-						
-						DisplayObject(dot).y = area.bottom;
-						TweenMax.to(dot, 0.5, { y: pheight, onUpdate:dotNextFrame} );		
-						lineShape.addChild(dot as DisplayObject);
-						dotAryT[dotAryT.length] = dot;	
-						_arrDots[_arrDots.length] = dot;					
-					}
-					_dotArr[_dotArr.length] = dotAryT;		
-				}		
-				_tipsManager.init(_arrDots, _tipContainer);
-				_preLineDots = lineDots;
-				_preLineLen = lineLen;			
+				unit = this.area.width/(axisLen-1);
 			}
 			else
 			{
-				if (_preLineLen == lineLen && _preLineDots == lineDots)
-				{
-					_tipsManager.updateInitState();
-					for (j = 0; j < lineLen; j++)
-					{
-						for (i = 0; i < lineDots; i++)
-						{
-//							valueData = coordinateLogic.dataProvider.data[j]["value"];							
-							dot = _dotArr[j][i] as IDotUI;
-							ChartUIBase(dot).uiColor = _chartStyle.colors[j % _chartStyle.colors.length];
-							type = dataProvider["data"][j]["useSubAxis"] ? 1 : 0;
-							pheight = Math.round(area.y + this.coordinateLogic.getPosition(dataProvider["data"][j]["value"][i],type));
+				unit = this.area.width/axisLen;
+			}
 
-							if(lineDots > 1) tx = _chartStyle.touchSide ? Math.round(area.x + i * _space) : Math.round(area.x + i * _space + _space * 0.5);
-							else tx = Math.round(area.x + _space);
-//							_container.graphics.clear();
-							TweenMax.to(dot, 0.5, { x: tx, ease:Cubic.easeOut } );
-							TweenMax.to(dot, 0.5, { y: pheight, ease:Cubic.easeOut, onUpdate:dotNextFrame } );
-						}			
+			//创建
+			if (_lastLineNum == 0)
+			{
+				for (var i:int = 0; i < lineNum; i++)
+				{
+					var dotAryT:Array = [];
+					var lineShape:LineShape = getChildShapeAt(i) as LineShape;
+					for(var j:int = 0; j < axisLen ; j ++)
+					{
+						var DotClass:Class = _chartStyle.dotUI || NullDot;
+						dot = new DotClass();
+						if(_chartStyle.touchSide && axisLen > 1)
+							dot.x = area.x + j * unit;
+						else
+							dot.x = area.x + j * unit + unit * 0.5;
+						dot.y = area.bottom;
+						lineShape.addChild(dot);
+						dotAryT.push(dot);
+						_arrDots.push(dot);
+					}
+					_dotArr.push(dotAryT);
+				}
+				_tipsManager.init(_arrDots, _tipContainer);
+			}
+			if (_lastLineNum == 0 || (_lastLineNum == lineNum && _lastAxisLen == axisLen))
+			{
+				_tipsManager.updateInitState();
+				for (i = 0; i < lineNum; i++)
+				{
+					var k:int = 0;
+					for (j = 0; j < axisLen; j++)
+					{
+						var type:int;
+						dot = _dotArr[i][j];
+						dot.uiColor = _chartStyle.colors[i % _chartStyle.colors.length];
+						type = dataProvider["data"][i]["useSubAxis"] ? 1 : 0;
+						pheight = area.y + this.coordinateLogic.getPosition(dataProvider["data"][i]["value"][j], type);
+						
+						if (k < coordinateLogic.labelData.length && coordinateLogic.labelData[k].index == j)
+						{
+							dot.state = "show";
+							k++;
+						}
+						else
+						{
+							dot.state = "hide";
+						}
+
+						if(_chartStyle.touchSide && axisLen > 1)
+							tx = area.x + j * unit;
+						else
+							tx = area.x + j * unit + unit * 0.5;
+						
+						TweenLite.to(dot, .7, { x: tx, ease:Cubic.easeOut } );
+						TweenLite.to(dot, .7, { y: pheight, ease:Cubic.easeOut } );
 					}
 				}
-				else
-				{
-					this.invalidate("all");
-				}
+				TweenLite.to(null, 3, {onUpdate:dotNextFrame } );
 			}
+			else
+			{
+				this.invalidate("all");
+			}
+			
+			_lastAxisLen = axisLen;
+			_lastLineNum = lineNum;
 		}
 		
 		private function dotNextFrame():void

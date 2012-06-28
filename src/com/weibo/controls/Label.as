@@ -36,6 +36,12 @@ package com.weibo.controls
 			_tf.setTextFormat(_format);
 			invalidate(ValidateType.SIZE);
 		}
+		
+		public function get text():String
+		{
+			return this._text;
+		}
+		
 		public function set text(value:String):void
 		{
 //			_tf.text = value;

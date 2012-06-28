@@ -22,8 +22,6 @@ package com.weibo.charts.comp
 		
 		private var _tipContainer:Sprite;
 		
-		private var _arrTips:Array = [];
-		
 		
 	//==========================================
 	// 构造函数
@@ -71,7 +69,6 @@ package com.weibo.charts.comp
 				_tipContainer.graphics.clear();
 				while(_tipContainer.numChildren > 0) _tipContainer.removeChildAt(0);
 			}
-			_arrTips = [];
 		}
 		
 		override protected function addEvents():void
@@ -132,7 +129,6 @@ package com.weibo.charts.comp
 //				getStyle("tipFun").call(null, dataProvider[i]);
 				tip.setLabel(pieChartStyle.tipFun.call(null, dataProvider[i]), tf, true);
 				_tipContainer.addChild(tip as DisplayObject);
-				_arrTips[_arrTips.length] = tip;
 				
 				//文字基础位置
 				//拐角方向:右
@@ -153,7 +149,7 @@ package com.weibo.charts.comp
 			
 			_tipContainer.graphics.clear();
 			_tipContainer.graphics.lineStyle(1, pieChartStyle.tipLineColor, pieChartStyle.tipLineAlpha);
-			graphics.drawRect(0, 0, 200, 300);
+//			graphics.drawRect(0, 0, 200, 300);
 			repareTips(leftTips);
 			repareTips(rightTips);
 		}

@@ -116,21 +116,29 @@ package com.weibo.charts.comp
 
 
 
-import com.weibo.charts.comp.Label;
+
+import com.weibo.controls.Label;
 
 import flash.display.Shape;
 import flash.display.Sprite;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 class IconText extends Sprite
 {
 	private var icon:Shape;
-	private var label:Label;
+	private var label:TextField;
 	
 	public function IconText()
 	{
 		icon = new Shape();
 		icon.y = 5;
-		label = new Label();
+		
+		label = new TextField();
+		label.defaultTextFormat = new TextFormat("微软雅黑,Arial", 12, 0x666666);
+		label.autoSize = TextFieldAutoSize.LEFT;
+		label.mouseEnabled = label.selectable = false;
 		label.x = 15;
 		
 		addChild(icon);

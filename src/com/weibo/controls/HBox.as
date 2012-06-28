@@ -42,7 +42,7 @@ package com.weibo.controls
 			}
 			doAlignment();
 			_width += _spacing * (numChildren - 1);
-			dispatchEvent(new Event(Event.RESIZE));
+//			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		/**
@@ -79,8 +79,8 @@ package com.weibo.controls
 		public override function addChild(child:DisplayObject):DisplayObject
 		{
 			super.addChild(child);	
-			child.addEventListener(Event.RESIZE, onResize);
-			invalidate(ValidateType.SIZE);		
+//			child.addEventListener(Event.RESIZE, onResize);
+			invalidate(ValidateType.SIZE);
 			return child;
 		}
 		
@@ -93,7 +93,7 @@ package com.weibo.controls
         override public function addChildAt(child:DisplayObject, index:int) : DisplayObject
         {
 			super.addChild(child);
-			child.addEventListener(Event.RESIZE, onResize);
+//			child.addEventListener(Event.RESIZE, onResize);
 			invalidate(ValidateType.SIZE);
 			return child;
 		}

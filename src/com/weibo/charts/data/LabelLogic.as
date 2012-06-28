@@ -42,17 +42,17 @@ package com.weibo.charts.data
 		public function set dataProvider(data:Array):void
 		{
 			var count:int = data.length;
-			var unit:Number = chartStyle.touchSide ? axisLength/(count-1) : axisLength/count;
+			var unit:Number = (chartStyle.touchSide && count>1) ? axisLength/(count-1) : axisLength/count;
 			_axisData = [];
 			_gridData = [];
 			
 			//为避免文字重叠，设置的标签出现的间隔。默认为1，即：每个标签都显示。
-			var quotient:int = 1;
+			var quotient:int = chartStyle.axisStyle.partLength || 1;
 //			coordinate.autoLabel = labelLength > unit;
 //			chart.dispatchEvent(new ChartEvent(ChartEvent.CHART_LABELAXIS_SHOW, labelLength > unit, true));
 			//coordinate.autoLabel 如果标签过长，而按需要分配
 			if (chartStyle.axisStyle.autoHide && labelLength > unit)
-				quotient = Math.ceil(labelLength / unit);
+				quotient = Math.max(Math.ceil(labelLength / unit), quotient);
 			
 			
 			var i:int;
@@ -66,11 +66,16 @@ package com.weibo.charts.data
 				
 				if ((i - startI) % quotient == 0)
 				{
-					position = chartStyle.touchSide ? i/(count-1)*axisLength : i/count*axisLength;
-					if (!chartStyle.touchSide) position += unit / 2;
+					if (chartStyle.touchSide && count>1){
+						position = i/(count-1)*axisLength
+					}
+					else{
+						position = i/count*axisLength + unit / 2;
+					}
 					_axisData.push({
-					label:		data[i],
-					position:	position
+						index:		i,
+						label:		data[i],
+						position:	position
 					});
 				}
 			}

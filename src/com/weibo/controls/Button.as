@@ -15,12 +15,13 @@ package com.weibo.controls
 	public class Button extends UIComponent
 	{
 		private var states:Dictionary;
-		private var currentState:DisplayObject;
+		private var currentState:String;
+		private var currentObject:DisplayObject;
 		
-		private var upState:DisplayObject;
-		private var overState:DisplayObject;
-		private var downState:DisplayObject;
-		private var disabledState:DisplayObject;
+//		private var upState:DisplayObject;
+//		private var overState:DisplayObject;
+//		private var downState:DisplayObject;
+//		private var disabledState:DisplayObject;
 		
 		private var _buttonDown:Boolean;
 		
@@ -47,6 +48,30 @@ package com.weibo.controls
 //===================================
 // 公开方法
 		
+		public function set upState(state:DisplayObject):void
+		{
+			states["upState"] = state;
+			if (currentState == "upState")	setState("upState");
+		}
+		
+		public function set overState(state:DisplayObject):void
+		{
+			states["overState"] = state;
+			if (currentState == "overState")	setState("overState");
+		}
+		
+		public function set downState(state:DisplayObject):void
+		{
+			states["downState"] = state;
+			if (currentState == "downState")	setState("downState");
+		}
+		
+		public function set disabledState(state:DisplayObject):void
+		{
+			states["disabledState"] = state;
+			if (currentState == "disabledState")	setState("disabledState");
+		}
+		
 		public function set label(value:String):void
 		{
 			_labelText.text = value;
@@ -66,12 +91,12 @@ package com.weibo.controls
 		
 		override public function get width():Number
 		{
-			return currentState ? currentState.width : 0;
+			return currentObject ? currentObject.width : 0;
 		}
 		
 		override public function get height():Number
 		{
-			return currentState ? currentState.height : 0;
+			return currentObject ? currentObject.height : 0;
 		}
 		
 //===================================
@@ -103,10 +128,11 @@ package com.weibo.controls
 		
 		protected function setState(value:String):void
 		{
-			if (currentState && contains(currentState)) removeChild(currentState);
+			currentState = value;
+			if (currentObject && contains(currentObject)) removeChild(currentObject);
 			
 			var button:DisplayObject = states[value] || states["upState"];
-			currentState = button;
+			currentObject = button;
 			if (button) addChildAt(button, 0);
 			
 		}

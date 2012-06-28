@@ -173,7 +173,7 @@ package com.weibo.controls
 		
 		protected function onLoad(event:Event):void
 		{
-//			dispatchEvent(new Event(Event.RESIZE));
+//			dispatchEvent(new Event(Event.RESIZE, true, false));//临时发送
 			invalidate(ValidateType.SIZE);
 //			invalidate();
 		}
