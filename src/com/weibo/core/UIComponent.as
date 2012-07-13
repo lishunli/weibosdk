@@ -3,6 +3,7 @@ package com.weibo.core
 	import com.weibo.events.UIComponentEvent;
 	
 	import flash.display.Sprite;
+	import flash.events.DataEvent;
 	import flash.events.Event;
 	
 	/**
@@ -51,6 +52,8 @@ package com.weibo.core
 		//是否需要渲染
 		protected var _needRender:Boolean = false;
 		
+		protected var listenChildrenSize:Boolean = false;
+		
 		
 	//==========================================
 	// 构造函数
@@ -65,8 +68,10 @@ package com.weibo.core
 			create();
 			addEvents();
 			
-			addEventListener(Event.RESIZE, resizeHandler);
-			addEventListener(UIComponentEvent.LAYOUT, layoutHandler);//冒泡阶段，保证子对象-->父对象顺序
+//			addEventListener(Event.RESIZE, resizeHandler);//监听子对象尺寸
+			addEventListener("invalidate", invalidateListener);//兼容Player9
+			
+//			addEventListener(UIComponentEvent.LAYOUT, layoutHandler);//冒泡阶段，保证子对象-->父对象顺序
 			addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
 			
 			invalidate(ValidateType.SIZE);
@@ -83,12 +88,13 @@ package com.weibo.core
 		final protected function invalidate(type:String = "state"):void
 		{
 			_validateTypeObject[type] = true;
-			if (type == ValidateType.SIZE)
+			/*if (type == ValidateType.SIZE)
 			{
 				//启动父级对象改变尺寸
 				dispatchEvent(new Event(Event.RESIZE, true));
 			}
-			addEventListener(Event.ENTER_FRAME, invalidateAtFrame);
+			addEventListener(Event.ENTER_FRAME, invalidateAtFrame);*/
+			dispatchEvent(new DataEvent("invalidate", true, true, type));
 		}
 		
 		private function invalidateAtFrame(event:Event):void
@@ -110,7 +116,7 @@ package com.weibo.core
 				addEvents();//给对象添加事件
 				
 			}
-			//布局对象
+			//改变尺寸、布局对象
 			else if (_validateTypeObject[ValidateType.SIZE])
 			{
 				_validateTypeObject = {};//同上
@@ -130,9 +136,13 @@ package com.weibo.core
 			}
 			
 			//利用事件冒泡，容器整体侦听由内向外冒泡，减轻维护子类成本
-			if (_haveResized)
+			/*if (_haveResized)
 			{
 				dispatchEvent(new Event(UIComponentEvent.LAYOUT, true));
+			}*/
+			if (_haveResized){
+				_needRender = true;
+				layout();
 			}
 			
 			//推迟到Render阶段
@@ -300,27 +310,47 @@ package com.weibo.core
 		private function invalidateAtRender(event:Event):void
 		{
 			if (_needRender) updateState();
+			//由于在Event.ADDED_TO_STAGE时添加了侦听，所以需要重置--避免外界因素触发
+			_needRender = false;
+			_haveResized = false;
 		}
 		
 		/**
 		 * 处理接收到的子对象的尺寸更新
 		 * @param event
-		 */	
 		private function resizeHandler(event:Event):void
 		{
 			if (event.target == this) return;//排除自身(避免死循环，且自身已添加)
-			//子对象发生了尺寸变化，因此父对象也需要同帧变化尺寸
+			
+			if (!listenChildrenSize) return;
+			
+			//同步：子对象发生了尺寸变化，因此父对象也需要启动同帧变化尺寸机制，但这时还未实现冒泡顺序
 			invalidate(ValidateType.SIZE);
 		}
+		 */	
+		private function invalidateListener(event:DataEvent):void
+		{
+			if (event.target != this && listenChildrenSize){
+				//同步：子对象发生了尺寸变化，因此父对象也需要启动同帧变化尺寸机制，但这时还未实现冒泡顺序
+				if (event.data == ValidateType.SIZE){
+					_validateTypeObject[event.data] = true;
+				}
+			}
+			
+			removeEventListener(Event.ENTER_FRAME, invalidateAtFrame);
+			addEventListener(Event.ENTER_FRAME, invalidateAtFrame);
+		}
+		
 		
 		/**
 		 * 处理接收到的尺寸布局变化
 		 * 由EnterFrame时期发送的事件
 		 * 包括自身内的冒泡链，即：子对象-父对象（显示列表链）计算尺寸
 		 * @param event
-		 */		
 		private function layoutHandler(event:Event):void
 		{
+			if (!listenChildrenSize) return;
+			
 			removeEventListener(Event.FRAME_CONSTRUCTED, frameConstructedHandler);//保证顺序！务删！
 			addEventListener(Event.FRAME_CONSTRUCTED, frameConstructedHandler);
 		}
@@ -334,5 +364,6 @@ package com.weibo.core
 			_needRender = true;
 			if (stage)	stage.invalidate();
 		}
+		 */		
 	}
 }

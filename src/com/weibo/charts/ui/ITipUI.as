@@ -1,5 +1,7 @@
 package com.weibo.charts.ui
 {
+	import com.weibo.charts.CoordinateChart;
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
@@ -13,6 +15,14 @@ package com.weibo.charts.ui
 		 * @param renderAsHTML
 		 */		
 		function setLabel(value:String, tf:TextFormat = null, renderAsHTML:Boolean = false):void;
+		
+		/**
+		 * 更新多条数据显示
+		 * @param data
+		 * @param index
+		 * @param tf
+		 */		
+		function setContent(chart:CoordinateChart, index:int, tf:TextFormat = null):void;
 		
 		/**
 		 * 添加到显示列表

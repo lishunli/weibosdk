@@ -1,8 +1,5 @@
 package com.weibo.charts.style
 {
-	import com.weibo.charts.ui.dots.BasicDot;
-	import com.weibo.charts.ui.tips.DialogShapeTip;
-	
 	import flash.text.TextFormat;
 
 	/**

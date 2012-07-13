@@ -7,11 +7,11 @@ package com.weibo.charts
 	import com.weibo.charts.ui.ITipUI;
 	import com.weibo.charts.ui.dots.NullDot;
 	import com.weibo.charts.ui.tips.TipsManager;
+	import com.weibo.core.ValidateType;
 	import com.weibo.util.ColorUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.Event;
 
 	public class LineChart extends CoordinateChart
 	{
@@ -25,7 +25,6 @@ package com.weibo.charts
 		private var _tipsManager:TipsManager
 		
 		private var _dotArr:Array = [];
-		private var _arrTips:Array = [];
 		private var _arrDots:Array = [];
 		
 		private var _lastLineNum:int;
@@ -41,14 +40,6 @@ package com.weibo.charts
 //			this.coordinateLogic.addMore = style.gridStyle.addMore;
 //			this.area = new Rectangle(0,0,width,height);
 		}
-		
-		
-		
-		public function get dotArr():Array 
-		{
-			return _dotArr;
-		}
-		
 		
 		override protected function create():void
 		{
@@ -70,7 +61,6 @@ package com.weibo.charts
 		override protected function destroy():void
 		{
 			_dotArr = [];
-			_arrTips = [];
 			_arrDots = [];
 			
 			_lastLineNum = 0;
@@ -134,6 +124,7 @@ package com.weibo.charts
 				}
 				_tipsManager.init(_arrDots, _tipContainer);
 			}
+			//在已经有了的内容上变化属性
 			if (_lastLineNum == 0 || (_lastLineNum == lineNum && _lastAxisLen == axisLen))
 			{
 				_tipsManager.updateInitState();
@@ -171,7 +162,7 @@ package com.weibo.charts
 			}
 			else
 			{
-				this.invalidate("all");
+				this.invalidate(ValidateType.ALL);
 			}
 			
 			_lastAxisLen = axisLen;

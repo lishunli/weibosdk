@@ -29,5 +29,10 @@ package com.weibo.charts.style
 		public var border:Boolean = false;
 		public var borderThickness:int = 1;
 //		public var borderColor:int = 0x000000;
+		
+		/**
+		 * 是否显示为百分比
+		 */		
+		public var isRate:Boolean = false;
 	}
 }

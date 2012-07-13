@@ -2,6 +2,7 @@ package com.weibo.charts.ui.tips
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Elastic;
+	import com.weibo.charts.CoordinateChart;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.ITipUI;
 	
@@ -60,6 +61,11 @@ package com.weibo.charts.ui.tips
 			
 		}
 		
+		
+		public function setContent(chart:CoordinateChart, index:int, tf:TextFormat=null):void
+		{
+			
+		}
 		
 		public function setLabel(value:String, tf:TextFormat=null, renderAsHTML:Boolean=false):void
 		{

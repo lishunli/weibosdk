@@ -23,7 +23,8 @@ package com.weibo.controls
 		
 		public function HBox() 
 		{
-			
+			listenChildrenSize = true;
+			super();
 		}
 				
 		override protected function layout():void

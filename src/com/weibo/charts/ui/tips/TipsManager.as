@@ -10,7 +10,6 @@ package com.weibo.charts.ui.tips
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
@@ -191,11 +190,18 @@ package com.weibo.charts.ui.tips
 						if(i == 0) tx = dot.x;
 						dot.selected = true;
 					}
+					
+					for(i = 0; i < _dataLen ; i ++)
+					{
+						dot = _targets[id + i * _axisLen];
+						if(i == 0) tx = dot.x;
+						dot.selected = true;
+					}
 				}
 				
 				var valueData:Array = _targetChart.coordinateLogic.dataProvider.data[tipIPos]["value"];
 				tipStr = (tipFun == null) ? valueData[tipJPos] : tipFun(tipIPos, tipJPos);			
-				_singleTip.setLabel(tipStr, new TextFormat("Arial", 12, 0x000000, false, null, null, null, null, null, null ,null, null, 7), true);
+				_singleTip.setContent(_targetChart, id, chartStyle.tipFormat);
 				
 				if(tx + ChartUIBase(_singleTip).uiWidth >= _targetChart.area.right) tx = _targetChart.area.right - ChartUIBase(_singleTip).uiWidth;
 				if(ty + ChartUIBase(_singleTip).uiHeight >= _targetChart.area.bottom) ty = _targetChart.area.bottom - ChartUIBase(_singleTip).uiHeight;

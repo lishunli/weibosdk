@@ -22,8 +22,8 @@ package com.weibo.controls
 		
 		public function Box()
 		{
+			listenChildrenSize = true;
 			super();
-			
 		}
 		
 //===============================

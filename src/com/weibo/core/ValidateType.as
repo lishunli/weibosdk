@@ -12,6 +12,7 @@ package com.weibo.core
 	{
 		public static const ALL:String="all";
 		public static const SIZE:String="size";
+//		public static const LAYOUT:String="layout";
 //		public static const STYLES:String="styles";
 		public static const STATE:String="state";
 //		public static const DATA:String="data";

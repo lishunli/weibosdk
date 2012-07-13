@@ -41,6 +41,7 @@ package com.weibo.charts.ui.bars
 				value = txt.replace(/{value}/g, value);
 			}
 			_labelTip.text = value;
+			invalidate();
 		}
 		
 		override protected function create():void
@@ -56,7 +57,7 @@ package com.weibo.charts.ui.bars
 			}
 		}
 		
-		override protected function layout():void
+		override protected function updateState():void
 		{
 //			TweenMax.to(this, 1, {height: _height, ease:Cubic.easeOut});
 			var alpha:Number = getStyle("alpha") as Number;

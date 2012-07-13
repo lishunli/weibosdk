@@ -28,6 +28,7 @@ package com.weibo.controls
 		
 		public function VBox()
 		{
+			listenChildrenSize = true;
 			super();
 		}
 		
