@@ -30,7 +30,7 @@ package com.weibo.controls
 			labelText = new Label("", new TextFormat("Arial", 12, 0x666666));
 			labelText.mouseEnabled = false;
 			labelText.x = 16;
-			checkIcon.y = 4;
+			checkIcon.y = 3;
 			addChild(checkIcon);
 			addChild(labelText);
 			goto(0);

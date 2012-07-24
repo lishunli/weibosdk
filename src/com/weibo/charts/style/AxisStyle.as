@@ -8,6 +8,8 @@ package com.weibo.charts.style
 	 */
 	public class AxisStyle
 	{
+		public var type:String = "normal";
+		
 		//===== 标签轴部分 =====
 		public var labelFun:Function;
 		public var labelFormat:TextFormat = new TextFormat("Arial", 12, 0x999999, false);

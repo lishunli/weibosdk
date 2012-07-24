@@ -136,6 +136,7 @@ package com.weibo.charts.ui.tips
 		
 		protected function onEnterFrame(event:Event):void
 		{
+			if (!_tipContainer.stage) return;
 			
 			if(_tipContainer.mouseX > _targetChart.area.left &&
 				_tipContainer.mouseX < _targetChart.area.right && 

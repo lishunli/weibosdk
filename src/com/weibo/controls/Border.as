@@ -71,8 +71,8 @@ package com.weibo.controls
 		override protected function destroy():void
 		{
 			removeChild(_target);
-			removeChild(_border);
-			_border = null;
+			removeChild(_borderShape);
+			_borderShape = null;
 		}
 		
 		override protected function layout():void

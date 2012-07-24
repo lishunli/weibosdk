@@ -33,7 +33,7 @@ package com.weibo.charts
 		public function LineChart(style:LineChartStyle)
 		{
 			_chartStyle = style;
-			super(style);		
+			super(style);
 //			this.coordinateLogic.integer = style.integer;
 //			this.coordinateLogic.alwaysShow0 = true;
 //			this.coordinateLogic.touchSide = style.touchSide;
@@ -123,6 +123,7 @@ package com.weibo.charts
 					_dotArr.push(dotAryT);
 				}
 				_tipsManager.init(_arrDots, _tipContainer);
+				addChild(_tipContainer);//置顶
 			}
 			//在已经有了的内容上变化属性
 			if (_lastLineNum == 0 || (_lastLineNum == lineNum && _lastAxisLen == axisLen))
@@ -148,14 +149,16 @@ package com.weibo.charts
 						{
 							dot.state = "hide";
 						}
-
-						if(_chartStyle.touchSide && axisLen > 1)
-							tx = area.x + j * unit;
-						else
-							tx = area.x + j * unit + unit * 0.5;
 						
-						TweenLite.to(dot, .7, { x: tx, ease:Cubic.easeOut } );
-						TweenLite.to(dot, .7, { y: pheight, ease:Cubic.easeOut } );
+						if(_chartStyle.touchSide && axisLen > 1)
+						{
+							tx = area.x + j * unit;
+						}
+						else
+						{
+							tx = area.x + j * unit + unit * 0.5;
+						}
+						TweenLite.to(dot, .7, { x: tx, y: pheight, ease:Cubic.easeOut });
 					}
 				}
 				TweenLite.to(null, 3, {onUpdate:dotNextFrame } );

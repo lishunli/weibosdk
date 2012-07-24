@@ -4,6 +4,7 @@ package com.weibo.controls
 	import com.weibo.core.ValidateType;
 	
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
@@ -15,7 +16,7 @@ package com.weibo.controls
 	public class Button extends UIComponent
 	{
 		private var states:Dictionary;
-		private var currentState:String;
+		private var _currentState:String;
 		private var currentObject:DisplayObject;
 		
 //		private var upState:DisplayObject;
@@ -25,7 +26,9 @@ package com.weibo.controls
 		
 		private var _buttonDown:Boolean;
 		
-		private var _labelText:Label;
+		protected var _iconContainer:Sprite;
+		protected var _icon:DisplayObject;
+		protected var _labelText:Label;
 		
 		private var _enabled:Boolean = true;
 		
@@ -47,7 +50,7 @@ package com.weibo.controls
 		
 //===================================
 // 公开方法
-		
+
 		public function set upState(state:DisplayObject):void
 		{
 			states["upState"] = state;
@@ -72,10 +75,25 @@ package com.weibo.controls
 			if (currentState == "disabledState")	setState("disabledState");
 		}
 		
+		public function set icon(object:DisplayObject):void
+		{
+			_icon = object;
+			
+			invalidate(ValidateType.STATE);
+		}
+		
 		public function set label(value:String):void
 		{
 			_labelText.text = value;
 			invalidate(ValidateType.SIZE);
+		}
+		
+		/**
+		 * @return Label 文本对象
+		 */		
+		public function get labelComponent():Label
+		{
+			return _labelText;
 		}
 		
 		public function get enabled():Boolean
@@ -102,12 +120,33 @@ package com.weibo.controls
 //===================================
 // 内部方法
 		
+		protected function get currentState():String
+		{
+			return _currentState;
+		}
+		
 		override protected function create():void
 		{
 			setState("upState");
 			
+			_iconContainer = new Sprite();
+			addChild(_iconContainer);
+			
 			_labelText = new Label("", new TextFormat("Arial", 12, 0x666666));
 			addChild(_labelText);
+		}
+		
+		override protected function destroy():void
+		{
+			if (_labelText){
+				if (contains(_labelText))	removeChild(_labelText);
+				_labelText = null;
+			}
+			if (_iconContainer){
+				if (contains(_iconContainer))	removeChild(_iconContainer);
+				while (_iconContainer.numChildren > 0)	removeChildAt(0);
+				_iconContainer = null;
+			}
 		}
 		
 		override protected function addEvents():void
@@ -122,19 +161,32 @@ package com.weibo.controls
 		
 		override protected function updateState():void
 		{
+			while (_iconContainer.numChildren > 0){
+				_iconContainer.removeChildAt(0);
+			}
+			
+			if (_icon){
+				_iconContainer.addChild(_icon);
+			}
+			
 			_labelText.x = (width - _labelText.width) / 2;
 			_labelText.y = (height - _labelText.height) / 2;
+			
+//			this.graphics.clear();
+//			this.graphics.lineStyle(1, 0xccff00);
+//			this.graphics.drawRect(0,0,width,height);
 		}
 		
 		protected function setState(value:String):void
 		{
-			currentState = value;
+			_currentState = value;
 			if (currentObject && contains(currentObject)) removeChild(currentObject);
 			
 			var button:DisplayObject = states[value] || states["upState"];
 			currentObject = button;
 			if (button) addChildAt(button, 0);
 			
+			invalidate(ValidateType.STATE);
 		}
 		
 //===================================

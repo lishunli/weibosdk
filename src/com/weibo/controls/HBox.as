@@ -41,9 +41,12 @@ package com.weibo.controls
 				_width += child.width;
 				_height = Math.max(_height, child.height);
 			}
-			doAlignment();
 			_width += _spacing * (numChildren - 1);
-//			dispatchEvent(new Event(Event.RESIZE));
+		}
+		
+		override protected function updateState():void
+		{
+			doAlignment();
 		}
 		
 		/**
