@@ -106,7 +106,7 @@ package com.weibo.controls
 			for (var i:int = 0; i < _content.numChildren; i++)
 			{
 				var d:DisplayObject = _content.getChildAt(i);
-				_width = Math.max(d.width);
+				_width = Math.max(d.width, width);
 				d.y = start;
 				start += d.height + _spacing;
 			}
