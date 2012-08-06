@@ -2,15 +2,13 @@ package com.weibo.charts.data
 {
 	import com.weibo.charts.ChartBase;
 	
-	import org.casalib.util.DateUtil;
-	
 	/**
 	 * 日期轴
 	 * yaofei
 	 */
 	public class DateLogic extends LabelLogic
 	{
-		private var 
+//		private var 
 		
 		public function DateLogic(chart:ChartBase)
 		{

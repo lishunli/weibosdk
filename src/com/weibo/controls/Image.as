@@ -23,12 +23,13 @@ package com.weibo.controls
 		private var _content:Sprite;
 		private var _loader:Loader;
 		
+		private var _autoSize:Boolean = true;
+		
 //		private var _showBack:Boolean = false;
 //		private var _border:Number = 1;
 //		private var _padding:Number = 2;
 //		private var _borderColor:uint = 0xcccccc;
 //		private var _backColor:uint = 0xffffff;
-		private var _autoSize:Boolean = true;
 		
 //======================================
 // 构造函数
@@ -42,16 +43,6 @@ package com.weibo.controls
 		
 //======================================
 // 公开方法
-		
-		public function get autoSize():Boolean
-		{
-			return _autoSize;
-		}
-		public function set autoSize(value:Boolean):void
-		{
-			_autoSize = value;
-			invalidate(ValidateType.SIZE);
-		}
 		
 		/**
 		 * 图片的源：
@@ -100,22 +91,12 @@ package com.weibo.controls
 			return autoSize ? _content.height : _height;
 		}
 		
-		override public function set width(w:Number):void
-		{
-			_autoSize = false;
-			super.width = w;
-		}
+		public function get autoSize():Boolean{return _autoSize;}
 		
-		override public function set height(h:Number):void
+		public function set autoSize(value:Boolean):void
 		{
-			_autoSize = false;
-			super.height = h;
-		}
-		
-		override public function setSize(w:Number, h:Number):void
-		{
-			_autoSize = false;
-			super.setSize(w, h);
+			_autoSize = value;
+			invalidate(ValidateType.SIZE);
 		}
 		
 		
@@ -158,20 +139,20 @@ package com.weibo.controls
 		
 		private function addLoaderEvents():void
 		{
-			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoad);
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, imageOnLoad);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
 		}
 		
 		private function removeLoaderEvents():void
 		{
-			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoad);
+			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, imageOnLoad);
 			_loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onError);
 		}
 		
 //======================================
 // 事件侦听器
 		
-		protected function onLoad(event:Event):void
+		protected function imageOnLoad(event:Event):void
 		{
 //			dispatchEvent(new Event(Event.RESIZE, true, false));//临时发送
 			invalidate(ValidateType.SIZE);

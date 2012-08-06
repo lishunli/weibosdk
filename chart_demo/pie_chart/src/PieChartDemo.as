@@ -5,12 +5,14 @@ package
 	import com.weibo.charts.comp.PieTipSpider;
 	import com.weibo.charts.style.PieChartStyle;
 	import com.weibo.charts.ui.tips.LabelMultiTip;
+	import com.weibo.util.ColorUtil;
 	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
+	import flash.system.Security;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
 	
@@ -37,10 +39,11 @@ package
 		
 		public function PieChartDemo()
 		{
+			Security.allowDomain("*");
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.00", false, false);
+			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.01", false, false);
 			var cm:ContextMenu = new ContextMenu();
 			cm.hideBuiltInItems();
 			cm.customItems.push(cmi);
@@ -62,25 +65,28 @@ package
 //			style.borderThicknesss = 5;
 			var smallerlen:Number = (stage.stageWidth > stage.stageHeight) ? stage.stageHeight : stage.stageWidth;
 			style.radiusIn = (smallerlen - 20) * 0.2;
-			style.gap = 3;			
+			style.gap = 3;		
+			style.tipFun = this.tipFun;
+			if(loaderInfo.parameters["pieColors"] != null){
+				style.colors = ColorUtil.getColorsFromRGB16(loaderInfo.parameters["pieColors"]);
+			}
 			
 			_chart = new PieChart(style);
-			_chart = new PieTipSpider(_chart as PieChart);	
-			_chart.setStyle("tipFun", this.tipFun);		
+			_chart = new PieTipSpider(_chart as PieChart);
 			//TO DO 优化设置方案
-			_chart.setStyle("labelGrid", true);	
+			_chart.setStyle("labelGrid", true);
 			
 			addChild(_chart);
 			_chart.setSize(stage.stageWidth - 30, stage.stageHeight - 40);
 			_chart.move(stage.stageWidth * 0.5 - 0.5 * _chart.width, stage.stageHeight * 0.5 - 0.5 * _chart.height);
-//			changeData(_testData);			
+//			changeData(_testData);
 			
 			var para:Object = this.loaderInfo.parameters;
 			if (ExternalInterface.available)
 			{
 				ExternalInterface.addCallback("setData", changeData);
 				ExternalInterface.addCallback("setStyle", setStyle);
-				ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"]);
+				ExternalInterface.call(para["readyCallback"] || "readyCallback", para["swfID"] || ExternalInterface.objectID);
 			}
 		}
 		

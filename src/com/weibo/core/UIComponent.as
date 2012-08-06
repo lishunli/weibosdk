@@ -21,6 +21,7 @@ package com.weibo.core
 	 * ValidateType.ALL-->销毁所有模版内容并重新创建
 	 * ValidateType.SIZE-->改变尺寸，影响布局
 	 * ValidateType.STATE-->只改变状态
+	 * 最近修改：yaofei
 	 * @author sinaweibo
 	 */	
 	public class UIComponent extends Sprite
@@ -44,6 +45,8 @@ package com.weibo.core
 		protected var _width:Number = 0;
 		protected var _height:Number = 0;
 		
+//		private var _autoSize:Boolean = true;
+		
 		//样式
 		protected var _style:Object = {};
 		
@@ -51,7 +54,9 @@ package com.weibo.core
 		protected var _haveResized:Boolean = false;
 		//是否需要渲染
 		protected var _needRender:Boolean = false;
-		
+		/**
+		 * 子对象的尺寸变化是否影响容器
+		 */		
 		protected var listenChildrenSize:Boolean = false;
 		
 		
@@ -188,9 +193,9 @@ package com.weibo.core
 		
 		/**
 		 * 需要被子类重写，完成内容排版的目的
-		 * 运行时期：FRAME_CONSTRUCTED
-		 * 此时能读到子对象尺寸。
 		 * 职责：设置宽高、布局子对象。
+		 * //运行时期：FRAME_CONSTRUCTED
+		 * 时机：此时能读到子对象尺寸；同时计算出自己的宽高。
 		 * 注意：容器的子类考虑是否继承容器行为：super.layout();
 		 */	
 		protected function layout():void
@@ -263,6 +268,7 @@ package com.weibo.core
 		{
 			if (w == width) return;
 			_width = w;
+//			_autoSize = false;
 			invalidate(ValidateType.SIZE);
 		}
 		
@@ -274,6 +280,7 @@ package com.weibo.core
 		{
 			if (h == height) return;
 			_height = h;
+//			_autoSize = false;
 			invalidate(ValidateType.SIZE);
 		}
 		
@@ -287,8 +294,20 @@ package com.weibo.core
 			if (w == width && h == height) return;
 			_width = w;
 			_height = h;
+//			_autoSize = false;
 			invalidate(ValidateType.SIZE);
 		}
+		
+		/*public function get autoSize():Boolean
+		{
+			return _autoSize;
+		}
+		
+		public function set autoSize(value:Boolean):void
+		{
+			_autoSize = value;
+			invalidate(ValidateType.SIZE);
+		}*/
 		
 //==========================================
 // 事件侦听器

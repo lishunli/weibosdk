@@ -33,6 +33,9 @@ package com.weibo.charts
 		
 		private var errorSector:DisplayObject;
 		
+		
+		private var markRefreshTip:Boolean = false;
+		
 	//==========================================
 	// 构造函数
 	//------------------------------------------
@@ -244,6 +247,7 @@ package com.weibo.charts
 		private function refreshTip():void
 		{
 //			_tipContainer.visible = true;
+			markRefreshTip = true;
 			if (stage) stage.invalidate();
 		}
 		
@@ -261,7 +265,10 @@ package com.weibo.charts
 		
 		private function drawTipsHandler(event:Event):void
 		{
-			dispatchEvent(new ChartEvent(ChartEvent.CHART_TIPS_SHOW, _arrBars, true, true));
+			if (markRefreshTip)
+				dispatchEvent(new ChartEvent(ChartEvent.CHART_TIPS_SHOW, _arrBars, true, true));
+			
+			markRefreshTip = false;
 		}
 		
 		private function mouseShowTip(event:MouseEvent):void

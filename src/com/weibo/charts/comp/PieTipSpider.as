@@ -127,7 +127,16 @@ package com.weibo.charts.comp
 				var tf:TextFormat = new TextFormat("Arial", null, pieChartStyle.tipColor);
 				
 //				getStyle("tipFun").call(null, dataProvider[i]);
-				tip.setLabel(pieChartStyle.tipFun.call(null, dataProvider[i]), tf, true);
+				if (pieChartStyle.tipFun != null){
+					var tipInfo:String = pieChartStyle.tipFun.call(null, dataProvider[i]);
+				}
+				/*if (pieChartStyle && pieChartStyle.tipFun != null){
+					var tipInfo:String = pieChartStyle.tipFun.call(null, dataProvider[i]) : ;
+				}*/
+				else{
+					tipInfo = dataProvider[i].toString();
+				}
+				tip.setLabel(tipInfo, tf, true);
 				_tipContainer.addChild(tip as DisplayObject);
 				
 				//文字基础位置

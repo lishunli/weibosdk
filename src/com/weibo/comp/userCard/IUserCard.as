@@ -4,6 +4,7 @@ package com.weibo.comp.userCard
 
 	public interface IUserCard extends IWeiboUI
 	{
-		
+		function get data():UserCardVO;
+		function set data(vo:UserCardVO):void;
 	}
 }
