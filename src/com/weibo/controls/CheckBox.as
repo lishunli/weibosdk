@@ -13,10 +13,12 @@ package com.weibo.controls
 		public static const CHECK_ON:String = "check_on";
 		public static const CHECK_OFF:String = "check_off";
 		
-		[Embed(source="com/weibo/assets/check_on.png")]
+		[Embed(source="../assets/check0.gif")]
 		private const CheckOn:Class;
-		[Embed(source="com/weibo/assets/check_off.png")]
+		
+		[Embed(source="../assets/check2.gif")]
 		private const CheckOff:Class;
+		
 		
 		private const checkOn:DisplayObject = new CheckOn();
 		private const checkOff:DisplayObject = new CheckOff();
@@ -25,9 +27,9 @@ package com.weibo.controls
 		private var labelText:Label;
 		private var iconWidth:Number = 14;
 		
-		public function CheckBox()
+		public function CheckBox(textFormat:TextFormat=null)
 		{
-			labelText = new Label("", new TextFormat("Arial", 12, 0x666666));
+			labelText = new Label("", textFormat || new TextFormat("Arial", 12, 0x666666));
 			labelText.mouseEnabled = false;
 			labelText.x = 16;
 			checkIcon.y = 3;
@@ -40,6 +42,7 @@ package com.weibo.controls
 		private function clickListener(event:MouseEvent):void {
 			selected = !selected;
 		}
+		
 		
 		/**公开方法
 		 -------------------------------------------------------*/
