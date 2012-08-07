@@ -2,6 +2,7 @@ package com.weibo.controls
 {
 	import com.weibo.core.UIComponent;
 	import com.weibo.core.ValidateType;
+	import flash.display.BlendMode;
 	
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -58,6 +59,7 @@ package com.weibo.controls
 			_tf.selectable = false;
 			_tf.mouseEnabled = false;
 			_tf.autoSize = TextFieldAutoSize.LEFT;
+			_tf.blendMode = BlendMode.LAYER;
 //			_tf.border = true;
 			_tf.text = _text;
 			addChild(_tf);
