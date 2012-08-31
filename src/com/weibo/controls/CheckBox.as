@@ -13,10 +13,10 @@ package com.weibo.controls
 		public static const CHECK_ON:String = "check_on";
 		public static const CHECK_OFF:String = "check_off";
 		
-		[Embed(source="../assets/check0.gif")]
+		[Embed(source="../assets/check_on.png")]
 		private const CheckOn:Class;
 		
-		[Embed(source="../assets/check2.gif")]
+		[Embed(source="../assets/check_off.png")]
 		private const CheckOff:Class;
 		
 		

@@ -10,7 +10,8 @@ package com.weibo.controls
 	import flash.utils.Dictionary;
 	
 	/**
-	 * 带有可用状态的按钮
+	 * 带有Icon和Label按钮
+	 * 同时可定义多状态
 	 * @author yaofei@staff.sina.com.cn
 	 */	
 	public class Button extends UIComponent
@@ -85,7 +86,7 @@ package com.weibo.controls
 		public function set label(value:String):void
 		{
 			_labelText.text = value;
-			invalidate(ValidateType.SIZE);
+			invalidate(ValidateType.STATE);
 		}
 		
 		/**
@@ -127,13 +128,13 @@ package com.weibo.controls
 		
 		override protected function create():void
 		{
-			setState("upState");
-			
 			_iconContainer = new Sprite();
 			addChild(_iconContainer);
 			
 			_labelText = new Label("", new TextFormat("Arial", 12, 0x666666));
 			addChild(_labelText);
+			
+			setState("upState");
 		}
 		
 		override protected function destroy():void

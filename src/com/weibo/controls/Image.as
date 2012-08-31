@@ -23,6 +23,8 @@ package com.weibo.controls
 		private var _content:Sprite;
 		private var _loader:Loader;
 		
+		private var _source:Object;
+		
 		private var _autoSize:Boolean = true;
 		
 //		private var _showBack:Boolean = false;
@@ -51,6 +53,8 @@ package com.weibo.controls
 		 */		
 		public function set source(value:Object):void
 		{
+			_source = value;
+			
 			removeContents();
 			_content.scaleX = _content.scaleY = 1;
 			
@@ -59,14 +63,12 @@ package com.weibo.controls
 				var object:DisplayObject = new value();
 				if (object) _content.addChild(object);
 				
-//				dispatchEvent(new Event(Event.RESIZE));
 				invalidate(ValidateType.SIZE);
 			}
 			else if (value is DisplayObject)
 			{
 				_content.addChild(value as DisplayObject);
 				
-//				dispatchEvent(new Event(Event.RESIZE));
 				invalidate(ValidateType.SIZE);
 			}
 			else if (value is String)

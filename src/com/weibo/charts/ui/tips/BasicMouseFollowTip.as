@@ -1,6 +1,7 @@
 package com.weibo.charts.ui.tips
 {
 	import com.greensock.TweenMax;
+	import com.weibo.charts.CoordinateChart;
 	import com.weibo.charts.ui.ChartUIBase;
 	import com.weibo.charts.ui.ITipUI;
 	
@@ -41,6 +42,11 @@ package com.weibo.charts.ui.tips
 			}
 			
 			this.filters = [new DropShadowFilter(2,45,0,0.5)];
+		}
+		
+		public function setContent(chart:CoordinateChart, index:int, tf:TextFormat = null):void
+		{
+			
 		}
 		
 		/**

@@ -17,11 +17,13 @@ package com.weibo.controls
 //		public static const RIGHT:String = "right";
 		
 		/**
+		 * 左右对齐方式
 		 * 有效值：'left', 'center', 'right'
 		 */		
 		protected var _hAlign:String;
 		
 		/**
+		 * 排列对齐方式
 		 * 有效值：'top', 'middle', 'bottom'
 		 */		
 		protected var _vAlign:String;
@@ -68,7 +70,7 @@ package com.weibo.controls
 			{
 				var d:DisplayObject = _content.getChildAt(i);
 				_width = Math.max(d.width, width);
-				childrenHeight += d.width;
+				childrenHeight += d.height;
 			}
 			
 			//设置子对象X轴坐标

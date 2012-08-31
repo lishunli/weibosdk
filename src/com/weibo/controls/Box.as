@@ -36,9 +36,9 @@ package com.weibo.controls
 			if (autoSize){
 				_width = 0;
 				_height = 0;
-				for (var i:int = 0; i < numChildren; i++)
+				for (var i:int = 0; i < _content.numChildren; i++)
 				{
-					var d:DisplayObject = getChildAt(i);
+					var d:DisplayObject = _content.getChildAt(i);
 					_width = Math.max(d.width, _width);
 					_height = Math.max(d.height, _height);
 				}

@@ -1,7 +1,5 @@
 package com.weibo.core
 {
-	import com.weibo.events.UIComponentEvent;
-	
 	import flash.display.Sprite;
 	import flash.events.DataEvent;
 	import flash.events.Event;
@@ -93,12 +91,6 @@ package com.weibo.core
 		final protected function invalidate(type:String = "state"):void
 		{
 			_validateTypeObject[type] = true;
-			/*if (type == ValidateType.SIZE)
-			{
-				//启动父级对象改变尺寸
-				dispatchEvent(new Event(Event.RESIZE, true));
-			}
-			addEventListener(Event.ENTER_FRAME, invalidateAtFrame);*/
 			dispatchEvent(new DataEvent("invalidate", true, true, type));
 		}
 		
@@ -205,6 +197,7 @@ package com.weibo.core
 		
 		/**
 		 * 需要被子类重写，完成状态更新的目的
+		 * 不可再调用子对象中影响尺寸的方法 ！
 		 */		
 		protected function updateState():void
 		{
@@ -349,10 +342,15 @@ package com.weibo.core
 		 */	
 		private function invalidateListener(event:DataEvent):void
 		{
-			if (event.target != this && listenChildrenSize){
-				//同步：子对象发生了尺寸变化，因此父对象也需要启动同帧变化尺寸机制，但这时还未实现冒泡顺序
-				if (event.data == ValidateType.SIZE){
+			if (event.target != this && event.data == ValidateType.SIZE){
+				if (listenChildrenSize){
+					//同步：子对象发生了尺寸变化，因此父对象也需要启动同帧变化尺寸机制，但这时还未实现冒泡顺序
 					_validateTypeObject[event.data] = true;
+//					trace(listenChildrenSize, this, event.target)
+				}
+				else{
+					//不再向上传递
+					event.data = null;
 				}
 			}
 			

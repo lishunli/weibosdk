@@ -1,4 +1,4 @@
-package com.weibo.charts.comp
+package
 {
 	import com.weibo.core.UIComponent;
 	
