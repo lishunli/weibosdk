@@ -43,7 +43,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.01", false, false);
+			var cmi:ContextMenuItem = new ContextMenuItem("weibo chart: v1.04", false, false);
 			var cm:ContextMenu = new ContextMenu();
 			cm.hideBuiltInItems();
 			cm.customItems.push(cmi);
@@ -65,7 +65,7 @@ package
 //			style.borderThicknesss = 5;
 			var smallerlen:Number = (stage.stageWidth > stage.stageHeight) ? stage.stageHeight : stage.stageWidth;
 			style.radiusIn = (smallerlen - 20) * 0.2;
-			style.gap = 3;		
+			style.gap = 3;
 			style.tipFun = this.tipFun;
 			if(loaderInfo.parameters["pieColors"] != null){
 				style.colors = ColorUtil.getColorsFromRGB16(loaderInfo.parameters["pieColors"]);
