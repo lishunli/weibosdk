@@ -103,9 +103,9 @@ package com.sina.microblog.data
 		 */ 
 		public function MicroBlogStatus(status:Object)
 		{
-			this.idstr = status["idstr"];
+			this.idstr = status["idstr"] + "";
 			this.createdAt = MicroBlogDataUtil.resolveDate(status["created_at"]);
-			this.id = status["id"];
+			this.id = status["id"] + "";
 			this.text = status["text"];
 			this.source = status["source"];
 			this.isFavorited = status["favorited"];
@@ -121,7 +121,10 @@ package com.sina.microblog.data
 			this.commentsCount = uint(status["comments_count"]);
 			this.annotations = status["annotations"] as Array;
 			this.geo = status["geo"] as Object;
-			this.user = new MicroBlogUser(status["user"]);
+			if(status["user"] != undefined)
+			{
+				this.user = new MicroBlogUser(status["user"]);
+			}
 			if(status["retweeted_status"] != null)
 			{
 				this.repost = new MicroBlogStatus(status["retweeted_status"]);

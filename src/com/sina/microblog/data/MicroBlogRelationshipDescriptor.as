@@ -26,13 +26,13 @@ package com.sina.microblog.data
 		 */
 		public var isNotificationEnabled:Boolean;
 		
-		public function MicroBlogRelationshipDescriptor(user:XML)
+		public function MicroBlogRelationshipDescriptor(user:Object)
 		{
 			id = String(user.id);
 			screenName = user.screen_name;
-			isFollowingMe = user.following == "true";
-			isFollowedBy = user.followed_by == "true";
-			isNotificationEnabled = user.notification_enabled == "true";
+			isFollowingMe = user.following == true;
+			isFollowedBy = user.followed_by == true;
+			isNotificationEnabled = user.notifications_enabled == true;
 		}
 	}
 }

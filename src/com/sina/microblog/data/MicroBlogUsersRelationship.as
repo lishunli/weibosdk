@@ -13,10 +13,10 @@ package com.sina.microblog.data
 		 * 查询的目标用户
 		 */
 		public var target:MicroBlogRelationshipDescriptor;
-		public function MicroBlogUsersRelationship(relationship:XML)
+		public function MicroBlogUsersRelationship(relationship:Object)
 		{
-			source = new MicroBlogRelationshipDescriptor(relationship.source[0]);
-			target = new MicroBlogRelationshipDescriptor(relationship.target[0]);
+			source = new MicroBlogRelationshipDescriptor(relationship.source);
+			target = new MicroBlogRelationshipDescriptor(relationship.target);
 		}
 	}
 }

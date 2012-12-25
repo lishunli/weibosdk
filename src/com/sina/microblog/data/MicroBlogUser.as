@@ -170,7 +170,7 @@ package com.sina.microblog.data
 			
 			if(user["status"] != null)
 			{
-				if ( user["status"]["text"] != "")status = new MicroBlogStatus(user.status[0]);
+				if ( user["status"]["text"] != "")status = new MicroBlogStatus(user.status);
 			}
 		}
 		

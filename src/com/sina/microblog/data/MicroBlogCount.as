@@ -23,11 +23,11 @@ package com.sina.microblog.data
 		/**
 		 * @private
 		 */ 
-		public function MicroBlogCount(count:XML)
+		public function MicroBlogCount(count:Object)
 		{
 			id = String(count.id);
-			commentsCount = int(count.comments);
-			repostsCount = int(count.rt);
+			commentsCount = int(count.comments_count);
+			repostsCount = int(count.reposts_count);
 		}
 
 	}
